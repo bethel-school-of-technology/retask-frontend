@@ -2,7 +2,8 @@ import {
   Component,
   ChangeDetectionStrategy,
   ViewChild,
-  TemplateRef
+  TemplateRef,
+  OnInit
 } from '@angular/core';
 import {
   startOfDay,
@@ -22,6 +23,14 @@ import {
   CalendarEventTimesChangedEvent,
   CalendarView
 } from 'angular-calendar';
+
+import { Subscription } from 'rxjs';
+
+import { User } from '@app/_models';
+import { Task } from '@app/_models/task';
+import { TaskService } from '@app/_services/task.service';
+import { AuthenticationService } from '@app/_services';
+
 
 const colors: any = {
   red: {
@@ -43,7 +52,7 @@ const colors: any = {
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnInit {
   @ViewChild('modalContent') modalContent: TemplateRef<any>;
 
   view: CalendarView = CalendarView.Week;
@@ -118,7 +127,28 @@ export class CalendarComponent {
 
   activeDayIsOpen: boolean = true;
 
-  constructor(private modal: NgbModal) {}
+  currentUser: User;
+  currentUserSubscription: Subscription;
+
+  taskList: Task[];
+
+  constructor(private modal: NgbModal,
+    private taskService: TaskService,
+    private authenticationService: AuthenticationService) {
+    this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
+      this.currentUser = user;
+    });
+  }
+
+  ngOnInit() {
+    this.taskList = this.taskService.getAllbyUsername(this.currentUser.username)
+    console.log(this.taskList);
+  }
+
+  ngOnDestroy() {
+    // unsubscribe to ensure no memory leaks
+    this.currentUserSubscription.unsubscribe();
+  }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -164,6 +194,6 @@ export class CalendarComponent {
     });
     this.refresh.next();
   }
-  
+
 
 }

@@ -5,6 +5,8 @@ import { Observable, } from 'rxjs';
 
 import { environment } from '@environments/environment'
 
+import { User, UserUpdateForm} from '@app/_models/user'
+
 @Injectable({
   providedIn: 'root'
 })
@@ -51,6 +53,58 @@ export class ReTaskService {
           .append('Content-Type', 'application/text'),
       }
     );
+  }
+
+  //get picture.  This requires a token.
+  getPic(token: string): Observable<Blob> {
+    let urlParm = `${environment.reTaskUrl}/user/downloadPic`
+     return this.http.get(urlParm
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'blob'
+      }
+    );
+  }
+
+  //update the user.  This requires a token.
+  setPic(pic: File , token: string): Observable<any> {
+    let urlParm = `${environment.reTaskUrl}/user/uploadPic`
+
+    let formData = new FormData(); 
+
+    formData.append("file", pic, pic.name);
+
+    return this.http.post(urlParm, formData
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token),
+      }
+    );
+  }
+
+  //update the user.  This requires a token.
+  updateUser(user: UserUpdateForm, token: string): Observable<any> {
+    let urlParm = `${environment.reTaskUrl}/user/updateUser`
+    return this.http.post(urlParm, user
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+        .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+  }
+
+  // reset the password
+  resetPassword(dataIs:any, token: string) {
+    let urlParm = `${environment.reTaskUrl}/user/changePassword`
+    return this.http.post(urlParm, dataIs
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+        .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+
   }
 
 }
