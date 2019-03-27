@@ -14,6 +14,7 @@ import { ApiResponse } from '@app/_models/apiResponse';
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
 
+  submitted = false;
   currentUser: User;
   currentUserSubscription: Subscription;
   imageSubscription: Subscription;
@@ -62,6 +63,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     // unsubscribe to ensure no memory leaks
     this.currentUserSubscription.unsubscribe();
   }
+
+  onSubmit() {}
 
   getPic() {
   // Get the image 

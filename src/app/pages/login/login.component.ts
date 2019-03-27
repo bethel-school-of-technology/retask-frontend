@@ -2,7 +2,6 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
 import { User } from '@app/_models';
 
 import { AlertService, AuthenticationService } from '@app/_services';

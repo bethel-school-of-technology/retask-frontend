@@ -7,7 +7,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
 
-import { AlertComponent } from './_components';
+import { AlertRetaskComponent } from './_components';
 //import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { HomeComponent } from '@app/pages/home';
 import { LoginComponent } from '@app/pages/login';
@@ -30,6 +30,7 @@ import { SocialLoginModule, AuthServiceConfig  } from 'angularx-social-login';
 import { GoogleLoginProvider, FacebookLoginProvider, LinkedInLoginProvider } from 'angularx-social-login';
 import { DemoComponent } from './pages/demo/demo.component';;
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+
 
 const config = new AuthServiceConfig([
     {
@@ -73,7 +74,7 @@ export function provideConfig() {
     ],
     declarations: [
         AppComponent,
-        AlertComponent,
+        AlertRetaskComponent,
         HomeComponent,
         LoginComponent,
         RegisterComponent,
@@ -82,7 +83,6 @@ export function provideConfig() {
         ForgotusernameComponent,
         DemoComponent,
         UserProfileComponent
-
     ],
     providers: [
         {
