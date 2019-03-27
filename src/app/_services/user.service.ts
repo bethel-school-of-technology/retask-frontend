@@ -5,7 +5,6 @@ import { environment } from '@environments/environment';
 import { User, UserUpdateForm } from '@app/_models';
 import { ReTaskService } from '@app/_services/retask.service';
 import { ApiResponse } from '@app/_models/apiResponse';
-import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {

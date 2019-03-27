@@ -30,7 +30,7 @@ import { SocialLoginModule, AuthServiceConfig  } from 'angularx-social-login';
 import { GoogleLoginProvider, FacebookLoginProvider, LinkedInLoginProvider } from 'angularx-social-login';
 import { DemoComponent } from './pages/demo/demo.component';;
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
-import { AlertService } from './_services';
+
 
 const config = new AuthServiceConfig([
     {

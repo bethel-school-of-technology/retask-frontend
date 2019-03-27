@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 
-import { environment } from '@environments/environment';
 import { Task } from '@app/_models/task';
 import { ReTaskService } from '@app/_services/retask.service';
 
