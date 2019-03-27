@@ -5,7 +5,7 @@ import { Observable, } from 'rxjs';
 
 import { environment } from '@environments/environment'
 
-import { User, UserUpdateForm} from '@app/_models/user'
+import { UserUpdateForm} from '@app/_models/user'
 
 @Injectable({
   providedIn: 'root'
