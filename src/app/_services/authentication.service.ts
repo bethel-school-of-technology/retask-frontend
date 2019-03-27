@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { User } from '@app/_models';
 import { ReTaskService } from '@app/_services/retask.service';
+import { SocialUser } from 'angularx-social-login';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -25,7 +26,6 @@ export class AuthenticationService {
 
         let tempUser = new User;
         if (username==='Guest' && password==='password') {
-       
             tempUser.username = 'Guest';
             tempUser.firstName = 'Guest';
             tempUser.lastName = 'User';
@@ -39,6 +39,11 @@ export class AuthenticationService {
             this.currentUserSubject.next(tempUser);
         }
         return tempUser;
+
+    }
+
+    setUserFromSoialLogin(userSocial: SocialUser) {
+        
 
     }
 

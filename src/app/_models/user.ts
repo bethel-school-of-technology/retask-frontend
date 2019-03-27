@@ -6,7 +6,15 @@
     lastName: string;
     email: string;
     tokenType: string;
-    accessToken: string;                       
+    accessToken: string;
     errorMessage: string;
+    phoneNbr: string;
     role: string[];
+}
+
+// if you want the field to be update on the database - added it here also
+export class UserUpdateForm {
+    firstName: string;
+    lastName: string;
+    phoneNbr: string;
 }

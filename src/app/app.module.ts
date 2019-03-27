@@ -16,15 +16,40 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from "./material.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { CalendarComponent } from '@app/pages/calendar/calendar.component'
+import { CalendarComponent } from '@app/pages/calendar/calendar.component';
 
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CommonModule } from '@angular/common';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { ForgotpasswordComponent } from '@app/pages/forgotpassword/forgotpassword.component';;
-import { ForgotusernameComponent } from '@app/pages/forgotusername/forgotusername.component'
+import { ForgotpasswordComponent } from '@app/pages/forgotpassword/forgotpassword.component';
+import { ForgotusernameComponent } from '@app/pages/forgotusername/forgotusername.component';
+
+import { SocialLoginModule, AuthServiceConfig  } from 'angularx-social-login';
+import { GoogleLoginProvider, FacebookLoginProvider, LinkedInLoginProvider } from 'angularx-social-login';
+import { DemoComponent } from './pages/demo/demo.component';;
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+
+const config = new AuthServiceConfig([
+    {
+        id: GoogleLoginProvider.PROVIDER_ID,
+        //provider: new GoogleLoginProvider('624796833023-clhjgupm0pu6vgga7k5i5bsfp6qp6egh.apps.googleusercontent.com')
+        provider: new GoogleLoginProvider('563025889923-li0ssh373lio431e4m176binneejcqg1.apps.googleusercontent.com')
+    },
+    {
+        id: FacebookLoginProvider.PROVIDER_ID,
+        provider: new FacebookLoginProvider('561602290896109')
+    },
+    {
+        id: LinkedInLoginProvider.PROVIDER_ID,
+        provider: new LinkedInLoginProvider('78iqy5cu2e1fgr')
+    }
+]);
+
+export function provideConfig() {
+    return config;
+}
 
 @NgModule({
     imports: [
@@ -44,6 +69,7 @@ import { ForgotusernameComponent } from '@app/pages/forgotusername/forgotusernam
         NgbModalModule,
         FlatpickrModule.forRoot(),
         CommonModule,
+        SocialLoginModule,
     ],
     declarations: [
         AppComponent,
@@ -52,11 +78,17 @@ import { ForgotusernameComponent } from '@app/pages/forgotusername/forgotusernam
         LoginComponent,
         RegisterComponent,
         CalendarComponent,
-        ForgotpasswordComponent
-,
-        ForgotusernameComponent
+        ForgotpasswordComponent,
+        ForgotusernameComponent,
+        DemoComponent,
+        UserProfileComponent
+
     ],
     providers: [
+        {
+            provide: AuthServiceConfig,
+            useFactory: provideConfig
+        }
     ],
     bootstrap: [AppComponent]
 })

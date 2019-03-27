@@ -1,42 +1,59 @@
 ﻿<div class="container">
+    <div class="row">
+        <h2>Login</h2>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="row">
-            <h2>Login</h2>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" formControlName="username" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                    <div *ngIf="f.username.errors.required">Username is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" formControlName="password" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Password is required</div>
+                </div>
+            </div>
         </div>
 
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <div class="row">
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" formControlName="username" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
-                    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-                        <div *ngIf="f.username.errors.required">Username is required</div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" formControlName="password" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                        <div *ngIf="f.password.errors.required">Password is required</div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
+        <div class="row">
+            <div class="form-group">
+                <div>
                     <button [disabled]="loading" class="btn btn-primary" (click)="login()">Login</button>
                     <img *ngIf="loading" class="pl-3"
                         src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                     <a routerLink="/register" class="btn btn-link">Register</a>
-                    <br>
-                    <br>
-                    <a routerLink="/forgotusername" class="btn-sm btn-link">Forgot Username</a>
-                    <br>
-                    <a routerLink="/forgotpassword" class="btn-sm btn-link">Forgot Password</a>
                 </div>
+                <br>
+                <div class="card-block">
+                    Login with 
+                    <button class="btn btn-social-icon btn-google mx-1" (click)="signInWithGoogle()"><span
+                            class="fa fa-google"></span></button>
+                    <button class="btn btn-social-icon btn-facebook mx-1" (click)="signInWithFB()"><span
+                            class="fa fa-facebook"></span></button>
+                    <button class="btn btn-social-icon btn-linkedin mx-1" (click)="signInWithLinkedIn()"><span
+                            class="fa fa-linkedin"></span></button>
+                </div>
+                <br>
+                <a routerLink="/forgotusername" class="btn-sm btn-link">Forgot Username</a>
+                <br>
+                <a routerLink="/forgotpassword" class="btn-sm btn-link">Forgot Password</a>
+                <br>
+                <a routerLink="/demo" class="btn-sm btn-link">Demo Password Page</a>
             </div>
-        </form>
+        </div>
+
+
+
+    </form>
 
 </div>
