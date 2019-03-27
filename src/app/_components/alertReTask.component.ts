@@ -5,10 +5,10 @@ import { AlertService } from '@app/_services';
 
 @Component({
     selector: 'alert',
-    templateUrl: 'alert.component.html'
+    templateUrl: 'alertReTask.component.html'
 })
 
-export class AlertComponent implements OnInit, OnDestroy {
+export class AlertRetaskComponent implements OnInit, OnDestroy {
     private subscription: Subscription;
     message: any;
 

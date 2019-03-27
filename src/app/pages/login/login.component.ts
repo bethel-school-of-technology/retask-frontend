@@ -2,13 +2,19 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
 import { User } from '@app/_models';
 
 import { AlertService, AuthenticationService } from '@app/_services';
 
+import { AuthService } from 'angularx-social-login';
+import { SocialUser } from 'angularx-social-login';
+import { GoogleLoginProvider, FacebookLoginProvider, LinkedInLoginProvider } from 'angularx-social-login';
+
 @Component({ templateUrl: 'login.component.html' })
 export class LoginComponent implements OnInit {
+
+    userSocial: SocialUser;
+
     loginForm: FormGroup;
     loading = false;
     submitted = false;
@@ -21,7 +27,8 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private authService: AuthService
     ) {
         // redirect to home if already logged in
         if (this.authenticationService.currentUserValue) {
@@ -30,6 +37,11 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
+        //for socail media
+        this.authService.authState.subscribe((user) => {
+            this.userSocial = user;
+        });
+
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required],
             password: ['', Validators.required]
@@ -43,6 +55,21 @@ export class LoginComponent implements OnInit {
         // Only need to unsubscribe if its a multi event Observable
         //this.subscription.unsubscribe();
     }
+
+
+    signInWithGoogle(): void {
+        this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+        console.log(this.userSocial);
+    }
+
+    signInWithFB(): void {
+        this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+    }
+
+    signInWithLinkedIn(): void {
+        this.authService.signIn(LinkedInLoginProvider.PROVIDER_ID);
+    }
+
 
     // convenience getter for easy access to form fields
     get f() { return this.loginForm.controls; }

@@ -1,18 +1,17 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-import { environment } from '@environments/environment';
 import { User } from '@app/_models';
 import { ReTaskService } from '@app/_services/retask.service';
+import { SocialUser } from 'angularx-social-login';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
 
-    constructor(private http: HttpClient, private reTaskService: ReTaskService) {
+    constructor(private reTaskService: ReTaskService) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
     }
@@ -25,7 +24,6 @@ export class AuthenticationService {
 
         let tempUser = new User;
         if (username==='Guest' && password==='password') {
-       
             tempUser.username = 'Guest';
             tempUser.firstName = 'Guest';
             tempUser.lastName = 'User';
@@ -39,6 +37,11 @@ export class AuthenticationService {
             this.currentUserSubject.next(tempUser);
         }
         return tempUser;
+
+    }
+
+    setUserFromSoialLogin(userSocial: SocialUser) {
+        
 
     }
 

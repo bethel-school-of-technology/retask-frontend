@@ -1,15 +1,24 @@
-﻿<!-- nav -->
+﻿<!-- this gives the tool tip to a button or icon-->
+<script type="text/javascript">
+    $(function () {
+        $("[rel='tooltip']").tooltip();
+    });
+</script>
+
+<!-- nav -->
 <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="currentUser">
     <div class="navbar-nav">
         <a class="nav-item nav-link" routerLink="/">Home</a> 
         <a class="nav-item nav-link" routerLink="calendar">Calendar</a>    
         <a class="nav-item nav-link" routerLink="rewards">Rewards</a>     
- 
     </div>
     <div class="navbar-nav  ml-auto">
+        <a class="nav-item nav-link" routerLink="userprofile" rel="tooltip" title="Edit Profile">
+            <img src="assets/img/baseline_account_circle_white_18dp.png">
+        </a>
         <a class="nav-item nav-link" (click)="logout()">Logout</a>
     </div>
-    <!-- <ul class="navbar-nav mr-auto">
+       <!-- <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
             <a class="nav-link">Left Link 1</a>
         </li>
@@ -31,7 +40,6 @@
         </li>
     </ul> -->
 </nav>
-
 <!-- main app container -->
 <div class="jumbotron">
     <div class="container">
@@ -46,7 +54,5 @@
 
 <!-- credits -->
 <div class="text-center">
-    <!-- <p>
-        <a href="http://jasonwatmore.com/post/2018/10/29/angular-7-user-registration-and-login-example-tutorial" target="_top">Angular 7 - User Registration and Login Example & Tutorial</a>
-    </p> -->
+    
 </div>

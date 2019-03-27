@@ -1,4 +1,4 @@
-﻿import { NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -23,8 +23,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CommonModule } from '@angular/common';
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { ForgotpasswordComponent } from '@app/pages/forgotpassword/forgotpassword.component';;
-import { ForgotusernameComponent } from '@app/pages/forgotusername/forgotusername.component';
+import { ForgotpasswordComponent } from '@app/pages/forgotpassword/forgotpassword.component';
+import { ForgotusernameComponent } from '@app/pages/forgotusername/forgotusername.component';
 import { RewardsComponent } from './pages/rewards/rewards.component'
 
 @NgModule({
@@ -53,9 +53,8 @@ import { RewardsComponent } from './pages/rewards/rewards.component'
         LoginComponent,
         RegisterComponent,
         CalendarComponent,
-        ForgotpasswordComponent
-,
-        ForgotusernameComponent,
+        ForgotpasswordComponent,
+        ForgotusernameComponent,
         RewardsComponent
     ],
     providers: [
@@ -64,6 +63,3 @@ import { RewardsComponent } from './pages/rewards/rewards.component'
 })
 
 export class AppModule { }
-
-//{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-//{ provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
