@@ -7,7 +7,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
 
-import { AlertComponent } from './_components';
+import { AlertRetaskComponent } from './_components';
 //import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { HomeComponent } from '@app/pages/home';
 import { LoginComponent } from '@app/pages/login';
@@ -73,7 +73,7 @@ export function provideConfig() {
     ],
     declarations: [
         AppComponent,
-        AlertComponent,
+        AlertRetaskComponent,
         HomeComponent,
         LoginComponent,
         RegisterComponent,
