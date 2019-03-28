@@ -1,5 +1,4 @@
-﻿import { Routes, RouterModule } from '@angular/router';
-
+import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from '@app/pages/home';
 import { LoginComponent } from '@app/pages/login';
 import { RegisterComponent } from '@app/pages/register';   
@@ -10,6 +9,7 @@ import { DemoComponent } from '@app/pages/demo/demo.component';
 import { UserProfileComponent } from '@app/pages/user-profile/user-profile.component';
 
 import { AuthGuard } from './_guards';
+import { RewardsComponent } from '@app/pages/rewards/rewards.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -17,6 +17,7 @@ const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard] },
+    { path: 'rewards', component: RewardsComponent, canActivate: [AuthGuard] },
     { path: 'userprofile', component: UserProfileComponent, canActivate: [AuthGuard] },
     {
         path: 'forgotpassword', component: ForgotpasswordComponent,
