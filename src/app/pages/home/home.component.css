@@ -1,0 +1,16 @@
+/*h1 {
+  color: white;
+  mix-blend-mode: difference;
+} */
+
+
+.square {
+  width: 75%;
+  padding-bottom: 75%;
+  background-size: cover;
+  background-position: center;
+}
+
+.list-group {
+  width: 50%;
+}
