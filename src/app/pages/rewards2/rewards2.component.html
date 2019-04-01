@@ -7,7 +7,7 @@ Points {{currentUser.points}}
 
 <!-- If the page is loaded but they want to add rewards then show this section -->
 <div clss="container">
-  <div *ngIf="addReward && !pageloading">
+  <div *ngIf="addReward && !pageLoading">
     <div class="row">
       <div class="col-sm-12">
         <button class="btn btn-sm btn-primary float-right" (click)="addRewards()">Cancel</button>
