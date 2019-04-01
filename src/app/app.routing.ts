@@ -10,6 +10,8 @@ import { UserProfileComponent } from '@app/pages/user-profile/user-profile.compo
 
 import { AuthGuard } from './_guards';
 import { RewardsComponent } from '@app/pages/rewards/rewards.component';
+import { Rewards2Component } from '@app/pages/rewards2/rewards2.component';
+
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -18,6 +20,7 @@ const appRoutes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard] },
     { path: 'rewards', component: RewardsComponent, canActivate: [AuthGuard] },
+    { path: 'rewards2', component: Rewards2Component, canActivate: [AuthGuard] },
     { path: 'userprofile', component: UserProfileComponent, canActivate: [AuthGuard] },
     {
         path: 'forgotpassword', component: ForgotpasswordComponent,
