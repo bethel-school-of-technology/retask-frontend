@@ -31,13 +31,14 @@ import { GoogleLoginProvider, FacebookLoginProvider, LinkedInLoginProvider } fro
 import { DemoComponent } from './pages/demo/demo.component';;
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { RewardsComponent} from './pages/rewards/rewards.component';
+import { Rewards2Component } from './pages/rewards2/rewards2.component';
 
 
 const config = new AuthServiceConfig([
     {
         id: GoogleLoginProvider.PROVIDER_ID,
-        //provider: new GoogleLoginProvider('624796833023-clhjgupm0pu6vgga7k5i5bsfp6qp6egh.apps.googleusercontent.com')
-        provider: new GoogleLoginProvider('563025889923-li0ssh373lio431e4m176binneejcqg1.apps.googleusercontent.com')
+        provider: new GoogleLoginProvider('624796833023-clhjgupm0pu6vgga7k5i5bsfp6qp6egh.apps.googleusercontent.com')
+        //provider: new GoogleLoginProvider('563025889923-li0ssh373lio431e4m176binneejcqg1.apps.googleusercontent.com')
     },
     {
         id: FacebookLoginProvider.PROVIDER_ID,
@@ -84,7 +85,8 @@ export function provideConfig() {
         ForgotusernameComponent,
         DemoComponent,
         UserProfileComponent,
-        RewardsComponent
+        RewardsComponent,
+        Rewards2Component
     ],
     providers: [
         {

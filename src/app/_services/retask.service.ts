@@ -107,4 +107,16 @@ export class ReTaskService {
 
   }
 
+
+  getRewardsByUsername(token: string) {
+    
+      let urlParm = `${environment.reTaskUrl}/api/getrewardsbyusername`
+       return this.http.get(urlParm
+        , {
+          headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+            .append('Content-Type', 'application/json')
+        }
+      );
+  }
+
 }
