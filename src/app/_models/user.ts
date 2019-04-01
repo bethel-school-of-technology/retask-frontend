@@ -9,6 +9,7 @@
     accessToken: string;
     errorMessage: string;
     phoneNbr: string;
+    points: number;
     role: string[];
 }
 
