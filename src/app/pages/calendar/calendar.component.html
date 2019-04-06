@@ -58,7 +58,7 @@
   </div>
 </div>
 <br />
-<div [ngSwitch]="view">
+<div [ngSwitch]="view" id="background" class="rounded">
   <mwl-calendar-month-view
     *ngSwitchCase="CalendarView.Month"
     [viewDate]="viewDate"
@@ -89,5 +89,6 @@
   >
   </mwl-calendar-day-view>
 </div>
+<br/>
 
 <!-- Everything you see below is just for the demo, you don't need to include it in your app -->
