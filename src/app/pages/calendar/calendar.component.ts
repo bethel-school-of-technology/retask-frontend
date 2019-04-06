@@ -140,8 +140,11 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.taskList = this.taskService.getAllbyUsername(this.currentUser.username)
-    console.log(this.taskList);
+    this.taskService.getAllbyUsername(this.currentUser).then(tasksIn => {
+      this.taskList=<Task[]>tasksIn;
+      console.log(this.taskList);
+    });
+  
   }
 
   ngOnDestroy() {
@@ -176,7 +179,7 @@ export class CalendarComponent implements OnInit {
 
   handleEvent(action: string, event: CalendarEvent): void {
     this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+    this.modal.open(this.modalContent, { size: 'sm' });
   }
 
   addEvent(): void {

@@ -1,0 +1,76 @@
+<div class="container-fluid">
+  <div class="row justify-content-md-center align-text-top">
+    <div class="col-md-auto">
+      <h1>Welcome to ReTask, {{currentUser.firstName}}!</h1>
+    </div>
+  </div>
+  <div class="row justify-content-md-center">
+    <div class="col-md-6">
+      <br />
+      <h2>Rewards Overview</h2>
+    </div>
+    <div class="col-md-auto">
+      <br />
+      <h2>Today's Tasks</h2>
+    </div>
+  </div>
+  <div class="row">
+    <button (click)="previous()">Previous</button>
+    <button (click)="next()">Next</button>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <br />
+      <div class="card" style="width: 18rem;">
+        <img class="card-img-top" [src]="rewardList[cnt].uploads[0].url">
+        <div class="card-body">
+          <h5 class="card-title">{{rewardList[cnt].name}}</h5>
+          <p class="card-text">{{rewardList[cnt].descr}}</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">Last updated 3 mins ago</small>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0"
+              aria-valuemax="100">25%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <br />
+      <br />
+      <div>
+        <div *ngIf="totRewards>cnt+1" class="square rounded border border-light">
+          <img class="card-img-top" [src]="rewardList[cnt+1].uploads[0].url">
+
+        </div>
+        <br />
+        <div *ngIf="totRewards>cnt+2" class="square rounded border border-light">
+          <img class="card-img-top" [src]="rewardList[cnt+2].uploads[0].url">
+        </div>
+
+        <br />
+        <div *ngIf="totRewards>cnt+3" class="square rounded border border-light">
+          <img class="card-img-top" [src]="rewardList[cnt+3].uploads[0].url">
+
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <br />
+      <div class="list-group mx-auto" *ngFor="let item of taskList; let i = index">
+        <a href="#" class="list-group-item list-group-item-action">{{item.name}}</a>
+      </div>
+
+      <!-- <a href="#" class="list-group-item list-group-item-action">{{taskList[0].name}}</a>
+        <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
+        <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
+        <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
+        <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
+        <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
+        <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
+      </div> -->
+    </div>
+
+  </div>

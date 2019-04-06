@@ -32,7 +32,7 @@ import { DemoComponent } from './pages/demo/demo.component';;
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { RewardsComponent} from './pages/rewards/rewards.component';
 import { Rewards2Component } from './pages/rewards2/rewards2.component';
-
+import { Home2Component } from './pages/home2/home2.component';
 
 const config = new AuthServiceConfig([
     {
@@ -86,7 +86,8 @@ export function provideConfig() {
         DemoComponent,
         UserProfileComponent,
         RewardsComponent,
-        Rewards2Component
+        Rewards2Component,
+        Home2Component
     ],
     providers: [
         {
