@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 
-import { Task } from '@app/_models/task';
+import { Task, User } from '@app/_models';
 import { ReTaskService } from '@app/_services/retask.service';
 
 @Injectable({
@@ -18,31 +18,16 @@ export class TaskService {
     //return this.http.get<Task[]>(`${environment.apiUrl}/users`);
   }
 
-  getAllbyUsername(username: string) {
-
-    let mockTasks: Task[];
-
-    mockTasks = [
-      {
-        id: 1,
-        startdate: new Date(),
-        enddate: new Date(),
-        level: 1,
-        parent_task_id: 0,
-        description: "Feed horses on time"
-
-      },
-      {
-        id: 2,
-        startdate: new Date(),
-        enddate: new Date(),
-        level: 1,
-        parent_task_id: 0,
-        description: "Clean stalls on time"
-      }
-    ]
-
-    return mockTasks
+  getAllbyUsername(user: User) {
+    return new Promise(resolve => {
+      this.reTaskService.getTasksByUsername(user.accessToken)
+        .subscribe(tasks => {
+          console.log(tasks)
+          resolve(tasks);
+        }, err => {
+          console.log(err.message);
+        });
+    });
 
   }
 
@@ -50,8 +35,16 @@ export class TaskService {
     //return this.http.get(`${environment.apiUrl}/users/${id}`);
   }
 
-  create(task: Task) {
-    //return this.http.put(`${environment.apiUrl}/users/${task.id}`, task);
+  create(tasks: Task[], user: User) {
+      return new Promise(resolve => {
+        this.reTaskService.createTasks(tasks, user.accessToken)
+          .subscribe(tasks => {
+            console.log(tasks)
+            resolve(tasks);
+          }, err => {
+            console.log(err.message);
+          });
+      });
   }
 
   update(task: Task) {
