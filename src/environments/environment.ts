@@ -8,8 +8,8 @@ export const environment = {
   reTaskUrl: 'https://retask-backend.herokuapp.com'
 };
 
-//reTaskUrl: 'http://localhost:8090',
-//reTaskUrl: 'https://retask-backend.herokuapp.com',
+// reTaskUrl: 'http://localhost:8090',
+// reTaskUrl: 'https://retask-backend.herokuapp.com',
 
 /*
  * For easier debugging in development mode, you can import the following file
