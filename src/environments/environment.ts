@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:4000',
-  reTaskUrl: 'http://localhost:8090'
+  reTaskUrl: 'http://localhost:8090',
 };
 
 //reTaskUrl: 'http://localhost:8090',
