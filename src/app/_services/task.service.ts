@@ -10,19 +10,21 @@ import { ReTaskService } from '@app/_services/retask.service';
 })
 export class TaskService {
 
-  taskList
+  taskList;
 
   constructor(private http: HttpClient, private reTaskService: ReTaskService) { }
 
   getAll() {
-    //return this.http.get<Task[]>(`${environment.apiUrl}/users`);
+    // return this.http.get<Task[]>(`${environment.apiUrl}/users`);
   }
 
   getAllbyUsername(user: User) {
     return new Promise(resolve => {
       this.reTaskService.getTasksByUsername(user.accessToken)
         .subscribe(tasks => {
+
           console.log(tasks)
+
           resolve(tasks);
         }, err => {
           console.log(err.message);
@@ -32,14 +34,16 @@ export class TaskService {
   }
 
   getById(id: number) {
-    //return this.http.get(`${environment.apiUrl}/users/${id}`);
+    // return this.http.get(`${environment.apiUrl}/users/${id}`);
   }
 
   create(tasks: Task[], user: User) {
       return new Promise(resolve => {
         this.reTaskService.createTasks(tasks, user.accessToken)
+
           .subscribe(tasks => {
             console.log(tasks)
+
             resolve(tasks);
           }, err => {
             console.log(err.message);
@@ -48,10 +52,10 @@ export class TaskService {
   }
 
   update(task: Task) {
-    //return this.http.put(`${environment.apiUrl}/users/${task.id}`, task);
+    // return this.http.put(`${environment.apiUrl}/users/${task.id}`, task);
   }
 
   delete(id: number) {
-    //return this.http.delete(`${environment.apiUrl}/users/${id}`);
+    // return this.http.delete(`${environment.apiUrl}/users/${id}`);
   }
 }
