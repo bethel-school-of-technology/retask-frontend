@@ -22,20 +22,20 @@
           <div class="carousel-item active">
             <a href="#">
               <img class="d-block w-100 img-fluid img-thumbnail"
-                src="https://images.unsplash.com/photo-1551334787-21e6bd3ab135?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80">
+              [src]="rewardList[cnt].uploads[0].url">
             </a>
             <div class="carousel-caption d-none d-md-block">
-              <h5>{{item.title}}</h5>
+              <h5>{{ rewardList[cnt].name }}</h5>
               <div class="progress">
                 <div class="progress-bar bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75"
                   aria-valuemin="0" aria-valuemax="100"></div>
               </div>
             </div>
           </div>
-          <div class="carousel-item">
+          <div class="carousel-item" *ngIf="totRewards > cnt + 1" >
             <a href="#">
               <img class="d-block w-100 img-fluid img-thumbnail"
-                src="https://images.unsplash.com/photo-1554189097-469e3847835d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80">
+              [src]="rewardList[cnt + 1].uploads[0].url">
             </a>
             <div class="carousel-caption d-none d-md-block">
               <h5>Reward 2</h5>
@@ -45,10 +45,10 @@
               </div>
             </div>
           </div>
-          <div class="carousel-item">
+          <div class="carousel-item" *ngIf="totRewards > cnt + 2">
             <a href="#">
               <img class="d-block w-100 img-fluid img-thumbnail"
-                src="https://images.unsplash.com/photo-1554176259-aa961fc32671?ixlib=rb-1.2.1&auto=format&fit=crop&w=1005&q=80">
+              [src]="rewardList[cnt + 2].uploads[0].url">
             </a>
             <div class="carousel-caption d-none d-md-block">
               <h5>Reward 3</h5>
