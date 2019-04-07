@@ -57,6 +57,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
     this.getPic();
 
+    
+
+
   }
 
   ngOnDestroy() {
