@@ -11,10 +11,12 @@ import { UserProfileComponent } from '@app/pages/user-profile/user-profile.compo
 import { AuthGuard } from './_guards';
 import { RewardsComponent } from '@app/pages/rewards/rewards.component';
 import { Rewards2Component } from '@app/pages/rewards2/rewards2.component';
+import { Home2Component } from './pages/home2/home2.component';
 
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+    { path: 'home2', component: Home2Component, canActivate: [AuthGuard] },
     { path: 'demo', component: DemoComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },

@@ -32,7 +32,16 @@ export class RewardService {
     //return this.http.get(`${environment.apiUrl}/users/${id}`);
   }
 
-  create(reward: Reward) {
+  create(rewards: Reward[], user: User) {
+    return new Promise(resolve => {
+      this.reTaskService.createReward(rewards, user.accessToken)
+        .subscribe(rewards => {
+          console.log(rewards)
+          resolve(rewards);
+        }, err => {
+          console.log(err.message);
+        });
+    });
     //return this.http.put(`${environment.apiUrl}/users/${task.id}`, task);
   }
 
