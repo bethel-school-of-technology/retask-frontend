@@ -12,11 +12,6 @@ h1 {
   font-family: 'Montserrat', sans-serif;
 }
 
-
-.list-group {
-  width: 50%;
-}
-
 .raised-block {
   background-color: rgba(0,0,0,.5);
   text-align: center;
