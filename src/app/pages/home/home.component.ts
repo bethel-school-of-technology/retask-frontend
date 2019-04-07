@@ -31,11 +31,12 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         // this.loadAllUsers();
-        this.taskService.getAllbyUsername(JSON.stringify(this.currentUser)).then(tasksIn => {
+        this.taskService.getAllbyUsername(this.currentUser).then(tasksIn => {
           this.taskList = tasksIn as Task[];
           this.currentDateTime = new Date();
           console.log(this.taskList[0].enddate);
           this.currentDateTime = this.taskList[0].enddate;
+          // tslint:disable-next-line:radix
           //    this.currentDataTime = this.currentDateTime + 500;
           console.log(this.currentDateTime);
           if (

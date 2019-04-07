@@ -3,17 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, } from 'rxjs';
 
-import { environment } from '@environments/environment';
+import { environment } from '@environments/environment'
 
-import { UserUpdateForm} from '@app/_models/user';
+import { User, UserUpdateForm, Reward, Task } from '@app/_models'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReTaskService {
-    getAllbyUsername(currentUser: import ('../_models/user').User) {
-        throw new Error('Method not implemented.');
-    }
 
   constructor(public http: HttpClient,
               private sanitizer: DomSanitizer) { }
@@ -25,11 +22,11 @@ export class ReTaskService {
 
   // authenicateUser for now.  returns a user with a token
   authenticateUser(username, password): Observable<any> {
-    const xurlParm = `${environment.reTaskUrl}/api/auth/signin`;
-    const dataIs = {
-      username,
-      password
-    };
+    let xurlParm = `${environment.reTaskUrl}/api/auth/signin`
+    let dataIs = {
+      "username": username,
+      "password": password
+    }
     return this.http.post(xurlParm, dataIs
       , {
         headers: new HttpHeaders().set('Content-Type', 'application/json')
@@ -39,7 +36,7 @@ export class ReTaskService {
 
   // create a new user.  Requires no security.
   registerUser(dataIs): Observable<any> {
-    const urlParm = `${environment.reTaskUrl}/api/auth/signup`;
+    let urlParm = `${environment.reTaskUrl}/api/auth/signup`
     return this.http.post(urlParm, dataIs
       , {
         headers: new HttpHeaders().set('Content-Type', 'application/json')
@@ -49,7 +46,7 @@ export class ReTaskService {
 
   // get test.  This requires a token.
   test(token: string): Observable<any> {
-    const urlParm = `${environment.reTaskUrl}/api/test/user`;
+    let urlParm = `${environment.reTaskUrl}/api/test/user`
     return this.http.get(urlParm
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
@@ -60,7 +57,7 @@ export class ReTaskService {
 
   // get picture.  This requires a token.
   getPic(token: string): Observable<Blob> {
-    const urlParm = `${environment.reTaskUrl}/user/downloadPic`;
+    let urlParm = `${environment.reTaskUrl}/user/downloadPic`
     return this.http.get(urlParm
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
@@ -71,8 +68,8 @@ export class ReTaskService {
   }
 
   // update the user.  This requires a token.
-  setPic(pic: File , token: string): Observable<any> {
-    const urlParm = `${environment.reTaskUrl}/user/uploadPic`;
+  setPic(pic: File, token: string): Observable<any> {
+    const urlParm = `${environment.reTaskUrl}/user/uploadPic`
 
     const formData = new FormData();
 
@@ -87,11 +84,11 @@ export class ReTaskService {
 
   // update the user.  This requires a token.
   updateUser(user: UserUpdateForm, token: string): Observable<any> {
-    const urlParm = `${environment.reTaskUrl}/user/updateUser`;
+    const urlParm = `${environment.reTaskUrl}/user/updateUser`
     return this.http.post(urlParm, user
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
-        .append('Content-Type', 'application/json'),
+          .append('Content-Type', 'application/json'),
         responseType: 'json'
       }
     );
@@ -99,11 +96,11 @@ export class ReTaskService {
 
   // reset the password
   resetPassword(dataIs: any, token: string) {
-    const urlParm = `${environment.reTaskUrl}/user/changePassword`;
+    const urlParm = `${environment.reTaskUrl}/user/changePassword`
     return this.http.post(urlParm, dataIs
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
-        .append('Content-Type', 'application/json'),
+          .append('Content-Type', 'application/json'),
         responseType: 'json'
       }
     );
@@ -111,15 +108,52 @@ export class ReTaskService {
   }
 
 
+  // get all the rewards associated with a user
   getRewardsByUsername(token: string) {
 
-      const urlParm = `${environment.reTaskUrl}/api/getrewardsbyusername`;
-      return this.http.get(urlParm
-        , {
-          headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
-            .append('Content-Type', 'application/json')
-        }
-      );
+    const urlParm = `${environment.reTaskUrl}/api/getrewardsbyusername`
+    return this.http.get(urlParm
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json')
+      }
+    );
+  }
+
+  // update the user.  This requires a token.
+  createReward(rewards: Reward[], token: string): Observable<any> {
+    const urlParm = `${environment.reTaskUrl}/api/createrewards`;
+    return this.http.post(urlParm, rewards
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+  }
+
+  // get all the rewards associated with a user
+  getTasksByUsername(token: string) {
+
+    const urlParm = `${environment.reTaskUrl}/api/gettasksbyusername`
+    return this.http.get(urlParm
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json')
+      }
+    );
+  }
+
+  // update the user.  This requires a token.
+  createTasks(tasks: Task[], token: string): Observable<any> {
+    const urlParm = `${environment.reTaskUrl}/api/createtasks`
+    return this.http.post(urlParm, tasks
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
   }
 
 }

@@ -1,96 +1,159 @@
 ﻿<div class="row justify-content-md-center align-text-top" id="header">
-  <div class="col-md-auto">
-    <br/>
-    <h1>Welcome to ReTask, {{currentUser.firstName}}!</h1>
-    <br/>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-6">
-    <div class="raised-block rounded">
+  <div *ngIf="!pageLoading">
+    <div class="col-md-auto">
       <br />
-      <h2>Rewards Overview</h2>
-      <br/>
-      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <a href="#">
-              <img class="d-block w-100 img-fluid img-thumbnail"
-              [src]="rewardList[cnt].uploads[0].url">
-            </a>
-            <div class="carousel-caption d-none d-md-block">
-              <h5>{{ rewardList[cnt].name }}</h5>
-              <div class="progress">
-                <div class="progress-bar bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75"
-                  aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item" *ngIf="totRewards > cnt + 1" >
-            <a href="#">
-              <img class="d-block w-100 img-fluid img-thumbnail"
-              [src]="rewardList[cnt + 1].uploads[0].url">
-            </a>
-            <div class="carousel-caption d-none d-md-block">
-              <h5>Reward 2</h5>
-              <div class="progress">
-                <div class="progress-bar bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75"
-                  aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item" *ngIf="totRewards > cnt + 2">
-            <a href="#">
-              <img class="d-block w-100 img-fluid img-thumbnail"
-              [src]="rewardList[cnt + 2].uploads[0].url">
-            </a>
-            <div class="carousel-caption d-none d-md-block">
-              <h5>Reward 3</h5>
-              <div class="progress">
-                <div class="progress-bar bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75"
-                  aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev" (click)="previous()">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next" (click)="next()">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
-      </div>
+      <h1>Welcome to ReTask, {{ currentUser.firstName }}!</h1>
       <br />
     </div>
-  </div>
 
-  <div class="col-md-6">
-    <div class="raised-block rounded">
-      <br />
-      <h2>Today's Tasks</h2>
-      <br />
-
-      <div
-          class="list-group mx-auto"
-          *ngFor="let item of taskList; let i = index"
-        >
-          <a
-            href="#"
-            class="list-group-item list-group-item-action"
-            style="background-color: blue;"
-            >{{ item.name }} {{ item.description }}</a
+    <div class="row">
+      <div class="col-md-6">
+        <div class="raised-block rounded">
+          <br />
+          <h2>Rewards Overview</h2>
+          <br />
+          <div
+            id="carouselExampleIndicators"
+            class="carousel slide"
+            data-ride="carousel"
           >
+            <ol class="carousel-indicators">
+              <li
+                data-target="#carouselExampleIndicators"
+                data-slide-to="0"
+                class="active"
+              ></li>
+              <li
+                data-target="#carouselExampleIndicators"
+                data-slide-to="1"
+              ></li>
+              <li
+                data-target="#carouselExampleIndicators"
+                data-slide-to="2"
+              ></li>
+            </ol>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <a href="#">
+                  <div class="resize img-thumbnail">
+                    <img
+                      class="d-block w-100 img-fluid"
+                      [src]="rewardList[cnt].uploads[0].url"
+                    />
+                  </div>
+                </a>
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>{{ rewardList[cnt].name }}</h5>
+                  <div class="progress">
+                    <div
+                      class="progress-bar bg-warning"
+                      role="progressbar"
+                      style="width: 75%"
+                      aria-valuenow="75"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item" *ngIf="totRewards > cnt + 1">
+                <a href="#">
+                  <div class="resize img-thumbnail">
+                    <img
+                      class="d-block w-100 img-fluid"
+                      [src]="rewardList[cnt + 1].uploads[0].url"
+                    />
+                  </div>
+                </a>
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Reward 2</h5>
+                  <div class="progress">
+                    <div
+                      class="progress-bar bg-warning"
+                      role="progressbar"
+                      style="width: 75%"
+                      aria-valuenow="75"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item" *ngIf="totRewards > cnt + 2">
+                <a href="#">
+                  <div class="resize img-thumbnail">
+                    <img
+                      class="d-block w-100 img-fluid"
+                      [src]="rewardList[cnt + 2].uploads[0].url"
+                    />
+                  </div>
+                </a>
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>Reward 3</h5>
+                  <div class="progress">
+                    <div
+                      class="progress-bar bg-warning"
+                      role="progressbar"
+                      style="width: 75%"
+                      aria-valuenow="75"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a
+              class="carousel-control-prev"
+              href="#carouselExampleIndicators"
+              role="button"
+              data-slide="prev"
+              (click)="previous()"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a
+              class="carousel-control-next"
+              href="#carouselExampleIndicators"
+              role="button"
+              data-slide="next"
+              (click)="next()"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+          <br />
         </div>
+      </div>
 
-      <!--div class="list-group mx-auto">
+      <div class="col-md-6">
+        <div class="raised-block rounded">
+          <br />
+          <h2>Today's Tasks</h2>
+          <br />
+
+          <div
+            class="list-group mx-auto"
+            *ngFor="let task of taskList; let i = index"
+          >
+            <a
+              href="#"
+              class="list-group-item list-group-item-action"
+              style="background-color: #d3d3d3;"
+              >{{ task.name }} | Due in
+              {{ task.enddate | date: "hh" }} hours!</a
+            >
+          </div>
+
+          <!--div class="list-group mx-auto">
         <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
         <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
         <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
@@ -99,8 +162,13 @@
         <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
         <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
       </div> -->
-      <br />
-      <br />
+          <br />
+          <br />
+        </div>
+      </div>
     </div>
   </div>
+  <button *ngIf="taskList[0].enddate >= CurrentDateTime" type="button">
+    Button
+  </button>
 </div>
