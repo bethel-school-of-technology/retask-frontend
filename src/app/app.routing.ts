@@ -1,7 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from '@app/pages/home';
 import { LoginComponent } from '@app/pages/login';
-import { RegisterComponent } from '@app/pages/register';   
+import { RegisterComponent } from '@app/pages/register';
 import { CalendarComponent } from '@app/pages/calendar/calendar.component';
 import { ForgotpasswordComponent } from '@app/pages/forgotpassword/forgotpassword.component';
 import { ForgotusernameComponent } from '@app/pages/forgotusername/forgotusername.component';
