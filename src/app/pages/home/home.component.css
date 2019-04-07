@@ -1,16 +1,36 @@
-/*h1 {
+h2 {
   color: white;
-  mix-blend-mode: difference;
-} */
+} 
 
-
-.square {
-  width: 75%;
-  padding-bottom: 75%;
-  background-size: cover;
-  background-position: center;
+h1 {
+  color: white;
+  font-size: 3em;
+    mix-blend-mode: difference;
 }
+
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
 
 .list-group {
   width: 50%;
+}
+
+.raised-block {
+  background-color: rgba(0,0,0,.5);
+  text-align: center;
+  margin-bottom: 10px;
+  margin-left: 0;
+  margin-right: -0.625rem; 
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+@media (max-width: 33.9em){ 
+  .raised-block {
+      margin-left: -0.625rem;
+  }
+}
+.row [class^="col-"]:first-child>.raised-block {
+  margin-left: -0.625rem;
 }
