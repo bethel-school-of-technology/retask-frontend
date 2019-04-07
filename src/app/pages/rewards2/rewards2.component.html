@@ -104,7 +104,7 @@ Points {{currentUser.points}}
                   <p class="card-text">{{rewardsIn[cnt].descr}}
                     <br><br>Cost: {{rewardsIn[cnt].cost}} points
                   </p>
-                  <button class="btn btn-primary" [disabled]="cantBuy[cnt]">Get Reward</button>
+                  <button class="btn btn-primary" [disabled]="cantBuy[cnt]" (click)="redeem(rewardsIn[cnt].cost)">Redeem</button>
                   <a href="#" class="btn btn-primary float-right">Share</a>
                 </div>
                 <!-- <div class="card-footer">
@@ -125,7 +125,7 @@ Points {{currentUser.points}}
                   <p class="card-text">{{rewardsIn[cnt+1].descr}}
                     <br><br>Cost: {{rewardsIn[cnt+1].cost}} points</p>
                   <div>
-                    <button class="btn btn-primary" [disabled]="cantBuy[cnt+1]">Get Reward</button>
+                    <button class="btn btn-primary" [disabled]="cantBuy[cnt+1]" (click)="redeem(rewardsIn[cnt+1].cost)">Redeem</button>
                     <a href="#" class="btn btn-primary float-right">Share</a>
                   </div>
 
@@ -146,7 +146,7 @@ Points {{currentUser.points}}
                   <h5 class="card-title">{{rewardsIn[cnt+2].name}}</h5>
                   <p class="card-text">{{rewardsIn[cnt+2].descr}}
                     <br><br>Cost: {{rewardsIn[cnt+2].cost}} points</p>
-                  <button class="btn btn-primary" [disabled]="cantBuy[cnt+2]">Get Reward</button>
+                  <button class="btn btn-primary" [disabled]="cantBuy[cnt+2]" (click)="redeem(rewardsIn[cnt+2].cost)">Redeem</button>
                   <a href="#" class="btn btn-primary float-right">Share</a>
 
                 </div>
@@ -169,4 +169,9 @@ Points {{currentUser.points}}
     </div>
 
   </div>
+
+  
+</div>
+<div>
+ 
 </div>

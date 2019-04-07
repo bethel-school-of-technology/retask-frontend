@@ -40,6 +40,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
   pageCnt: number = 2;
   page: number = 0;
   totPageCnt: number = 1;
+  // keeps track of the reward we are currently looking at
   cnt: number = 0;
 
   constructor(private formBuilder: FormBuilder,
@@ -104,7 +105,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
         // if (toEnd)
         //   this.page = this.totPageCnt - 1;
         // else
-          this.page = 0 //set to first page
+        this.page = 0 //set to first page
 
         this.pageCnt = this.rewardsIn.length - (this.page * this.rewards_perpage);
         this.cnt = 0;
@@ -207,6 +208,32 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
     this.rewardsToAdd = []
     this.addReward = !this.addReward;
+
+
+  }
+
+  // this function redeems the reward
+  redeem(rewardCost) {
+
+    this.currentUser.points = this.currentUser.points - rewardCost;
+
+    // 
+    let tempUser = new UserUpdateForm;
+    tempUser.firstName = this.currentUser.firstName;
+    tempUser.lastName = this.currentUser.lastName;
+    tempUser.phoneNbr = this.currentUser.phoneNbr;
+    tempUser.points = this.currentUser.points;
+
+    this.userService.update(tempUser, this.currentUser.accessToken)
+      .then(res => {
+        if (res.status == 0)
+          this.alertService.success("Points Updated");
+        else {
+          this.alertService.error("Save Failed");
+          this.currentUser.points = this.currentUser.points + rewardCost;
+        }
+      });
+
 
 
   }

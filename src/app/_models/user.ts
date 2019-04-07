@@ -19,4 +19,5 @@ export class UserUpdateForm {
     firstName: string;
     lastName: string;
     phoneNbr: string;
+    points: number;
 }
