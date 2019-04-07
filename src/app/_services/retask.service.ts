@@ -67,11 +67,13 @@ export class ReTaskService {
     );
   }
 
-  // update the user.  This requires a token.
-  setPic(pic: File, token: string): Observable<any> {
-    const urlParm = `${environment.reTaskUrl}/user/uploadPic`
 
-    const formData = new FormData();
+  //update the user.  This requires a token.
+  setPic(pic: File, token: string): Observable<any> {
+    let urlParm = `${environment.reTaskUrl}/user/uploadPic`
+
+    let formData = new FormData();
+
 
     formData.append('file', pic, pic.name);
 
@@ -96,7 +98,9 @@ export class ReTaskService {
 
   // reset the password
   resetPassword(dataIs: any, token: string) {
-    const urlParm = `${environment.reTaskUrl}/user/changePassword`
+
+    let urlParm = `${environment.reTaskUrl}/user/changePassword`
+
     return this.http.post(urlParm, dataIs
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
@@ -111,7 +115,9 @@ export class ReTaskService {
   // get all the rewards associated with a user
   getRewardsByUsername(token: string) {
 
-    const urlParm = `${environment.reTaskUrl}/api/getrewardsbyusername`
+
+    let urlParm = `${environment.reTaskUrl}/api/getrewardsbyusername`
+
     return this.http.get(urlParm
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
@@ -120,9 +126,11 @@ export class ReTaskService {
     );
   }
 
-  // update the user.  This requires a token.
+
+  //update the user.  This requires a token.
   createReward(rewards: Reward[], token: string): Observable<any> {
-    const urlParm = `${environment.reTaskUrl}/api/createrewards`;
+    let urlParm = `${environment.reTaskUrl}/api/createrewards`
+
     return this.http.post(urlParm, rewards
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
@@ -135,7 +143,9 @@ export class ReTaskService {
   // get all the rewards associated with a user
   getTasksByUsername(token: string) {
 
-    const urlParm = `${environment.reTaskUrl}/api/gettasksbyusername`
+
+    let urlParm = `${environment.reTaskUrl}/api/gettasksbyusername`
+
     return this.http.get(urlParm
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
@@ -144,9 +154,11 @@ export class ReTaskService {
     );
   }
 
-  // update the user.  This requires a token.
+
+  //update the user.  This requires a token.
   createTasks(tasks: Task[], token: string): Observable<any> {
-    const urlParm = `${environment.reTaskUrl}/api/createtasks`
+    let urlParm = `${environment.reTaskUrl}/api/createtasks`
+
     return this.http.post(urlParm, tasks
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User, UserUpdateForm } from '@app/_models/user';
+import { User, UserUpdateForm, Reward, Upload } from '@app/_models';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { AuthenticationService, UserService, AlertService, RewardService } from '@app/_services';
 import { ApiResponse } from '@app/_models/apiResponse';
@@ -18,16 +18,29 @@ export class Rewards2Component implements OnInit, OnDestroy {
   currentUser: User;
   currentUserSubscription: Subscription;
 
+  rewardToAdd: Reward = {
+    "id": null,
+    "name": null,
+    "descr": null,
+    "username": "",
+    "cost": null,
+    "uploads": []
+  }
+
+  rewardsToAdd: Reward[] = [];
+
   rewardsIn: any[];
   progressIn: number[] = [0, 0, 0];
   cantBuy: boolean[] = [true, true, true];
 
   pageLoading: boolean = true;
+  usingDragDrop: boolean = false;
 
   rewards_perpage: number = 3;
   pageCnt: number = 2;
   page: number = 0;
   totPageCnt: number = 1;
+  // keeps track of the reward we are currently looking at
   cnt: number = 0;
 
   constructor(private formBuilder: FormBuilder,
@@ -42,19 +55,26 @@ export class Rewards2Component implements OnInit, OnDestroy {
     });
   }
 
-  todo = [
-    'Get to work',
-    'Pick up groceries',
-    'Go home',
-    'Fall asleep'
+  defautRewards: Reward[] = [
+    {
+      "id": null,
+      "name": "Vacation",
+      "descr": "Vacation Somewhere warm",
+      "username": "",
+      "cost": 750,
+      "uploads": []
+    }
   ];
 
-  done = [
-    'Get up',
-    'Brush teeth',
-    'Take a shower',
-    'Check e-mail',
-    'Walk dog'
+  userRewards = [
+    {
+      "id": null,
+      "name": "Vacation",
+      "descr": "Vacation Somewhere warm",
+      "username": "",
+      "cost": 750,
+      "uploads": []
+    }
   ];
 
   drop(event: CdkDragDrop<string[]>) {
@@ -71,20 +91,28 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    this.loadRewards(false);
+  }
 
+  loadRewards(toEnd: boolean) {
     // load the rewards that a user has setup
     this.rewardService.getAllbyUsername(this.currentUser)
       .then(rewardsIn => {
         this.rewardsIn = rewardsIn as any[];
-        this.page = 0; //set to first page 
+
         this.totPageCnt = Math.ceil(this.rewardsIn.length / this.rewards_perpage);
+
+        // if (toEnd)
+        //   this.page = this.totPageCnt - 1;
+        // else
+        this.page = 0 //set to first page
+
         this.pageCnt = this.rewardsIn.length - (this.page * this.rewards_perpage);
         this.cnt = 0;
         // if greate than rewards_perpage set to rewards_perpage
         if (this.pageCnt > this.rewards_perpage)
           this.pageCnt = this.rewards_perpage;
-        console.log("total page cnt = " + this.totPageCnt);
-        console.log(this.pageCnt);
+
 
         this.setProgress();
 
@@ -107,7 +135,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
       if (this.pageCnt > this.rewards_perpage)
         this.pageCnt = this.rewards_perpage;
 
-        console.log("from goForward")
+      console.log("from goForward")
       this.setProgress();
     }
     console.log("total page cnt = " + this.totPageCnt);
@@ -137,6 +165,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
   }
 
   setProgress() {
+    console.log("In Set Progress")
     console.log(this.pageCnt);
     console.log(this.cnt);
     for (var i = 0; i < this.pageCnt; i++) {
@@ -152,6 +181,61 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   }
 
+  selectedFile;
 
+  onFileSelected(event) {
+    this.selectedFile = event.target.files[0];
+    // was in seperate events
+    console.log(this.selectedFile);
+
+  }
+
+  createReward() {
+
+    this.rewardToAdd.username = this.currentUser.username;
+    this.rewardToAdd.uploads = [];
+    let tempUpload = new Upload;
+    tempUpload.url = "http://www.pbs.org/mercy-street/lunchbox_plugins/s/photogallery/img/no-image-available.jpg";
+    tempUpload.type = "jpg";
+    this.rewardToAdd.uploads.push(tempUpload);
+    this.rewardsToAdd.push(this.rewardToAdd);
+    this.rewardService.create(this.rewardsToAdd, this.currentUser)
+      .then(res => {
+        console.log(res)
+        this.loadRewards(true);
+
+      });
+
+    this.rewardsToAdd = []
+    this.addReward = !this.addReward;
+
+
+  }
+
+  // this function redeems the reward
+  redeem(rewardCost) {
+
+    this.currentUser.points = this.currentUser.points - rewardCost;
+
+    // 
+    let tempUser = new UserUpdateForm;
+    tempUser.firstName = this.currentUser.firstName;
+    tempUser.lastName = this.currentUser.lastName;
+    tempUser.phoneNbr = this.currentUser.phoneNbr;
+    tempUser.points = this.currentUser.points;
+
+    this.userService.update(tempUser, this.currentUser.accessToken)
+      .then(res => {
+        if (res.status == 0)
+          this.alertService.success("Points Updated");
+        else {
+          this.alertService.error("Save Failed");
+          this.currentUser.points = this.currentUser.points + rewardCost;
+        }
+      });
+
+
+
+  }
 
 }

@@ -22,7 +22,9 @@ export class TaskService {
     return new Promise(resolve => {
       this.reTaskService.getTasksByUsername(user.accessToken)
         .subscribe(tasks => {
-          console.log(tasks);
+
+          console.log(tasks)
+
           resolve(tasks);
         }, err => {
           console.log(err.message);
@@ -38,9 +40,10 @@ export class TaskService {
   create(tasks: Task[], user: User) {
       return new Promise(resolve => {
         this.reTaskService.createTasks(tasks, user.accessToken)
-          // tslint:disable-next-line:no-shadowed-variable
+
           .subscribe(tasks => {
-            console.log(tasks);
+            console.log(tasks)
+
             resolve(tasks);
           }, err => {
             console.log(err.message);

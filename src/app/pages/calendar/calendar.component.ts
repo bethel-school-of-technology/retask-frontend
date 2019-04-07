@@ -117,7 +117,30 @@ export class CalendarComponent {
     }
   ];
 
-  activeDayIsOpen = true;
+
+  activeDayIsOpen: boolean = true;
+
+  currentUser: User;
+  currentUserSubscription: Subscription;
+
+  taskList: Task[];
+
+  constructor(private modal: NgbModal,
+    private taskService: TaskService,
+    private authenticationService: AuthenticationService) {
+    this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
+      this.currentUser = user;
+    });
+  }
+
+  ngOnInit() {
+    this.taskService.getAllbyUsername(this.currentUser).then(tasksIn => {
+      this.taskList=<Task[]>tasksIn;
+      console.log(this.taskList);
+    });
+  
+  }
+
 
   constructor(private modal: NgbModal) {}
 
@@ -155,7 +178,7 @@ export class CalendarComponent {
 
   handleEvent(action: string, event: CalendarEvent): void {
     this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+    this.modal.open(this.modalContent, { size: 'sm' });
   }
 
   addEvent(): void {
