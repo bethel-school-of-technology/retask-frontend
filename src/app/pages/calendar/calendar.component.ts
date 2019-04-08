@@ -1,5 +1,6 @@
 import {
   Component,
+  ChangeDetectionStrategy,
   ViewChild,
   TemplateRef,
   OnInit
@@ -22,14 +23,6 @@ import {
   CalendarEventTimesChangedEvent,
   CalendarView
 } from 'angular-calendar';
-
-import { Subscription } from 'rxjs';
-
-import { User } from '@app/_models';
-import { Task } from '@app/_models/task';
-import { TaskService } from '@app/_services/task.service';
-import { AuthenticationService } from '@app/_services';
-
 
 const colors: any = {
   red: {
@@ -54,7 +47,7 @@ const colors: any = {
 export class CalendarComponent implements OnInit {
   @ViewChild('modalContent') modalContent: TemplateRef<any>;
 
-  view: CalendarView = CalendarView.Week;
+  view: CalendarView = CalendarView.Month;
 
   CalendarView = CalendarView;
 
@@ -126,30 +119,9 @@ export class CalendarComponent implements OnInit {
 
   activeDayIsOpen: boolean = true;
 
-  currentUser: User;
-  currentUserSubscription: Subscription;
-
-  taskList: Task[];
-
-  constructor(private modal: NgbModal,
-    private taskService: TaskService,
-    private authenticationService: AuthenticationService) {
-    this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
-      this.currentUser = user;
-    });
-  }
+  constructor(private modal: NgbModal) {}
 
   ngOnInit() {
-    this.taskService.getAllbyUsername(this.currentUser).then(tasksIn => {
-      this.taskList = tasksIn as Task[];
-      console.log(this.taskList);
-    });
-    console.log(this.taskList);
-  }
-
-  ngOnDestroy() {
-    // unsubscribe to ensure no memory leaks
-    this.currentUserSubscription.unsubscribe();
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
@@ -171,10 +143,17 @@ export class CalendarComponent implements OnInit {
     newStart,
     newEnd
   }: CalendarEventTimesChangedEvent): void {
-    event.start = newStart;
-    event.end = newEnd;
+    this.events = this.events.map(iEvent => {
+      if (iEvent === event) {
+        return {
+          ...event,
+          start: newStart,
+          end: newEnd
+        };
+      }
+      return iEvent;
+    });
     this.handleEvent('Dropped or resized', event);
-    this.refresh.next();
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
@@ -183,20 +162,31 @@ export class CalendarComponent implements OnInit {
   }
 
   addEvent(): void {
-    this.events.push({
-      title: 'New event',
-      start: startOfDay(new Date()),
-      end: endOfDay(new Date()),
-      color: colors.red,
-      draggable: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true
+    this.events = [
+      ...this.events,
+      {
+        title: 'New event',
+        start: startOfDay(new Date()),
+        end: endOfDay(new Date()),
+        color: colors.red,
+        draggable: true,
+        resizable: {
+          beforeStart: true,
+          afterEnd: true
+        }
       }
-    });
-    this.refresh.next();
+    ];
   }
 
+  deleteEvent(eventToDelete: CalendarEvent) {
+    this.events = this.events.filter(event => event !== eventToDelete);
+  }
 
+  setView(view: CalendarView) {
+    this.view = view;
+  }
+
+  closeOpenMonthViewDay() {
+    this.activeDayIsOpen = false;
+  }
 }
-
