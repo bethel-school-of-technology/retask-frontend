@@ -1,8 +1,8 @@
 import {
   Component,
-  ChangeDetectionStrategy,
   ViewChild,
-  TemplateRef
+  TemplateRef,
+  OnInit
 } from '@angular/core';
 import {
   startOfDay,
@@ -23,6 +23,14 @@ import {
   CalendarView
 } from 'angular-calendar';
 
+import { Subscription } from 'rxjs';
+
+import { User } from '@app/_models';
+import { Task } from '@app/_models/task';
+import { TaskService } from '@app/_services/task.service';
+import { AuthenticationService } from '@app/_services';
+
+
 const colors: any = {
   red: {
     primary: '#ad2121',
@@ -41,13 +49,12 @@ const colors: any = {
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnInit {
   @ViewChild('modalContent') modalContent: TemplateRef<any>;
 
-  view: CalendarView = CalendarView.Month;
+  view: CalendarView = CalendarView.Week;
 
   CalendarView = CalendarView;
 
@@ -117,7 +124,6 @@ export class CalendarComponent {
     }
   ];
 
-
   activeDayIsOpen: boolean = true;
 
   currentUser: User;
@@ -135,14 +141,16 @@ export class CalendarComponent {
 
   ngOnInit() {
     this.taskService.getAllbyUsername(this.currentUser).then(tasksIn => {
-      this.taskList=<Task[]>tasksIn;
+      this.taskList = tasksIn as Task[];
       console.log(this.taskList);
     });
-  
+    console.log(this.taskList);
   }
 
-
-  constructor(private modal: NgbModal) {}
+  ngOnDestroy() {
+    // unsubscribe to ensure no memory leaks
+    this.currentUserSubscription.unsubscribe();
+  }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -163,50 +171,32 @@ export class CalendarComponent {
     newStart,
     newEnd
   }: CalendarEventTimesChangedEvent): void {
-    this.events = this.events.map(iEvent => {
-      if (iEvent === event) {
-        return {
-          ...event,
-          start: newStart,
-          end: newEnd
-        };
-      }
-      return iEvent;
-    });
+    event.start = newStart;
+    event.end = newEnd;
     this.handleEvent('Dropped or resized', event);
+    this.refresh.next();
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
     this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'sm' });
+    this.modal.open(this.modalContent, { size: 'lg' });
   }
 
   addEvent(): void {
-    this.events = [
-      ...this.events,
-      {
-        title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
-        color: colors.red,
-        draggable: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true
-        }
+    this.events.push({
+      title: 'New event',
+      start: startOfDay(new Date()),
+      end: endOfDay(new Date()),
+      color: colors.red,
+      draggable: true,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true
       }
-    ];
+    });
+    this.refresh.next();
   }
 
-  deleteEvent(eventToDelete: CalendarEvent) {
-    this.events = this.events.filter(event => event !== eventToDelete);
-  }
 
-  setView(view: CalendarView) {
-    this.view = view;
-  }
-
-  closeOpenMonthViewDay() {
-    this.activeDayIsOpen = false;
-  }
 }
+
