@@ -65,3 +65,24 @@
   #addButton {
     margin: 5px;
 }
+
+.titleContainer {
+  text-align: center;
+}
+
+.addRewards {
+  text-align: center;
+}
+
+.delete {
+  position: absolute;
+  top: 0;
+  right:0;
+  background-color: #007bff;
+  color: white;
+  border-radius:15%;
+}
+
+.redeemButton {
+  text-align: center;
+}
