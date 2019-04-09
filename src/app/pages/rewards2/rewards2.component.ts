@@ -172,7 +172,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
       if (this.rewardsIn[this.cnt + i].cost < this.currentUser.points) {
         this.progressIn[i] = 100;
         this.cantBuy[i] = false;
-        console.log("In greateer than")
+        console.log("In greater than")
       } else {
         this.progressIn[i] = this.currentUser.points / this.rewardsIn[this.cnt + i].cost * 100;
         this.cantBuy[i] = true;
