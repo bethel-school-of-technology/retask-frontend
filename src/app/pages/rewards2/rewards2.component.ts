@@ -7,6 +7,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { AuthenticationService, UserService, AlertService, RewardService } from '@app/_services';
 import { ApiResponse } from '@app/_models/apiResponse';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-rewards2',
@@ -29,6 +31,20 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   rewardsToAdd: Reward[] = [];
 
+  rewardToDelete: Reward = {
+    "id": null,
+    "name": null,
+    "descr": null,
+    "username": "",
+    "cost": null,
+    "uploads": []
+  }
+
+  rewardsToDelete: Reward[] = [];
+
+
+
+
   rewardsIn: any[];
   progressIn: number[] = [0, 0, 0];
   cantBuy: boolean[] = [true, true, true];
@@ -49,7 +65,8 @@ export class Rewards2Component implements OnInit, OnDestroy {
     private rewardService: RewardService,
     private sanitizer: DomSanitizer,
     private alertService: AlertService
-  ) {
+  ) 
+  {
     this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
       this.currentUser = user;
     });
@@ -164,6 +181,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
     this.addReward = !this.addReward;
   }
 
+  
   setProgress() {
     console.log("In Set Progress")
     console.log(this.pageCnt);
@@ -238,4 +256,24 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   }
 
-}
+  // deleteReward() {
+   
+  //   this.rewardToDelete.username = this.currentUser.username;
+  //   this.rewardToDelete.uploads = [];
+  //   let tempUpload = new Upload;
+  //   tempUpload.url = "http://www.pbs.org/mercy-street/lunchbox_plugins/s/photogallery/img/no-image-available.jpg";
+  //   tempUpload.type = "jpg";
+  //   this.rewardToDelete.uploads.push(tempUpload);
+  //   this.rewardsToDelete.push(this.rewardToDelete);
+  //   this.rewardService.delete(this.rewardsToDelete, this.currentUser)
+  //     .then(res => {
+  //       console.log(res)
+  //       this.loadRewards(true);
+
+  //     });
+
+  //   this.rewardsToDelete = []
+  //   this.deleteReward = !this.deleteReward;
+  }
+
+

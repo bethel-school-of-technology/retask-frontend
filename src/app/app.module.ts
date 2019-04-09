@@ -26,11 +26,11 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { ForgotpasswordComponent } from '@app/pages/forgotpassword/forgotpassword.component';
 import { ForgotusernameComponent } from '@app/pages/forgotusername/forgotusername.component';
 
-import { SocialLoginModule, AuthServiceConfig  } from 'angularx-social-login';
+import { SocialLoginModule, AuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider, FacebookLoginProvider, LinkedInLoginProvider } from 'angularx-social-login';
 import { DemoComponent } from './pages/demo/demo.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
-import { RewardsComponent} from './pages/rewards/rewards.component';
+import { RewardsComponent } from './pages/rewards/rewards.component';
 import { Rewards2Component } from './pages/rewards2/rewards2.component';
 import { Home2Component } from './pages/home2/home2.component';
 
@@ -72,7 +72,7 @@ export function provideConfig() {
         NgbModalModule,
         FlatpickrModule.forRoot(),
         CommonModule,
-        SocialLoginModule,
+        SocialLoginModule
     ],
     declarations: [
         AppComponent,
