@@ -17,97 +17,23 @@
             class="carousel slide"
             data-ride="carousel"
           >
-            <ol class="carousel-indicators">
-              <li
-                data-target="#carouselExampleIndicators"
-                data-slide-to="0"
-                class="active"
-              ></li>
-              <li
-                data-target="#carouselExampleIndicators"
-                data-slide-to="1"
-              ></li>
-              <li
-                data-target="#carouselExampleIndicators"
-                data-slide-to="2"
-              ></li>
-            </ol>
             <div class="carousel-inner">
               <div class="carousel-item active">
                 <a href="#">
-                  <div class="resize img-thumbnail">
+                  <div class="container rounded">
                     <img
-                      class="d-block w-100 img-fluid"
+                      class="d-block w-100 img-fluid center"
                       [src]="rewardList[cnt].uploads[0].url"
+                      layout-fill
                     />
                   </div>
                 </a>
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>{{ rewardList[cnt].name }}</h5>
-                  <div class="progress">
-                    <div
-                      class="progress-bar bg-warning"
-                      role="progressbar"
-                      style="width: 75%"
-                      aria-valuenow="75"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item" *ngIf="totRewards > cnt + 1">
-                <a href="#">
-                  <div class="resize img-thumbnail">
-                    <img
-                      class="d-block w-100 img-fluid"
-                      [src]="rewardList[cnt + 1].uploads[0].url"
-                    />
-                  </div>
-                </a>
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>Reward 2</h5>
-                  <div class="progress">
-                    <div
-                      class="progress-bar bg-warning"
-                      role="progressbar"
-                      style="width: 75%"
-                      aria-valuenow="75"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item" *ngIf="totRewards > cnt + 2">
-                <a href="#">
-                  <div class="resize img-thumbnail">
-                    <img
-                      class="d-block w-100 img-fluid"
-                      [src]="rewardList[cnt + 2].uploads[0].url"
-                    />
-                  </div>
-                </a>
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>Reward 3</h5>
-                  <div class="progress">
-                    <div
-                      class="progress-bar bg-warning"
-                      role="progressbar"
-                      style="width: 75%"
-                      aria-valuenow="75"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
               </div>
             </div>
             <a
               class="carousel-control-prev"
               href="#carouselExampleIndicators"
               role="button"
-              data-slide="prev"
               (click)="previous()"
             >
               <span
@@ -120,7 +46,6 @@
               class="carousel-control-next"
               href="#carouselExampleIndicators"
               role="button"
-              data-slide="next"
               (click)="next()"
             >
               <span
@@ -129,6 +54,22 @@
               ></span>
               <span class="sr-only">Next</span>
             </a>
+          </div>
+          <h5 class="rounded">{{ rewardList[cnt].name }}</h5>
+          <br />
+          <div class="carousel-caption d-none d-md-block">
+            <div class="progress">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                [style.width]="progressIn[cnt + 2] + '%'"
+                aria-valuenow="25"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                {{ progressIn[cnt + 2] }}%
+              </div>
+            </div>
           </div>
           <br />
         </div>
@@ -168,7 +109,4 @@
       </div>
     </div>
   </div>
-  <button *ngIf="taskList[0].enddate >= CurrentDateTime" type="button">
-    Button
-  </button>
 </div>
