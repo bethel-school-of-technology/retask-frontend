@@ -33,6 +33,21 @@ export class TaskService {
 
   }
 
+  getbyUsernamebyDate(user: User, startDate: Date, endDate: Date) {
+    return new Promise(resolve => {
+      this.reTaskService.getTasksByUsernameByDate(user.accessToken,startDate, endDate)
+        .subscribe(tasks => {
+
+          console.log(tasks)
+
+          resolve(tasks);
+        }, err => {
+          console.log(err.message);
+        });
+    });
+
+  }
+
   getById(id: number) {
     // return this.http.get(`${environment.apiUrl}/users/${id}`);
   }

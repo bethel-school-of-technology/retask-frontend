@@ -23,7 +23,7 @@ export class AuthenticationService {
     guestLogin(username: string, password: string) {
 
         let tempUser = new User;
-        if (username==='Guest' && password==='password') {
+        if (username === 'Guest' && password === 'password') {
             tempUser.username = 'Guest';
             tempUser.firstName = 'Guest';
             tempUser.lastName = 'User';
@@ -41,7 +41,7 @@ export class AuthenticationService {
     }
 
     setUserFromSoialLogin(userSocial: SocialUser) {
-        
+
 
     }
 
@@ -62,10 +62,25 @@ export class AuthenticationService {
                     tempUser = user;
                     console.log(user);
                     resolve(tempUser);
-                    return tempUser;
+
 
                 }, err => {
+                    let retVal = "";
                     console.log(err)
+                    
+
+                    switch (err.status) {
+                        case 400:
+                            retVal = "Invalid username or password";
+                            break;
+                        case 403:
+                            retVal = "Server Down no Login Available";
+                            break;
+                        default:
+                            retVal = err.message;
+                    }
+
+                    resolve(retVal);
                 }, () => {
                     //console.log("Observer got a complete notification")
                     //console.log(tempUser);

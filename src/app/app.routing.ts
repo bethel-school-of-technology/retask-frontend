@@ -12,16 +12,16 @@ import { AuthGuard } from './_guards';
 import { RewardsComponent } from '@app/pages/rewards/rewards.component';
 import { Rewards2Component } from '@app/pages/rewards2/rewards2.component';
 import { Home2Component } from './pages/home2/home2.component';
+import { TasksComponent } from './pages/tasks/tasks.component';
 
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-    { path: 'home2', component: Home2Component, canActivate: [AuthGuard] },
     { path: 'demo', component: DemoComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard] },
-    { path: 'rewards', component: RewardsComponent, canActivate: [AuthGuard] },
+    { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },
     { path: 'rewards2', component: Rewards2Component, canActivate: [AuthGuard] },
     { path: 'userprofile', component: UserProfileComponent, canActivate: [AuthGuard] },
     {
