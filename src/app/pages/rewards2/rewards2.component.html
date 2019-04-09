@@ -1,8 +1,10 @@
 <!-- <img class="card-img-top" src="https://images.pexels.com/photos/209424/pexels-photo-209424.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Card image cap"> -->
-<h1>Rewards Page</h1>
-Points {{currentUser.points}}
-<div *ngIf="pageLoading">
-  page loading ....
+<div class="titleContainer">
+  <h1>My Rewards</h1>
+  <h4><i>Available Points: {{currentUser.points}}</i></h4>
+  <div *ngIf="pageLoading">
+    <h5> page loading .... </h5>
+  </div>
 </div>
 
 <!-- If the page is loaded but they want to add rewards then show this section -->
@@ -10,36 +12,83 @@ Points {{currentUser.points}}
   <div *ngIf="addReward && !pageLoading">
     <div class="row">
       <div class="col-sm-12">
-        <button class="btn btn-sm btn-primary float-right" (click)="addRewards()">Cancel</button>
-        <br>
-        <br>
-        <div class="example-container">
-          <h2>Default Rewards</h2>
 
-          <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo" [cdkDropListConnectedTo]="[doneList]"
-            class="example-list" (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
+
+        <div class="row">
+          <div class="col-sm-3">
+            <label for="rewardName">Reward Name </label>
+            <br>
+            <input type="text" [(ngModel)]="rewardToAdd.name" default="reward name" />
+          </div>
+          <div class="col-sm-5">
+            <label for="rewardName">Reward Description </label>
+            <br>
+            <input type="text" [(ngModel)]="rewardToAdd.descr" size="50" />
+          </div>
+          <div class="col-sm-2">
+            <label for="rewardName">Cost</label>
+            <br>
+            <input type="text" [(ngModel)]="rewardToAdd.cost" size="5" />
+          </div>
+          <div class="col-sm-2">
+            <br>
+            <input type="file" class="float-left" id="file" (change)="onFileSelected($event)" accept="image/*">
+            <!-- <button>
+              <label for="file">Select Image</label>
+            </button> -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-10">
+          </div>
+
+          <div class="col-sm-2">
+            <span>
+              <button id=addButton class="btn btn-sm btn-primary float-left" (click)="createReward()">Save</button>
+            </span>
+            <span>
+              <button id=addButton class="btn btn-sm btn-primary float-left" (click)="addRewards()">Cancel</button>
+            </span>
           </div>
         </div>
 
-        <div class="example-container">
-          <h2>My Rewards List</h2>
 
-          <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done" [cdkDropListConnectedTo]="[todoList]"
-            class="example-list" (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
+
+        <!-- when we implement drag and drop -->
+        <div *ngIf="addReward && !pageLoading && usingDragDrop">
+          <div class="example-container">
+            <h2>Default Rewards</h2>
+
+            <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="defautRewards"
+              [cdkDropListConnectedTo]="[doneList]" class="example-list" (cdkDropListDropped)="drop($event)">
+              <div class="example-box" *ngFor="let item of defautRewards" cdkDrag>{{item.name}}</div>
+            </div>
+          </div>
+
+          <div class="example-container">
+            <h2>My Rewards List</h2>
+
+            <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="rewardsIn" [cdkDropListConnectedTo]="[todoList]"
+              class="example-list" (cdkDropListDropped)="drop($event)">
+              <div class="example-box" *ngFor="let item of rewardsIn" cdkDrag>{{item.name}}</div>
+            </div>
           </div>
         </div>
+        <!-- end of drag and drop functionality -->
       </div>
     </div>
   </div>
 
- <!-- If the page is loaded and they are not adding rewards then show the rewards -->
-  <div *ngIf="!pageLoading && !addReward">
+  <!-- If the page is loaded and they are not adding rewards then show the rewards -->
+  <div *ngIf="!pageLoading">
 
     <div class="row">
       <div class="col-sm-12">
-        <button class="btn btn-sm btn-primary float-right" (click)="addRewards()">Add Rewards</button>
+        <div *ngIf="!addReward">
+          <div class="addRewards">
+            <button class="btn btn-sm btn-primary" (click)="addRewards()">Add Rewards</button>
+          </div>
+        </div>
         <br>
         <br>
       </div>
@@ -53,69 +102,83 @@ Points {{currentUser.points}}
           <div class="row">
             <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>0">
+                <button class="delete" title="delete reward">
+                  <i class="fa fa-times"></i>
+                </button>
                 <img class="card-img-top" [src]="rewardsIn[cnt].uploads[0].url" alt="Card image cap">
                 <div class="card-body">
                   <h5 class="card-title">{{rewardsIn[cnt].name}}</h5>
                   <p class="card-text">{{rewardsIn[cnt].descr}}
                     <br><br>Cost: {{rewardsIn[cnt].cost}} points
                   </p>
-                  <button class="btn btn-primary"
-                  [disabled]="cantBuy[cnt]">Get Reward</button>
-                  <a href="#" class="btn btn-primary float-right">Share</a>
+                  <div class="redeemButton">
+                    <button class="btn btn-primary" [disabled]="cantBuy[cnt]"
+                      (click)="redeem(rewardsIn[cnt].cost)">Redeem</button>
+                  </div>
+                  <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
                 </div>
-                <div class="card-footer">
+                <!-- <div class="card-footer">
                   <small class="text-muted">Last updated 3 mins ago</small>
                   <div class="progress">
-                    <div class="progress-bar" role="progressbar" [style.width]="progressIn[cnt] + '%'" 
-                      [attr.aria-valuenow]="progressIn[cnt]"
-                      aria-valuemin="0" [attr.aria-valuemax]="100">{{progressIn[cnt]}}%</div>
+                    <div class="progress-bar" role="progressbar" [style.width]="progressIn[cnt] + '%'"
+                      [attr.aria-valuenow]="progressIn[cnt]" aria-valuemin="0" [attr.aria-valuemax]="100">
+                      {{progressIn[cnt]}}%</div>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>1">
+                <button class="delete" title="delete reward">
+                  <i class="fa fa-times"></i>
+                </button>
                 <img class="card-img-top" [src]="rewardsIn[cnt+1].uploads[0].url" alt="Card image cap">
                 <div class="card-body">
                   <h5 class="card-title">{{rewardsIn[cnt+1].name}}</h5>
                   <p class="card-text">{{rewardsIn[cnt+1].descr}}
                     <br><br>Cost: {{rewardsIn[cnt+1].cost}} points</p>
                   <div>
-                      <button class="btn btn-primary"
-                      [disabled]="cantBuy[cnt+1]">Get Reward</button>
-                    <a href="#" class="btn btn-primary float-right">Share</a>
+                    <div class="redeemButton">
+                      <button class="btn btn-primary" [disabled]="cantBuy[cnt+1]"
+                        (click)="redeem(rewardsIn[cnt+1].cost)">Redeem</button>
+                    </div>
+                    <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
                   </div>
 
                 </div>
-                <div class="card-footer">
+                <!-- <div class="card-footer">
                   <small class="text-muted">Last updated 3 mins ago</small>
                   <div class="progress">
                     <div class="progress-bar" role="progressbar" [style.width]="progressIn[cnt+1] + '%'"
-                     aria-valuenow="25"
-                      aria-valuemin="0" aria-valuemax="100">{{progressIn[cnt+1]}}%</div>
+                      aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{progressIn[cnt+1]}}%</div>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>2">
+                <button class="delete" title="delete reward">
+                  <i class="fa fa-times"></i>
+                </button>
                 <img class="card-img-top" [src]="rewardsIn[cnt+2].uploads[0].url" alt="Card image cap">
                 <div class="card-body">
                   <h5 class="card-title">{{rewardsIn[cnt+2].name}}</h5>
                   <p class="card-text">{{rewardsIn[cnt+2].descr}}
                     <br><br>Cost: {{rewardsIn[cnt+2].cost}} points</p>
-                    <button class="btn btn-primary"
-                    [disabled]="cantBuy[cnt+2]">Get Reward</button>
-                  <a href="#" class="btn btn-primary float-right">Share</a>
+                  <div class="redeemButton">
+                    <button class="btn btn-primary" [disabled]="cantBuy[cnt+2]"
+                      (click)="redeem(rewardsIn[cnt+2].cost)">Redeem</button>
+                  </div>
+                  <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
 
                 </div>
-                <div class="card-footer">
+                <!-- <div class="card-footer">
                   <small class="text-muted">Last updated 3 mins ago</small>
                   <div class="progress">
-                    <div class="progress-bar" role="progressbar" [style.width]="progressIn[cnt+2] + '%'" aria-valuenow="25"
-                      aria-valuemin="0" aria-valuemax="100">{{progressIn[cnt+2]}}%</div>
+                    <div class="progress-bar" role="progressbar" [style.width]="progressIn[cnt+2] + '%'"
+                      aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{progressIn[cnt+2]}}%</div>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -128,4 +191,9 @@ Points {{currentUser.points}}
     </div>
 
   </div>
+
+
+</div>
+<div>
+
 </div>

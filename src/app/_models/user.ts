@@ -11,6 +11,7 @@
     phoneNbr: string;
     points: number;
     role: string[];
+    defaultBackgroundImage: string;
 }
 
 // if you want the field to be update on the database - added it here also
@@ -18,4 +19,5 @@ export class UserUpdateForm {
     firstName: string;
     lastName: string;
     phoneNbr: string;
+    points: number;
 }
