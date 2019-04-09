@@ -12,6 +12,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     currentUserSubscription: Subscription;
     taskList: Task[];
     rewardList: Reward[];
+    // tslint:disable-next-line:ban-types
+    rewardPercentage: Number;
     currentDateTime: Date;
 
     // loading page variable
