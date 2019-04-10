@@ -24,6 +24,8 @@ export class TasksComponent implements OnInit {
       enddate: new Date(),
       dueDate: new Date(),
       level: 0,
+      points: 0,
+      username: "",
       parent_task_id: 0,
       description: "",
       uploads: []

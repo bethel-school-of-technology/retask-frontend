@@ -7,6 +7,8 @@ export class Task {
     enddate: Date;
     level: number;
     dueDate: Date;
+    points: number;
+    username: string;
     parent_task_id: number;
     description: string;
     uploads: Upload[];
