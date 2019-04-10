@@ -33,6 +33,8 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
 import { RewardsComponent} from './pages/rewards/rewards.component';
 import { Rewards2Component } from './pages/rewards2/rewards2.component';
 import { Home2Component } from './pages/home2/home2.component';
+import { TasksComponent } from './pages/tasks/tasks.component';
+import { DatePipe } from '@angular/common'
 
 const config = new AuthServiceConfig([
     {
@@ -40,14 +42,14 @@ const config = new AuthServiceConfig([
         provider: new GoogleLoginProvider('624796833023-clhjgupm0pu6vgga7k5i5bsfp6qp6egh.apps.googleusercontent.com')
         // provider: new GoogleLoginProvider('563025889923-li0ssh373lio431e4m176binneejcqg1.apps.googleusercontent.com')
     },
-    {
-        id: FacebookLoginProvider.PROVIDER_ID,
-        provider: new FacebookLoginProvider('561602290896109')
-    },
-    {
-        id: LinkedInLoginProvider.PROVIDER_ID,
-        provider: new LinkedInLoginProvider('78iqy5cu2e1fgr')
-    }
+    // {
+    //     id: FacebookLoginProvider.PROVIDER_ID,
+    //     provider: new FacebookLoginProvider('561602290896109')
+    // },
+    // {
+    //     id: LinkedInLoginProvider.PROVIDER_ID,
+    //     provider: new LinkedInLoginProvider('78iqy5cu2e1fgr')
+    // }
 ]);
 
 export function provideConfig() {
@@ -87,13 +89,15 @@ export function provideConfig() {
         UserProfileComponent,
         RewardsComponent,
         Rewards2Component,
-        Home2Component
+        Home2Component,
+        TasksComponent
     ],
     providers: [
         {
             provide: AuthServiceConfig,
             useFactory: provideConfig
-        }
+        },
+        DatePipe
     ],
     bootstrap: [AppComponent]
 })
