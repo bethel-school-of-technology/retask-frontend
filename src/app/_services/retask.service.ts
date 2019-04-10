@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, } from 'rxjs';
+import { DatePipe } from '@angular/common'
 
 import { environment } from '@environments/environment'
 
-import { User, UserUpdateForm, Reward, Task } from '@app/_models'
+import { User, UserUpdateForm, Reward, Task, TaskDateRange } from '@app/_models'
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ import { User, UserUpdateForm, Reward, Task } from '@app/_models'
 export class ReTaskService {
 
   constructor(public http: HttpClient,
-              private sanitizer: DomSanitizer) { }
+    private sanitizer: DomSanitizer,
+    private datePipe: DatePipe) { }
 
   // sanitize a link
   transform(html) {
@@ -63,6 +65,20 @@ export class ReTaskService {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
           .append('Content-Type', 'application/json'),
         responseType: 'blob'
+      }
+    );
+  }
+
+  //save a pic to AWS.  This requires a token.
+  setAWSPic(pic: File, token: string): Observable<any> {
+    let urlParm = `${environment.reTaskUrl}/api/file/upload`
+
+    let formData = new FormData();
+    formData.append('file', pic, pic.name);
+
+    return this.http.post(urlParm, formData
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token),
       }
     );
   }
@@ -140,9 +156,21 @@ export class ReTaskService {
     );
   }
 
+  //update the user.  This requires a token.
+  deleteReward(reward: Reward, token: string): Observable<any> {
+    let urlParm = `${environment.reTaskUrl}/api/deletereward/`+ reward.id
+
+    return this.http.delete(urlParm
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+  }
+
   // get all the rewards associated with a user
   getTasksByUsername(token: string) {
-
 
     let urlParm = `${environment.reTaskUrl}/api/gettasksbyusername`
 
@@ -152,6 +180,27 @@ export class ReTaskService {
           .append('Content-Type', 'application/json')
       }
     );
+  }
+
+  // get all the rewards associated with a user
+  getTasksByUsernameByDate(token: string, startDate: Date, endDate: Date) {
+
+    let dateRange: TaskDateRange = {
+      startdate: this.datePipe.transform(startDate, "yyyy-MM-dd"),
+      enddate: this.datePipe.transform(endDate, "yyyy-MM-dd")
+    }
+
+    console.log(dateRange.startdate, dateRange.enddate);
+
+    let urlParm = `${environment.reTaskUrl}/api/gettasksbyusernamefordate`
+    return this.http.post(urlParm, dateRange
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+
   }
 
 

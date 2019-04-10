@@ -32,7 +32,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
     cursor: move;
     background: white;
     font-size: 14px;
@@ -85,4 +85,38 @@
 
 .redeemButton {
   text-align: center;
+}
+
+/* testing */
+
+/* .example-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.example-container > * {
+  width: 100%;
+} */
+
+/* testing above */
+
+.raised-block {
+  background-color: rgba(0, 0, 0, 0.342);
+  text-align: center;
+  margin-bottom: 10px;
+  margin-left: 0;
+  /* margin-right: -0.625rem;  */
+  padding-left: 20%;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: white;
+}
+@media (max-width: 33.9em){ 
+  .raised-block {
+      margin-left: -0.625rem;
+  }
+}
+
+.saveCancel {
+padding-left: 55%;
 }
