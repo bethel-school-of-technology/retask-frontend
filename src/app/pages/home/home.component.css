@@ -1,6 +1,7 @@
 h2 {
-  color: white;
+  color: black;
 } 
+
 
 h1 {
   color: white;
@@ -13,7 +14,7 @@ h1 {
 }
 
 .raised-block {
-  background-color: rgba(0,0,0,.5);
+  background-color: white;
   text-align: center;
   margin-bottom: 10px;
   margin-left: 0;
@@ -28,4 +29,38 @@ h1 {
 }
 .row [class^="col-"]:first-child>.raised-block {
   margin-left: -0.625rem;
+}
+
+/* resize rewards images */
+
+
+
+img {
+  position: absolute;
+  top: 0; bottom:0; left: 0; right:0;
+  margin: auto;
+}
+
+/*Desktops */
+@media (min-width: 1281px) {
+  
+  .container {
+    height: 400px;
+    width: 800px;
+    overflow:hidden;
+    background-color: white;
+  }
+  
+}
+
+/* Mobile portrait */
+@media (min-width: 320px) and (max-width: 480px) {
+  
+  .container {
+    height: 150px;
+    width: 300px;
+    overflow:hidden;
+    background-color: white;
+  }
+  
 }
