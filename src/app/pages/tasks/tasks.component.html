@@ -1,0 +1,107 @@
+<div class="raised-block rounded">
+  <div clss="container">
+    <div class="row">
+      <br />
+      <h2>Tasks for - {{currentDateTime | date: "EE M/d/yyyy"}}</h2>
+    </div>
+    <div class="row">
+      <span>
+        <button id=addButton class="btn btn-sm btn-primary float-left" (click)="prev()">Previous</button>
+      </span>
+      <span>
+        <button id=addButton class="btn btn-sm btn-primary float-left" (click)="next()">Next</button>
+      </span>
+      <br>
+      <br>
+    </div>
+    <!-- This is the  Task List-->
+    <div class="list-group mx-auto" *ngFor="let task of taskList; let i = index">
+      <div class="list-group-item list-group-item-action" style="background-color: #d3d3d3;">
+        <div class="row">
+          <div class="col-sm-4">
+            {{ task.name }}
+          </div>
+          <div class="col-sm-4">
+            Task is worth <span id="points">{{ task.points }}</span>
+          </div>
+          <div class="col-sm-4">
+            <div class="float-left">Complete&nbsp;</div>
+            <input type="checkbox" (change)="makeComplete($event.target.checked, i)"
+              class="float-left" name="taskComplete" value="Complete">
+            <!-- <input type="checkbox" (change)="isChangeLimitAccessToggle($event.target.checked ? 'on' : 'off')" id="ifLimitAccess" class="switch-input"> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of the Task List-->
+    <div class="row">
+      <h3>Completed Tasks</h3>
+    </div>
+    <!-- This is the completed Task List-->
+    <div class="list-group mx-auto" *ngFor="let task of completedTaskList; let i = index">
+      <div class="list-group-item list-group-item-action" style="background-color: lightgreen;">
+        <div class="row">
+          <div class="col-sm-4">
+            {{ task.name }}
+          </div>
+          <div class="col-sm-4">
+            Task is worth <span id="points">{{ task.points }}</span>
+          </div>
+          <div class="col-sm-4">
+            <div class="float-left">Completed&nbsp;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of the completed Task List-->
+    <br />
+    <br />
+
+  </div>
+
+  <div class="raised-block rounded">
+    <br />
+    <h2>Add Task</h2>
+    <div class="list-group mx-auto">
+      <div class="list-group-item list-group-item-action" style="background-color: #d3d3d3;">
+        <div clss="container">
+          <div class="row">
+            <div class="col-sm-3">
+              Name
+            </div>
+            <div class="col-sm-3">
+              Start Date
+            </div>
+            <div class="col-sm-3">
+              End Date
+            </div>
+            <div class="col-sm-3">
+              Points
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              <input type="text" [(ngModel)]="addTask.name" />
+            </div>
+            <div class="col-sm-3">
+              <input type="text" [(ngModel)]="addTask.startdate" />
+            </div>
+            <div class="col-sm-3">
+              <input type="text" [(ngModel)]="addTask.enddate" />
+            </div>
+            <div class="col-sm-3">
+              <input type="text" [(ngModel)]="addTask.points" />
+            </div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <button id=addButton class="btn btn-sm btn-primary" (click)="OnAddTask()">Add Task</button>
+
+      </div>
+    </div>
+    <br />
+
+
+  </div>
+</div>
