@@ -32,6 +32,25 @@ export class RewardService {
     //return this.http.get(`${environment.apiUrl}/users/${id}`);
   }
 
+  // only used for one reward at a time.
+  createWithFile(rewards: Reward[], user: User, pic: File) {
+    return new Promise(resolve => {
+      this.reTaskService.setAWSPic(pic, user.accessToken)
+        .subscribe(res => {
+          // set the rewards upload url to the aws url 
+          rewards[0].uploads[0].url = res.url;
+          this.reTaskService.createReward(rewards, user.accessToken)
+            .subscribe(rewards => {
+              console.log(rewards)
+              resolve(rewards);
+            }, err => {
+              console.log(err.message);
+            });
+        });
+    });
+    //return this.http.put(`${environment.apiUrl}/users/${task.id}`, task);
+  }
+
   create(rewards: Reward[], user: User) {
     return new Promise(resolve => {
       this.reTaskService.createReward(rewards, user.accessToken)

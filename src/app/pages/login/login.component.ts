@@ -58,7 +58,12 @@ export class LoginComponent implements OnInit {
 
 
     signInWithGoogle(): void {
-        this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+        this.authService.signIn(GoogleLoginProvider.PROVIDER_ID)
+        .then(res => {
+            console.log('res', res);
+        }).catch(e => {
+            console.log(e);
+        });
         console.log(this.userSocial);
     }
 
@@ -81,20 +86,26 @@ export class LoginComponent implements OnInit {
             return;
         }
 
+        let retVal: any;
         // if the user is Guest and password = password allow them in as a guest
         // but they have no db access
         if (this.f.username.value === 'Guest' && this.f.password.value === 'password') {
             this.user = this.authenticationService.guestLogin(this.f.username.value, this.f.password.value);
         } else {
             this.loading = true;
-            this.user = await this.authenticationService.login(this.f.username.value, this.f.password.value)
+            retVal = await this.authenticationService.login(this.f.username.value, this.f.password.value)
+            if (retVal.hasOwnProperty('username')) {
+                this.user = retVal;
+            } else {
+                this.user = null;
+            }
         }
 
         // if the user.id is not null
-        if (this.user.username) {
+        if (this.user) {
             this.router.navigate([this.returnUrl]);
         } else {
-            this.alertService.error("error");
+            this.alertService.error(retVal);
             this.loading = false;
         }
 
