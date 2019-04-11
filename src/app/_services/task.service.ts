@@ -48,6 +48,52 @@ export class TaskService {
 
   }
 
+  getOpenTasks(user: User, startDate: Date, endDate: Date) {
+    return new Promise(resolve => {
+      this.reTaskService.getOpenTasks(user.accessToken,startDate, endDate)
+        .subscribe(tasks => {
+
+          console.log(tasks)
+
+          resolve(tasks);
+        }, err => {
+          console.log(err.message);
+        });
+    });
+
+  }
+
+  getCompleteTasks(user: User, startDate: Date, endDate: Date) {
+    return new Promise(resolve => {
+      this.reTaskService.getCompleteTasks(user.accessToken,startDate, endDate)
+        .subscribe(tasks => {
+
+          console.log(tasks)
+
+          resolve(tasks);
+        }, err => {
+          console.log(err.message);
+        });
+    });
+
+  }
+
+  // mark a task complete
+  completeTask(user: User, task_id: number, completeDate: Date) {
+    return new Promise(resolve => {
+      this.reTaskService.completeTask(user.accessToken,task_id, completeDate)
+        .subscribe(tasks => {
+
+          console.log(tasks)
+
+          resolve(tasks);
+        }, err => {
+          console.log(err.message);
+        });
+    });
+
+  }
+
   getById(id: number) {
     // return this.http.get(`${environment.apiUrl}/users/${id}`);
   }
