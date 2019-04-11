@@ -72,9 +72,6 @@ export class TaskService {
 
           resolve(tasks);
         }, err => {
-          if (err.status = 401) {
-            alert("401 error");
-          }
           console.log(err.message);
         });
     });
