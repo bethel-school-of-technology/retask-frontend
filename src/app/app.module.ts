@@ -34,6 +34,9 @@ import { RewardsComponent } from './pages/rewards/rewards.component';
 import { Rewards2Component } from './pages/rewards2/rewards2.component';
 import { Home2Component } from './pages/home2/home2.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
+
+import { HttpErrorInterceptor } from '@app/_guards/http-error.interceptor';
+
 import { DatePipe } from '@angular/common';
 
 const config = new AuthServiceConfig([
@@ -96,6 +99,11 @@ export function provideConfig() {
         {
             provide: AuthServiceConfig,
             useFactory: provideConfig
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: HttpErrorInterceptor,
+            multi: true
         },
         DatePipe
     ],
