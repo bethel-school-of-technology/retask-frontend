@@ -6,7 +6,7 @@ import { DatePipe } from '@angular/common'
 
 import { environment } from '@environments/environment'
 
-import { User, UserUpdateForm, Reward, Task, TaskDateRange } from '@app/_models'
+import { User, UserUpdateForm, Reward, Task, TaskDateRange, TaskComplete } from '@app/_models'
 
 @Injectable({
   providedIn: 'root'
@@ -158,7 +158,7 @@ export class ReTaskService {
 
   //update the user.  This requires a token.
   deleteReward(reward: Reward, token: string): Observable<any> {
-    let urlParm = `${environment.reTaskUrl}/api/deletereward/`+ reward.id
+    let urlParm = `${environment.reTaskUrl}/api/deletereward/` + reward.id
 
     return this.http.delete(urlParm
       , {
@@ -193,6 +193,68 @@ export class ReTaskService {
     console.log(dateRange.startdate, dateRange.enddate);
 
     let urlParm = `${environment.reTaskUrl}/api/gettasksbyusernamefordate`
+    return this.http.post(urlParm, dateRange
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+
+  }
+
+  // get all the open tasks
+  getOpenTasks(token: string, startDate: Date, endDate: Date) {
+
+    let dateRange: TaskDateRange = {
+      startdate: this.datePipe.transform(startDate, "yyyy-MM-dd"),
+      enddate: this.datePipe.transform(endDate, "yyyy-MM-dd")
+    }
+
+    console.log(dateRange.startdate, dateRange.enddate);
+
+    let urlParm = `${environment.reTaskUrl}/api/getopentasks`
+    return this.http.post(urlParm, dateRange
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+
+  }
+
+
+  // get all the open tasks
+  completeTask(token: string, task_id: number, completeDate: Date) {
+
+    let taskComplete: TaskComplete = {
+      task_id: task_id,
+      completeDate: this.datePipe.transform(completeDate, "yyyy-MM-dd")
+    }
+
+    let urlParm = `${environment.reTaskUrl}/api/updatetaskstatus`
+    return this.http.post(urlParm, taskComplete
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+
+  }
+
+  // get all the open tasks
+  getCompleteTasks(token: string, startDate: Date, endDate: Date) {
+
+    let dateRange: TaskDateRange = {
+      startdate: this.datePipe.transform(startDate, "yyyy-MM-dd"),
+      enddate: this.datePipe.transform(endDate, "yyyy-MM-dd")
+    }
+
+    console.log(dateRange.startdate, dateRange.enddate);
+
+    let urlParm = `${environment.reTaskUrl}/api/getcompletetasks`
     return this.http.post(urlParm, dateRange
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)

@@ -34,7 +34,7 @@ import { RewardsComponent } from './pages/rewards/rewards.component';
 import { Rewards2Component } from './pages/rewards2/rewards2.component';
 import { Home2Component } from './pages/home2/home2.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
 
 const config = new AuthServiceConfig([
     {
