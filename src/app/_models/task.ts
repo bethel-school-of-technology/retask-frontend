@@ -18,3 +18,8 @@ export class TaskDateRange {
     startdate: string;
     enddate: string;
 }
+
+export class TaskComplete {
+    task_id: number;
+    completeDate: string;
+}
