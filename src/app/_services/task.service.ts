@@ -22,9 +22,6 @@ export class TaskService {
     return new Promise(resolve => {
       this.reTaskService.getTasksByUsername(user.accessToken)
         .subscribe(tasks => {
-
-          console.log(tasks)
-
           resolve(tasks);
         }, err => {
           console.log(err.message);
@@ -35,11 +32,8 @@ export class TaskService {
 
   getbyUsernamebyDate(user: User, startDate: Date, endDate: Date) {
     return new Promise(resolve => {
-      this.reTaskService.getTasksByUsernameByDate(user.accessToken,startDate, endDate)
+      this.reTaskService.getTasksByUsernameByDate(user.accessToken, startDate, endDate)
         .subscribe(tasks => {
-
-          console.log(tasks)
-
           resolve(tasks);
         }, err => {
           console.log(err.message);
@@ -50,11 +44,8 @@ export class TaskService {
 
   getOpenTasks(user: User, startDate: Date, endDate: Date) {
     return new Promise(resolve => {
-      this.reTaskService.getOpenTasks(user.accessToken,startDate, endDate)
+      this.reTaskService.getOpenTasks(user.accessToken, startDate, endDate)
         .subscribe(tasks => {
-
-          console.log(tasks)
-
           resolve(tasks);
         }, err => {
           console.log(err.message);
@@ -65,11 +56,21 @@ export class TaskService {
 
   getCompleteTasks(user: User, startDate: Date, endDate: Date) {
     return new Promise(resolve => {
-      this.reTaskService.getCompleteTasks(user.accessToken,startDate, endDate)
+      this.reTaskService.getCompleteTasks(user.accessToken, startDate, endDate)
         .subscribe(tasks => {
+          resolve(tasks);
+        }, err => {
+          console.log(err.message);
+        });
+    });
 
-          console.log(tasks)
+  }
 
+  // mark a task uncomplete
+  unCompleteTask(user: User, task_id: number, completeDate: Date) {
+    return new Promise(resolve => {
+      this.reTaskService.unCompleteTask(user.accessToken, task_id, completeDate)
+        .subscribe(tasks => {
           resolve(tasks);
         }, err => {
           console.log(err.message);
@@ -81,11 +82,8 @@ export class TaskService {
   // mark a task complete
   completeTask(user: User, task_id: number, completeDate: Date) {
     return new Promise(resolve => {
-      this.reTaskService.completeTask(user.accessToken,task_id, completeDate)
+      this.reTaskService.completeTask(user.accessToken, task_id, completeDate)
         .subscribe(tasks => {
-
-          console.log(tasks)
-
           resolve(tasks);
         }, err => {
           console.log(err.message);
@@ -99,24 +97,39 @@ export class TaskService {
   }
 
   create(tasks: Task[], user: User) {
-      return new Promise(resolve => {
-        this.reTaskService.createTasks(tasks, user.accessToken)
+    return new Promise(resolve => {
+      this.reTaskService.createTasks(tasks, user.accessToken)
 
-          .subscribe(tasks => {
-            console.log(tasks)
-
-            resolve(tasks);
-          }, err => {
-            console.log(err.message);
-          });
-      });
+        .subscribe(tasks => {
+          resolve(tasks);
+        }, err => {
+          console.log(err.message);
+        });
+    });
   }
 
-  update(task: Task) {
-    // return this.http.put(`${environment.apiUrl}/users/${task.id}`, task);
+  update(task: Task, user: User) {
+
+    return new Promise(resolve => {
+      this.reTaskService.updateTask(task, user.accessToken)
+        .subscribe(res => {
+          resolve(res);
+        }, err => {
+          console.log(err.message);
+        });
+    });
   }
 
-  delete(id: number) {
+  delete(id: number, user: User) {
     // return this.http.delete(`${environment.apiUrl}/users/${id}`);
+    return new Promise(resolve => {
+      this.reTaskService.deleteTask(id, user.accessToken)
+
+        .subscribe(res => {
+          resolve(res);
+        }, err => {
+          console.log(err.message);
+        });
+    });
   }
 }

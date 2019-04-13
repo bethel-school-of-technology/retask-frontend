@@ -33,11 +33,13 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
 import { RewardsComponent } from './pages/rewards/rewards.component';
 import { Rewards2Component } from './pages/rewards2/rewards2.component';
 import { Home2Component } from './pages/home2/home2.component';
-import { TasksComponent } from './pages/tasks/tasks.component';
+import { TasksComponent, DialogEditTaskDialog } from './pages/tasks/tasks.component';
 
 import { HttpErrorInterceptor } from '@app/_guards/http-error.interceptor';
 
 import { DatePipe } from '@angular/common';
+import { PopupComponent, DialogOverviewExampleDialog } from './pages/popup/popup.component';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
 
 const config = new AuthServiceConfig([
     {
@@ -93,7 +95,14 @@ export function provideConfig() {
         RewardsComponent,
         Rewards2Component,
         Home2Component,
-        TasksComponent
+        TasksComponent,
+        PopupComponent,
+        DialogOverviewExampleDialog,
+        DialogEditTaskDialog
+    ],
+    entryComponents: [
+        DialogOverviewExampleDialog,
+        DialogEditTaskDialog
     ],
     providers: [
         {
@@ -105,6 +114,7 @@ export function provideConfig() {
             useClass: HttpErrorInterceptor,
             multi: true
         },
+        { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
         DatePipe
     ],
     bootstrap: [AppComponent]

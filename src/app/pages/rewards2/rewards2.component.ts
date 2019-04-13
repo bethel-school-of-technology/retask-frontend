@@ -244,8 +244,10 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
     this.userService.update(tempUser, this.currentUser.accessToken)
       .then(res => {
-        if (res.status == 0)
+        if (res.status == 0) {
           this.alertService.success("Points Updated");
+          this.authenticationService.saveLocally(this.currentUser);
+        }
         else {
           this.alertService.error("Save Failed");
           this.currentUser.points = this.currentUser.points + rewardCost;
