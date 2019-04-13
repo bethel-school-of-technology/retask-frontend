@@ -1,2 +1,17 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+#link-button {
+     background:none!important;
+     color:inherit;
+     border:none; 
+     padding:0!important;
+     font: inherit;
+     /*border is optional*/
+     border-bottom:1px solid #444; 
+     cursor: pointer;
+}
+
+#editbuttons {
+     margin: 5px;
+}

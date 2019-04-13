@@ -45,6 +45,10 @@ export class AuthenticationService {
 
     }
 
+    saveLocally(user: User) {
+        localStorage.setItem('currentUser', JSON.stringify(user));  
+    }
+
     login(username: string, password: string) {
         let tempUser = null;
         return new Promise(resolve => {
