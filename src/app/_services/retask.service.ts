@@ -190,7 +190,7 @@ export class ReTaskService {
       enddate: this.datePipe.transform(endDate, "yyyy-MM-dd")
     }
 
-    console.log(dateRange.startdate, dateRange.enddate);
+    //console.log(dateRange.startdate, dateRange.enddate);
 
     let urlParm = `${environment.reTaskUrl}/api/gettasksbyusernamefordate`
     return this.http.post(urlParm, dateRange
@@ -211,7 +211,7 @@ export class ReTaskService {
       enddate: this.datePipe.transform(endDate, "yyyy-MM-dd")
     }
 
-    console.log(dateRange.startdate, dateRange.enddate);
+    //console.log(dateRange.startdate, dateRange.enddate);
 
     let urlParm = `${environment.reTaskUrl}/api/getopentasks`
     return this.http.post(urlParm, dateRange
@@ -233,7 +233,46 @@ export class ReTaskService {
       completeDate: this.datePipe.transform(completeDate, "yyyy-MM-dd")
     }
 
-    let urlParm = `${environment.reTaskUrl}/api/updatetaskstatus`
+    let urlParm = `${environment.reTaskUrl}/api/updatetaskstatus/true`
+    return this.http.post(urlParm, taskComplete
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+
+  }
+
+  // get all the open tasks
+  updateTask(task: Task, token: string) {
+
+    task.strStartDate = this.datePipe.transform(task.startdate, "yyyy-MM-dd");
+    task.strEndDate = this.datePipe.transform(task.enddate, "yyyy-MM-dd");
+    let tasks: Task[] = [];
+    tasks.push(task);
+    //console.log("task to update", task)
+
+    let urlParm = `${environment.reTaskUrl}/api/updatetasks`
+    return this.http.post(urlParm, tasks
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+
+  }
+
+  // get all the open tasks
+  unCompleteTask(token: string, task_id: number, completeDate: Date) {
+
+    let taskComplete: TaskComplete = {
+      task_id: task_id,
+      completeDate: this.datePipe.transform(completeDate, "yyyy-MM-dd")
+    }
+
+    let urlParm = `${environment.reTaskUrl}/api/updatetaskstatus/false`
     return this.http.post(urlParm, taskComplete
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
@@ -252,7 +291,7 @@ export class ReTaskService {
       enddate: this.datePipe.transform(endDate, "yyyy-MM-dd")
     }
 
-    console.log(dateRange.startdate, dateRange.enddate);
+    //console.log(dateRange.startdate, dateRange.enddate);
 
     let urlParm = `${environment.reTaskUrl}/api/getcompletetasks`
     return this.http.post(urlParm, dateRange
@@ -278,5 +317,21 @@ export class ReTaskService {
       }
     );
   }
+
+  //update the user.  This requires a token.
+  deleteTask(task_id: number, token: string): Observable<any> {
+    let urlParm = `${environment.reTaskUrl}/api/deletetask/` + task_id
+
+    return this.http.delete(urlParm
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+  }
+
+
+
 
 }
