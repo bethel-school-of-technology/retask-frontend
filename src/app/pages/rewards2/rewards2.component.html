@@ -121,7 +121,7 @@
           <div class="row">
             <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>0">
-                <button (click)= "deleteReward" class="delete" title="delete reward">
+                <button (click)= "deleteReward(rewardsIn[cnt])" class="delete" title="delete reward">
                   <i class="fa fa-times"></i>
                 </button>
                 <img class="card-img-top" [src]="rewardsIn[cnt].uploads[0].url" alt="Card image cap">
@@ -148,7 +148,7 @@
             </div>
             <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>1">
-                <button (click)= "deleteReward" class="delete" title="delete reward">
+                <button (click)= "deleteReward(rewardsIn[cnt+1])" class="delete" title="delete reward">
                   <i class="fa fa-times"></i>
                 </button>
                 <img class="card-img-top" [src]="rewardsIn[cnt+1].uploads[0].url" alt="Card image cap">
@@ -176,7 +176,7 @@
             </div>
             <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>2">
-                <button (click)= "deleteReward" class="delete" title="delete reward">
+                <button (click)= "deleteReward(rewardsIn[cnt+2])" class="delete" title="delete reward">
                   <i class="fa fa-times"></i>
                 </button>
                 <img class="card-img-top" [src]="rewardsIn[cnt+2].uploads[0].url" alt="Card image cap">

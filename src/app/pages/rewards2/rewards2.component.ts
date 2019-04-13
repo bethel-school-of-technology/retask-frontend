@@ -244,8 +244,10 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
     this.userService.update(tempUser, this.currentUser.accessToken)
       .then(res => {
-        if (res.status == 0)
+        if (res.status == 0) {
           this.alertService.success("Points Updated");
+          this.authenticationService.saveLocally(this.currentUser);
+        }
         else {
           this.alertService.error("Save Failed");
           this.currentUser.points = this.currentUser.points + rewardCost;
@@ -256,24 +258,15 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   }
 
-  // deleteReward() {
-   
-  //   this.rewardToDelete.username = this.currentUser.username;
-  //   this.rewardToDelete.uploads = [];
-  //   let tempUpload = new Upload;
-  //   tempUpload.url = "http://www.pbs.org/mercy-street/lunchbox_plugins/s/photogallery/img/no-image-available.jpg";
-  //   tempUpload.type = "jpg";
-  //   this.rewardToDelete.uploads.push(tempUpload);
-  //   this.rewardsToDelete.push(this.rewardToDelete);
-  //   this.rewardService.delete(this.rewardsToDelete, this.currentUser)
-  //     .then(res => {
-  //       console.log(res)
-  //       this.loadRewards(true);
+  deleteReward(rewardToDelete: Reward) {
+   console.log("reward to delete", rewardToDelete)
+    this.rewardService.delete(rewardToDelete, this.currentUser)
+      .then(res => {
+        console.log(res)
+        this.loadRewards(true);
 
-  //     });
+      });
 
-  //   this.rewardsToDelete = []
-  //   this.deleteReward = !this.deleteReward;
   }
 
-
+}
