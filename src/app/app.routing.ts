@@ -13,13 +13,11 @@ import { RewardsComponent } from '@app/pages/rewards/rewards.component';
 import { Rewards2Component } from '@app/pages/rewards2/rewards2.component';
 import { Home2Component } from './pages/home2/home2.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
-import { PopupComponent } from './pages/popup/popup.component';
 
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'demo', component: DemoComponent },
-    { path: 'popup', component: PopupComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard] },

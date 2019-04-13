@@ -11,8 +11,6 @@ export class Task {
     username: string;
     parent_task_id: number;
     description: string;
-    strStartDate: string;
-    strEndDate: string;
     uploads: Upload[];
 }
 

@@ -13,9 +13,7 @@ import {
   MatSelectModule,
   MatOptionModule,
   MatCheckboxModule,
-  MatRadioModule,
-  MatExpansionModule,
-  MatDialogModule
+  MatRadioModule
 } from "@angular/material";
 
 import {MatTooltipModule} from '@angular/material';
@@ -35,9 +33,7 @@ import {MatTooltipModule} from '@angular/material';
     MatOptionModule,
     MatCheckboxModule,
     MatRadioModule,
-    MatTooltipModule, 
-    MatExpansionModule,
-    MatDialogModule
+    MatTooltipModule
   ],
   exports: [
     MatButtonModule,
@@ -53,9 +49,7 @@ import {MatTooltipModule} from '@angular/material';
     MatOptionModule,
     MatCheckboxModule,
     MatRadioModule,
-    MatTooltipModule,
-    MatExpansionModule,
-    MatDialogModule
+    MatTooltipModule
   ]
 })
 export class MaterialModule {}

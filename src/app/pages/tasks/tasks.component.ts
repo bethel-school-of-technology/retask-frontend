@@ -1,15 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Task, User, UserUpdateForm } from '@app/_models';
-import { AuthenticationService, UserService } from '@app/_services';
+import { Component, OnInit } from '@angular/core';
+import { Task, User } from '@app/_models';
+import { AuthenticationService, RewardService } from '@app/_services';
 import { TaskService } from '@app/_services/task.service';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
-
-export interface TaskDialogData {
-  animal: string;
-  name: string;
-}
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-tasks',
@@ -18,8 +13,7 @@ export interface TaskDialogData {
 })
 export class TasksComponent implements OnInit {
 
-  panelOpenState = false;
-  dateWork = new Date();
+  dateWork =new Date();
 
   currentDateTime: Date = new Date();
   displayDate: any;
@@ -39,20 +33,13 @@ export class TasksComponent implements OnInit {
       username: "",
       parent_task_id: 0,
       description: "",
-      strStartDate: "",
-      strEndDate: "",
       uploads: []
     }
-
-  animal: string;
-  name: string;
 
   constructor(
     private authenticationService: AuthenticationService,
     private taskService: TaskService,
-    private userService: UserService,
-    private datePipe: DatePipe,
-    public dialog: MatDialog
+    private datePipe: DatePipe
   ) {
     this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
       this.currentUser = user;
@@ -65,62 +52,22 @@ export class TasksComponent implements OnInit {
     this.getCompleteTasks();
   }
 
-  // this opens the dialog box
-  openDialog(taskIn: Task, editIn: boolean): void {
-
-    let task: Task = new Task();
-
-    task.name = taskIn.name
-    task.startdate = taskIn.startdate;
-    task.enddate = taskIn.enddate;
-    task.points = taskIn.points;
-
-    const dialogRef = this.dialog.open(DialogEditTaskDialog, {
-      width: '255px',
-      data: {
-        task: task,
-        edit: editIn
-      }
-    });
-
-    // after the dialog box is closed this is run
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (editIn) {
-          // edit the task
-          taskIn.name = task.name
-          taskIn.startdate = task.startdate;
-          taskIn.enddate = task.enddate;
-          taskIn.points = task.points;
-         
-          this.taskService.update(taskIn, this.currentUser)
-            .then(res => {
-              this.getTasks();
-            });
-        } else {
-          //delete the task
-          this.taskService.delete(taskIn.id, this.currentUser)
-            .then(res => {
-              this.getTasks();
-            });
-        }
-      }
-    });
-  }
-
-
   getTasks() {
+    console.log(this.currentDateTime);
     this.displayDate = this.datePipe.transform(this.currentDateTime, "EE MM-dd-yy")
     this.taskService.getOpenTasks(this.currentUser, this.currentDateTime, this.currentDateTime)
       .then(tasksIn => {
         this.taskList = tasksIn as Task[];
+        console.log(this.taskList);
       });
   }
 
   getCompleteTasks() {
+    console.log(this.currentDateTime);
     this.taskService.getCompleteTasks(this.currentUser, this.currentDateTime, this.currentDateTime)
       .then(tasksIn => {
         this.completedTaskList = tasksIn as Task[];
+        console.log(this.taskList);
       });
 
   }
@@ -131,7 +78,9 @@ export class TasksComponent implements OnInit {
 
     this.taskService.create(addTasks, this.currentUser)
       .then(res => {
+        console.log(res)
         this.getTasks();
+
       });
 
   }
@@ -139,102 +88,37 @@ export class TasksComponent implements OnInit {
   cnt = 0;
 
   prev() {
-    this.currentDateTime.setDate(this.currentDateTime.getDate() - 1);
+    this.currentDateTime.setDate(this.currentDateTime.getDate()-1);
     this.displayDate = this.datePipe.transform(this.currentDateTime, "EE MM-dd-yy")
-    this.addTask.startdate = this.currentDateTime;
-    this.addTask.enddate = this.currentDateTime;
     this.cnt--;
     this.getTasks();
     this.getCompleteTasks();
   }
 
   next() {
-    this.currentDateTime.setDate(this.currentDateTime.getDate() + 1);
+    this.currentDateTime.setDate(this.currentDateTime.getDate()+1);
     this.displayDate = this.datePipe.transform(this.currentDateTime, "EE MM-dd-yy")
-    this.addTask.startdate = this.currentDateTime;
-    this.addTask.enddate = this.currentDateTime;
     this.cnt++;
     this.getTasks();
     this.getCompleteTasks();
   }
 
-  makeComplete(itemComplete, indx) {
-    
-    let holdPoints = this.taskList[indx].points;
+  makeComplete (itemComplete, indx) {
+    console.log(itemComplete, indx);
 
     if (itemComplete) {
 
-      this.taskService.completeTask(this.currentUser, this.taskList[indx].id, this.currentDateTime)
-        .then(res => {
-          this.updateUserPoints(holdPoints);
-
-          this.completedTaskList.push(this.taskList[indx]);
-          this.taskList.splice(indx, 1);
-
-        });
-    }
-  }
-
-  makeUnComplete(itemComplete, indx) {
-
-    let holdPoints = this.completedTaskList[indx].points;
-
-    if (!itemComplete) {
-
-      this.taskService.unCompleteTask(this.currentUser, this.completedTaskList[indx].id, this.currentDateTime)
-        .then(res => {
-          // subtract the points from the user's points
-          this.updateUserPoints((holdPoints*-1));
-          this.taskList.push(this.completedTaskList[indx]);
-          this.completedTaskList.splice(indx, 1);
-
-        });
-
-
-    }
-  }
-
-  // negitive will decrease points if a task is marked uncomplete
-  updateUserPoints(points) {
-    // add points to the accumulated points
-    this.currentUser.points = this.currentUser.points + points;
-
-    let tempUser = new UserUpdateForm;
-    tempUser.firstName = this.currentUser.firstName;
-    tempUser.lastName = this.currentUser.lastName;
-    tempUser.phoneNbr = this.currentUser.phoneNbr;
-    tempUser.points = this.currentUser.points;
-
-    this.userService.update(tempUser, this.currentUser.accessToken)
+      this.taskService.completeTask(this.currentUser,this.taskList[indx].id, this.currentDateTime)
       .then(res => {
-        if (res.status == 0) {
-          this.authenticationService.saveLocally(this.currentUser);
-        }
-        else {
-          this.currentUser.points = this.currentUser.points - points;
-        }
+        console.log(res);
+        this.completedTaskList.push(this.taskList[indx]);
+        this.taskList.splice(indx,1);
+
       });
-  }
 
-}
+      
+    }
 
-
-
-/** Component to popup a dialog to edit a Task
- * 
-*/
-@Component({
-  selector: 'dialog-edit-task-dialog',
-  templateUrl: 'dialog-edit-task-dialog.html',
-})
-export class DialogEditTaskDialog {
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogEditTaskDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: { task: Task, edit: boolean }) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 
 }
