@@ -1,3 +1,9 @@
+<head>
+  <!--materialize tags-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+</head>
+
 <div class="raised-block rounded">
   <div clss="container">
     <div class="row">
@@ -24,9 +30,12 @@
             {{ task.name }}
           </div>
           <div class="col-sm-4">
-            <div class="float-left">Complete&nbsp;</div>
-            <input type="checkbox" (change)="makeComplete($event.target.checked, i)" class="float-left"
-              name="taskComplete" value="Complete">
+
+            <label>
+                <input type="checkbox" (change)="makeComplete($event.target.checked, i)" value="Complete" name="taskComplete">
+                <span>Complete</span>
+            </label>
+            
             <!-- <input type="checkbox" (change)="isChangeLimitAccessToggle($event.target.checked ? 'on' : 'off')" id="ifLimitAccess" class="switch-input"> -->
           </div>
           <div class="col-sm-4">
@@ -54,11 +63,12 @@
           <div class="col-sm-4">
             {{ task.name }}
           </div>
-          <div class="col-sm-4">
-            <div class="float-left">Complete&nbsp;</div>
-            <input type="checkbox" (change)="makeUnComplete($event.target.checked, i)" class="float-left"
-              name="taskComplete" value="Complete" checked>
-          </div>
+
+          <label>
+              <input type="checkbox" (change)="makeUnComplete($event.target.checked, i)" value="Complete" name="taskComplete" checked>
+              <span>Complete</span>
+          </label>
+
           <div class="col-sm-4">
             Task is worth <span id="points">{{ task.points }}</span>
           </div>
