@@ -258,24 +258,15 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   }
 
-  // deleteReward() {
-   
-  //   this.rewardToDelete.username = this.currentUser.username;
-  //   this.rewardToDelete.uploads = [];
-  //   let tempUpload = new Upload;
-  //   tempUpload.url = "http://www.pbs.org/mercy-street/lunchbox_plugins/s/photogallery/img/no-image-available.jpg";
-  //   tempUpload.type = "jpg";
-  //   this.rewardToDelete.uploads.push(tempUpload);
-  //   this.rewardsToDelete.push(this.rewardToDelete);
-  //   this.rewardService.delete(this.rewardsToDelete, this.currentUser)
-  //     .then(res => {
-  //       console.log(res)
-  //       this.loadRewards(true);
+  deleteReward(rewardToDelete: Reward) {
+   console.log("reward to delete", rewardToDelete)
+    this.rewardService.delete(rewardToDelete, this.currentUser)
+      .then(res => {
+        console.log(res)
+        this.loadRewards(true);
 
-  //     });
+      });
 
-  //   this.rewardsToDelete = []
-  //   this.deleteReward = !this.deleteReward;
   }
 
-
+}

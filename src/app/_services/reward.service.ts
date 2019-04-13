@@ -68,7 +68,16 @@ export class RewardService {
     //return this.http.put(`${environment.apiUrl}/users/${task.id}`, task);
   }
 
-  delete(id: number) {
-    //return this.http.delete(`${environment.apiUrl}/users/${id}`);
+  delete(reward: Reward, user: User) {
+    console.log("delete reward", reward)
+    return new Promise(resolve => {
+      this.reTaskService.deleteReward(reward, user.accessToken)
+        .subscribe(res => {
+          console.log(res)
+          resolve(res);
+        }, err => {
+          console.log(err.message);
+        });
+    });
   }
 }

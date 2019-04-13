@@ -159,7 +159,7 @@ export class ReTaskService {
   //update the user.  This requires a token.
   deleteReward(reward: Reward, token: string): Observable<any> {
     let urlParm = `${environment.reTaskUrl}/api/deletereward/` + reward.id
-
+      console.log("reTask delete reward", urlParm, reward)
     return this.http.delete(urlParm
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
