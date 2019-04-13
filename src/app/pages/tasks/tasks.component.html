@@ -24,13 +24,21 @@
             {{ task.name }}
           </div>
           <div class="col-sm-4">
-            Task is worth <span id="points">{{ task.points }}</span>
-          </div>
-          <div class="col-sm-4">
             <div class="float-left">Complete&nbsp;</div>
             <input type="checkbox" (change)="makeComplete($event.target.checked, i)" class="float-left"
               name="taskComplete" value="Complete">
             <!-- <input type="checkbox" (change)="isChangeLimitAccessToggle($event.target.checked ? 'on' : 'off')" id="ifLimitAccess" class="switch-input"> -->
+          </div>
+          <div class="col-sm-4">
+            Task is worth <span id="points">{{ task.points }}</span>
+            <div class="float-right">
+              <div id="editbuttons">    
+                <button id="editbuttons" (click)="openDialog(task, true)" id="link-button">Edit</button>
+                &nbsp;
+                <button id="editbuttons" (click)="openDialog(task, false)" id="link-button">Del</button>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -47,10 +55,12 @@
             {{ task.name }}
           </div>
           <div class="col-sm-4">
-            Task is worth <span id="points">{{ task.points }}</span>
+            <div class="float-left">Complete&nbsp;</div>
+            <input type="checkbox" (change)="makeUnComplete($event.target.checked, i)" class="float-left"
+              name="taskComplete" value="Complete" checked>
           </div>
           <div class="col-sm-4">
-            <div class="float-left">Completed&nbsp;</div>
+            Task is worth <span id="points">{{ task.points }}</span>
           </div>
         </div>
       </div>
