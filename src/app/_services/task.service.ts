@@ -132,4 +132,17 @@ export class TaskService {
         });
     });
   }
+
+
+  getTasksForDateRange(user: User, open: boolean, startDate: Date, endDate: Date) {
+    return new Promise(resolve => {
+      this.reTaskService.getTasksForDateRange(user.accessToken, open, startDate, endDate)
+        .subscribe(tasks => {
+          resolve(tasks);
+        }, err => {
+          console.log(err.message);
+        });
+    });
+
+  } 
 }

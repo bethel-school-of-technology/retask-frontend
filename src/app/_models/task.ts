@@ -13,6 +13,7 @@ export class Task {
     description: string;
     strStartDate: string;
     strEndDate: string;
+    completed: boolean;
     uploads: Upload[];
 }
 
