@@ -121,18 +121,26 @@
           <div class="row">
             <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>0">
-                <button (click)= "deleteReward(rewardsIn[cnt])" class="delete" title="delete reward">
+                <button (click)="deleteReward(rewardsIn[cnt])" class="delete" title="delete reward">
                   <i class="fa fa-times"></i>
                 </button>
                 <img class="card-img-top" [src]="rewardsIn[cnt].uploads[0].url" alt="Card image cap">
                 <div class="card-body">
-                  <h5 class="card-title">{{rewardsIn[cnt].name}}</h5>
+                  <h5 class="card-title"><div *ngIf="!edit[0]">{{rewardsIn[cnt].name}}</div>
+                    <div *ngIf="edit[0]">
+                    <mat-form-field>
+                      <input matInput [(ngModel)]="rewardsIn[cnt].name">
+                    </mat-form-field>
+                  </div>
+                  </h5>
                   <p class="card-text">{{rewardsIn[cnt].descr}}
                     <br><br>Cost: {{rewardsIn[cnt].cost}} points
                   </p>
                   <div class="redeemButton">
-                    <button class="btn btn-primary" [disabled]="cantBuy[cnt]"
+                    <button class="btn btn-primary" [disabled]="cantBuy[0]"
                       (click)="redeem(rewardsIn[cnt].cost)">Redeem</button>
+                      <button class="btn btn-primary" 
+                      (click)="editReward(0)">Edit</button>
                   </div>
                   <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
                 </div>
@@ -148,7 +156,7 @@
             </div>
             <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>1">
-                <button (click)= "deleteReward(rewardsIn[cnt+1])" class="delete" title="delete reward">
+                <button (click)="deleteReward(rewardsIn[cnt+1])" class="delete" title="delete reward">
                   <i class="fa fa-times"></i>
                 </button>
                 <img class="card-img-top" [src]="rewardsIn[cnt+1].uploads[0].url" alt="Card image cap">
@@ -158,7 +166,7 @@
                     <br><br>Cost: {{rewardsIn[cnt+1].cost}} points</p>
                   <div>
                     <div class="redeemButton">
-                      <button class="btn btn-primary" [disabled]="cantBuy[cnt+1]"
+                      <button class="btn btn-primary" [disabled]="cantBuy[1]"
                         (click)="redeem(rewardsIn[cnt+1].cost)">Redeem</button>
                     </div>
                     <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
@@ -176,7 +184,7 @@
             </div>
             <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>2">
-                <button (click)= "deleteReward(rewardsIn[cnt+2])" class="delete" title="delete reward">
+                <button (click)="deleteReward(rewardsIn[cnt+2])" class="delete" title="delete reward">
                   <i class="fa fa-times"></i>
                 </button>
                 <img class="card-img-top" [src]="rewardsIn[cnt+2].uploads[0].url" alt="Card image cap">
@@ -185,7 +193,7 @@
                   <p class="card-text">{{rewardsIn[cnt+2].descr}}
                     <br><br>Cost: {{rewardsIn[cnt+2].cost}} points</p>
                   <div class="redeemButton">
-                    <button class="btn btn-primary" [disabled]="cantBuy[cnt+2]"
+                    <button class="btn btn-primary" [disabled]="cantBuy[2]"
                       (click)="redeem(rewardsIn[cnt+2].cost)">Redeem</button>
                   </div>
                   <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->

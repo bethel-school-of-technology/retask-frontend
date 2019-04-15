@@ -1,17 +1,15 @@
 <div class="raised-block rounded">
   <div clss="container">
-    <div class="row">
-      <h2>Tasks for - {{displayDate}}</h2>
-    </div>
-    <div class="row">
-      <h3>Points - {{currentUser.points}}</h3>
+    <div class="row" class="taskTitle">
+      <h2>Tasks for {{displayDate | date: "MMMM dd"}} </h2>
+      <h3>Points: {{currentUser.points}}</h3>
     </div>
     <div class="row">
       <span>
-        <button id=addButton class="btn btn-sm btn-primary float-left" (click)="prev()">Previous</button>
+        <button id=addButton class="btn btn-sm btn-primary float-left" (click)="prev()">Yesterday</button>
       </span>
       <span>
-        <button id=addButton class="btn btn-sm btn-primary float-left" (click)="next()">Next</button>
+        <button id=addButton class="btn btn-sm btn-primary float-left" (click)="next()">Tomorrow</button>
       </span>
       <br>
       <br>
@@ -30,9 +28,9 @@
             <!-- <input type="checkbox" (change)="isChangeLimitAccessToggle($event.target.checked ? 'on' : 'off')" id="ifLimitAccess" class="switch-input"> -->
           </div>
           <div class="col-sm-4">
-            Task is worth <span id="points">{{ task.points }}</span>
+            <span id="points">{{ task.points }} points</span>
             <div class="float-right">
-              <div id="editbuttons">    
+              <div id="editbuttons">
                 <button id="editbuttons" (click)="openDialog(task, true)" id="link-button">Edit</button>
                 &nbsp;
                 <button id="editbuttons" (click)="openDialog(task, false)" id="link-button">Del</button>
@@ -43,6 +41,7 @@
         </div>
       </div>
     </div>
+    <br />
     <!-- End of the Task List-->
     <div class="row">
       <h3>Completed Tasks</h3>

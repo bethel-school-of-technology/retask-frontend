@@ -15,3 +15,15 @@
 #editbuttons {
      margin: 5px;
 }
+
+.taskTitle {
+     text-align: center;
+}
+
+.nextButton {
+     text-align: right;
+}
+
+.previousButton{
+     text-align: left;
+}

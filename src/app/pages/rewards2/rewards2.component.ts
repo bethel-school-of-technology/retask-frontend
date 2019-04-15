@@ -8,7 +8,7 @@ import { AuthenticationService, UserService, AlertService, RewardService } from 
 import { ApiResponse } from '@app/_models/apiResponse';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-rewards2',
@@ -48,6 +48,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
   rewardsIn: any[];
   progressIn: number[] = [0, 0, 0];
   cantBuy: boolean[] = [true, true, true];
+  edit: boolean[] = [false, false, false];
 
   pageLoading: boolean = true;
   usingDragDrop: boolean = false;
@@ -65,8 +66,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
     private rewardService: RewardService,
     private sanitizer: DomSanitizer,
     private alertService: AlertService
-  ) 
-  {
+  ) {
     this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
       this.currentUser = user;
     });
@@ -181,7 +181,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
     this.addReward = !this.addReward;
   }
 
-  
+
   setProgress() {
     console.log("In Set Progress")
     console.log(this.pageCnt);
@@ -217,11 +217,13 @@ export class Rewards2Component implements OnInit, OnDestroy {
     tempUpload.type = "jpg";
     this.rewardToAdd.uploads.push(tempUpload);
     this.rewardsToAdd.push(this.rewardToAdd);
-    this.rewardService.create(this.rewardsToAdd, this.currentUser)
-      .then(res => {
-        console.log(res)
-        this.loadRewards(true);
 
+    let rewardsToAdd: Reward[] = [];
+    rewardsToAdd.push(this.rewardToAdd);
+    this.rewardService.createWithFile(rewardsToAdd, this.currentUser, this.selectedFile)
+      .then(res => {
+        console.log(res);
+        this.loadRewards(false)
       });
 
     this.rewardsToAdd = []
@@ -259,7 +261,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
   }
 
   deleteReward(rewardToDelete: Reward) {
-   console.log("reward to delete", rewardToDelete)
+    console.log("reward to delete", rewardToDelete)
     this.rewardService.delete(rewardToDelete, this.currentUser)
       .then(res => {
         console.log(res)
@@ -267,6 +269,10 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
       });
 
+  }
+
+  editReward(indx) {
+    this.edit[indx] = true;
   }
 
 }
