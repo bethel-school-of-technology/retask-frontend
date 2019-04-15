@@ -211,9 +211,30 @@ export class ReTaskService {
       enddate: this.datePipe.transform(endDate, "yyyy-MM-dd")
     }
 
-    //console.log(dateRange.startdate, dateRange.enddate);
+    console.log(dateRange.startdate, dateRange.enddate);
 
     let urlParm = `${environment.reTaskUrl}/api/getopentasks`
+    return this.http.post(urlParm, dateRange
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+
+  }
+
+  // get Tasks for a Date Range 
+  getTasksForDateRange(token: string, open: boolean, startDate: Date, endDate: Date) {
+
+    let dateRange: TaskDateRange = {
+      startdate: this.datePipe.transform(startDate, "yyyy-MM-dd"),
+      enddate: this.datePipe.transform(endDate, "yyyy-MM-dd")
+    }
+
+    console.log(dateRange.startdate, dateRange.enddate);
+
+    let urlParm = `${environment.reTaskUrl}/api/gettaskbydaterange/`+open
     return this.http.post(urlParm, dateRange
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
