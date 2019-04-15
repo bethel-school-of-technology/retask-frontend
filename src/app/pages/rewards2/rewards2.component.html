@@ -131,7 +131,7 @@
                     <br><br>Cost: {{rewardsIn[cnt].cost}} points
                   </p>
                   <div class="redeemButton">
-                    <button class="btn btn-primary" [disabled]="cantBuy[cnt]"
+                    <button class="btn btn-primary" [disabled]="cantBuy[0]"
                       (click)="redeem(rewardsIn[cnt].cost)">Redeem</button>
                   </div>
                   <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
@@ -158,7 +158,7 @@
                     <br><br>Cost: {{rewardsIn[cnt+1].cost}} points</p>
                   <div>
                     <div class="redeemButton">
-                      <button class="btn btn-primary" [disabled]="cantBuy[cnt+1]"
+                      <button class="btn btn-primary" [disabled]="cantBuy[1]"
                         (click)="redeem(rewardsIn[cnt+1].cost)">Redeem</button>
                     </div>
                     <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
@@ -185,7 +185,7 @@
                   <p class="card-text">{{rewardsIn[cnt+2].descr}}
                     <br><br>Cost: {{rewardsIn[cnt+2].cost}} points</p>
                   <div class="redeemButton">
-                    <button class="btn btn-primary" [disabled]="cantBuy[cnt+2]"
+                    <button class="btn btn-primary" [disabled]="cantBuy[2]"
                       (click)="redeem(rewardsIn[cnt+2].cost)">Redeem</button>
                   </div>
                   <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
