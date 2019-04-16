@@ -1,16 +1,15 @@
-.bg-transparent {
-  background-color: transparent;
+h3 {
+  margin: 0 0 10px;
 }
 
-:host {
-  height: 100%;
+pre {
+  padding: 15px;
 }
 
-.photo {
-  object-fit: contain;
+#background {
+  background-color: rgb(255, 255, 255);
 }
 
-.card {
-  width: 20rem;
-  margin: 0 auto;
+.my-custom-class span {
+  color: #191970 !important;
 }

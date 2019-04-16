@@ -1,88 +1,301 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ViewChild,
+  TemplateRef,
+  ViewEncapsulation,
+  Inject,
+  OnInit
+} from '@angular/core';
+import {
+  startOfDay,
+  endOfDay,
+  subDays,
+  addDays,
+  endOfMonth,
+  isSameDay,
+  isSameMonth,
+  addHours
+} from 'date-fns';
+import { Subject } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  CalendarEvent,
+  CalendarEventAction,
+  CalendarEventTimesChangedEvent,
+  CalendarView
+} from 'angular-calendar';
+import { Task } from '@app/_models';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { DialogEditTaskDialog } from '../tasks/tasks.component';
+import { CalendarEventActionsComponent } from 'angular-calendar/modules/common/calendar-event-actions.component';
+import { TaskService } from '@app/_services/task.service';
 
-import { AuthService } from 'angularx-social-login';
-import { SocialUser } from 'angularx-social-login';
-import { GoogleLoginProvider, FacebookLoginProvider, LinkedInLoginProvider } from 'angularx-social-login';
-import { ReTaskService, RewardService, UserService, AuthenticationService } from '@app/_services';
-import { Reward, Upload, User } from '@app/_models';
-
+const colors: any = {
+  red: {
+    primary: '#ad2121',
+    secondary: '#FAE3E3'
+  },
+  blue: {
+    primary: '#1e90ff',
+    secondary: '#D1E8FF'
+  },
+  yellow: {
+    primary: '#e3bc08',
+    secondary: '#FDF1BA'
+  }
+};
 
 @Component({
-  selector: 'app-demo',
-  templateUrl: './demo.component.html',
-  styleUrls: ['./demo.component.css']
+  selector: 'mwl-demo-component',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None, // hack to get the styles to apply locally
+  styleUrls: ['demo.component.css'],
+  templateUrl: 'demo.component.html',
+  // styles: [
+  //   `
+  //     .my-custom-class span {
+  //       color: #191970 !important;
+  //     }
+  //   `
+  // ]
 })
 export class DemoComponent implements OnInit {
+  @ViewChild('modalContent') modalContent: TemplateRef<any>;
 
-  user: SocialUser;
-  currentUser: User;
+  view: CalendarView = CalendarView.Month;
 
-  rewardToAdd: Reward = {
-    "id": null,
-    "name": null,
-    "descr": null,
-    "username": "",
-    "cost": null,
-    "uploads": []
+  CalendarView = CalendarView;
+
+  viewDate: Date = new Date();
+
+  modalData: {
+    action: string;
+    event: CalendarEvent;
+  };
+
+  actions: CalendarEventAction[] = [
+    {
+      label: '<i class="fa fa-fw fa-pencil"></i>',
+      onClick: ({ event }: { event: CalendarEvent }): void => {
+        this.handleEvent('Edited', event);
+      }
+    },
+    {
+      label: '<i class="fa fa-fw fa-times"></i>',
+      onClick: ({ event }: { event: CalendarEvent }): void => {
+        this.events = this.events.filter(iEvent => iEvent !== event);
+        this.handleEvent('Deleted', event);
+      }
+    }
+  ];
+
+  refresh: Subject<any> = new Subject();
+
+  events: CalendarEvent[] = [
+    {
+      start: subDays(startOfDay(new Date()), 1),
+      end: addDays(new Date(), 1),
+      title: 'A 3 day event',
+      color: colors.red,
+      actions: this.actions,
+      allDay: true,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true
+      },
+      draggable: true,
+      cssClass: 'my-custom-class',
+      id: "3"
+    },
+    {
+      start: startOfDay(new Date()),
+      title: 'An event with no end date',
+      color: colors.yellow,
+      actions: this.actions,
+      id: "3"
+    },
+    {
+      start: subDays(endOfMonth(new Date()), 3),
+      end: addDays(endOfMonth(new Date()), 3),
+      title: 'A long event that spans 2 months',
+      color: colors.blue,
+      allDay: true,
+      id: "3"
+    },
+    {
+      start: addHours(startOfDay(new Date()), 2),
+      end: new Date(),
+      title: 'A draggable and resizable event',
+      color: colors.yellow,
+      actions: this.actions,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true
+      },
+      draggable: true,
+      id: "3"
+    }
+  ];
+
+
+  activeDayIsOpen: boolean = true;
+
+  constructor(private taskService: TaskService,
+    public dialog: MatDialog) { }
+
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    if (isSameMonth(date, this.viewDate)) {
+      this.viewDate = date;
+      if (
+        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+        events.length === 0
+      ) {
+        this.activeDayIsOpen = false;
+      } else {
+        this.activeDayIsOpen = true;
+      }
+    }
   }
 
-  constructor(private authService: AuthService,
-    private authenticationService: AuthenticationService,
-    private userService: UserService,
-    private rewardService: RewardService) { }
+  eventTimesChanged({
+    event,
+    newStart,
+    newEnd
+  }: CalendarEventTimesChangedEvent): void {
+    this.events = this.events.map(iEvent => {
+      if (iEvent === event) {
+        return {
+          ...event,
+          start: newStart,
+          end: newEnd
+        };
+      }
+      return iEvent;
+    });
+    //this.handleEvent('Dropped or resized', event);
+  }
+
 
   ngOnInit() {
-    this.authService.authState.subscribe((user) => {
-      this.user = user;
+    this.test();
+  }
+
+  test() {
+
+    for (let i = 0; i < this.events.length; i++) {
+      console.log("event.id", this.events[i].id);
+    }
+
+  }
+
+  handleEvent(action: string, event: CalendarEvent): void {
+
+   //if (!this.dialogOpen)
+   console.log(event.id);
+      //this.taskService.getById(event.id),
+      this.openDialog(new Task(), false);
+    //this.modalData = { event, action };
+    //this.modal.open(this.modalContent, { size: 'lg' });
+  }
+
+  addEvent(): void {
+    this.events = [
+      ...this.events,
+      {
+        title: 'New event',
+        start: startOfDay(new Date()),
+        end: endOfDay(new Date()),
+        color: colors.red,
+        draggable: true,
+        resizable: {
+          beforeStart: true,
+          afterEnd: true
+        }
+      }
+    ];
+  }
+
+  deleteEvent(eventToDelete: CalendarEvent) {
+    this.events = this.events.filter(event => event !== eventToDelete);
+  }
+
+  setView(view: CalendarView) {
+    this.view = view;
+  }
+
+  closeOpenMonthViewDay() {
+    this.activeDayIsOpen = false;
+  }
+
+  eventClicked({ event }: { event: CalendarEvent }): void {
+    console.log(event);
+    console.log('Event clicked', event);
+  }
+
+  dialogOpen: boolean = false;
+
+  // this opens the dialog box
+  openDialog(taskIn: Task, editIn: boolean): void {
+
+    console.log("in open dialog");
+    this.dialogOpen = true;
+
+    let task: Task = new Task();
+
+    task.name = taskIn.name
+    task.startdate = taskIn.startdate;
+    task.enddate = taskIn.enddate;
+    task.points = taskIn.points;
+
+    const dialogRef = this.dialog.open(DialogDemoDialog, {
+      width: '255px',
+      data: {
+        task: task,
+        edit: editIn
+      }
     });
-    this.authenticationService.currentUser.subscribe(user => {
-      this.currentUser = user;
+
+    // after the dialog box is closed this is run
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result) {
+        this.dialogOpen = false;
+        if (editIn) {
+          // edit the task
+          taskIn.name = task.name
+          taskIn.startdate = task.startdate;
+          taskIn.enddate = task.enddate;
+          taskIn.points = task.points;
+
+          // this.taskService.update(taskIn, this.currentUser)
+          //   .then(res => {
+          //     this.getTasks();
+          //   });
+        } else {
+          //delete the task
+          // this.taskService.delete(taskIn.id, this.currentUser)
+          //   .then(res => {
+          //     this.getTasks();
+          //   });
+        }
+      }
     });
-
-    console.log(this.user)
   }
+}
 
-  signInWithGoogle(): void {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-  }
+@Component({
+  selector: 'dialog-edit-task-dialog',
+  templateUrl: 'dialog-edit-task-dialog.html',
+})
+export class DialogDemoDialog {
 
-  signInWithFB(): void {
-    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
-  }
+  constructor(
+    public dialogRef: MatDialogRef<DialogEditTaskDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: { task: Task, edit: boolean }) { }
 
-  signInWithLinkedIn(): void {
-    this.authService.signIn(LinkedInLoginProvider.PROVIDER_ID);
-  }
-
-  signOut(): void {
-    this.authService.signOut();
-  }
-
-
-  createReward() {
-    alert("this is in createReward")
-    this.rewardToAdd.username = this.currentUser.username;
-    this.rewardToAdd.uploads = [];
-    let tempUpload = new Upload;
-    tempUpload.type = "jpg";
-    this.rewardToAdd.uploads.push(tempUpload);
-    
-
-    let rewardsToAdd: Reward[] = [];
-    rewardsToAdd.push(this.rewardToAdd);
-    this.rewardService.createWithFile(rewardsToAdd, this.currentUser, this.selectedFile)
-      .then(res => {
-        console.log(res)
-      });
-  }
-
-  selectedFile;
-
-  onFileSelected(event) {
-    this.selectedFile = event.target.files[0];
-    // was in seperate events
-    console.log(this.selectedFile);
-
+  onNoClick(): void {
+    this.dialogRef.close({ changedmade: false });
   }
 
 }

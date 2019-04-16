@@ -13,7 +13,7 @@
             <input matInput [(ngModel)]="data.task.name" placeholder="Task Name">
         </mat-form-field>
         <mat-form-field>
-            <input matInput [matDatepicker]="picker1" placeholder="Start date" [(ngModel)]="data.task.startdate">
+            <input matInput [matDatepicker]="picker1" placeholder="End date" [(ngModel)]="data.task.startdate">
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
@@ -38,7 +38,7 @@
             <input matInput [(ngModel)]="data.task.name" placeholder="Task Name" disabled>
         </mat-form-field>
         <mat-form-field>
-            <input matInput [matDatepicker]="picker1" placeholder="Start date" [(ngModel)]="data.task.startdate" disabled>
+            <input matInput [matDatepicker]="picker1" placeholder="End date" [(ngModel)]="data.task.startdate" disabled>
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
