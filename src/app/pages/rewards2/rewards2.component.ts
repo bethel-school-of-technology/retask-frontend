@@ -273,6 +273,26 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   editReward(indx) {
     this.edit[indx] = true;
+
   }
 
+  cancelEdit(indx) {
+    this.edit;
+  }
+
+  // updateReward(reward: Reward, user:User){
+  //   this.rewardService.update(reward, this.currentUser)
+  //   .then(res => {
+  //     this.getReward();
+  //   });
+  // } else {
+  // //delete the task
+  // this.rewardService.delete(reward.id, this.currentUser)
+  //   .then(res => {
+  //     this.getTasks();
+  //   });
+  // }
+
+
 }
+
