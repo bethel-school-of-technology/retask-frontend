@@ -1,8 +1,10 @@
 <div class="raised-block rounded">
   <div clss="container">
-    <div class="row" class="taskTitle">
-      <h2>Tasks for {{displayDate | date: "MMMM dd"}} </h2>
-      <h3>Points: {{currentUser.points}}</h3>
+
+    <div class="titleContainer">
+      <h1 class="topheading>Tasks for {{displayDate | date: "MMMM dd"}} </h1>
+      <h4> <i>Points: {{currentUser.points}}</i></h4>
+
     </div>
     <div class="row">
       <span>
@@ -28,7 +30,9 @@
             <!-- <input type="checkbox" (change)="isChangeLimitAccessToggle($event.target.checked ? 'on' : 'off')" id="ifLimitAccess" class="switch-input"> -->
           </div>
           <div class="col-sm-4">
-            <span id="points">{{ task.points }} points</span>
+
+            <span *ngIf="task.points>0" id="points">{{ task.points }} Points</span>
+
             <div class="float-right">
               <div id="editbuttons">
                 <button id="editbuttons" (click)="openDialog(task, true)" id="link-button">Edit</button>
@@ -59,7 +63,9 @@
               name="taskComplete" value="Complete" checked>
           </div>
           <div class="col-sm-4">
-            Task is worth <span id="points">{{ task.points }}</span>
+            <div *ngIf="task.points>0">
+              <span id="points">{{ task.points }}</span> Points
+            </div>
           </div>
         </div>
       </div>
@@ -81,8 +87,7 @@
             </div>
             <div class="col-sm-3">
               <mat-form-field>
-                <input matInput [matDatepicker]="picker" placeholder="Choose start date"
-                  [(ngModel)]="addTask.startdate">
+                <input matInput [matDatepicker]="picker" placeholder="Choose start date" [ngModel]="addTask.startdate">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>

@@ -115,6 +115,7 @@
                     class="fa fa-fw fa-pencil float-left"></i></button>
                 <img class="card-img-top" [src]="rewardsIn[cnt].uploads[0].url" alt="Card image cap">
                 <div class="card-body">
+
                   <h5 class="card-title">
                     <div *ngIf="!edit[0]">{{rewardsIn[cnt].name}}</div>
                     <div *ngIf="edit[0]">
@@ -147,6 +148,7 @@
                         (click)="redeem(rewardsIn[cnt].cost)">Redeem</button>
                     </div>
                     <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
+
                 </div>
                 <!-- <div class="card-footer">
                   <small class="text-muted">Last updated 3 mins ago</small>
@@ -235,6 +237,7 @@
 
                 <img class="card-img-top" [src]="rewardsIn[cnt+2].uploads[0].url" alt="Card image cap">
                 <div class="card-body">
+
                   <h5 class="card-title">
 
                     <div *ngIf="!edit[+2]">{{rewardsIn[cnt+2].name}}
@@ -274,6 +277,7 @@
                       <button id=addButton class="btn btn-sm btn-outline-primary float-right" (click)="cancelEdit">Cancel</button>
                     </div>
                     <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
+
 
                 </div>
                 <!-- <div class="card-footer">

@@ -1,10 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnChanges } from '@angular/core';
 import { Task, User, UserUpdateForm } from '@app/_models';
 import { AuthenticationService, UserService } from '@app/_services';
 import { TaskService } from '@app/_services/task.service';
 import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+
+import { startOfDay } from 'date-fns';
 
 export interface TaskDialogData {
   animal: string;
@@ -41,6 +43,7 @@ export class TasksComponent implements OnInit {
       description: "",
       strStartDate: "",
       strEndDate: "",
+      completed: false,
       uploads: []
     }
 
@@ -52,7 +55,8 @@ export class TasksComponent implements OnInit {
     private taskService: TaskService,
     private userService: UserService,
     private datePipe: DatePipe,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+
   ) {
     this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
       this.currentUser = user;
@@ -92,7 +96,7 @@ export class TasksComponent implements OnInit {
           taskIn.startdate = task.startdate;
           taskIn.enddate = task.enddate;
           taskIn.points = task.points;
-         
+
           this.taskService.update(taskIn, this.currentUser)
             .then(res => {
               this.getTasks();
@@ -140,9 +144,9 @@ export class TasksComponent implements OnInit {
 
   prev() {
     this.currentDateTime.setDate(this.currentDateTime.getDate() - 1);
-    this.displayDate = this.datePipe.transform(this.currentDateTime, "EE MM-dd-yy")
-    this.addTask.startdate = this.currentDateTime;
-    this.addTask.enddate = this.currentDateTime;
+    this.displayDate = this.datePipe.transform(this.currentDateTime, "EE MM-dd-yy");
+    this.addTask.startdate = startOfDay(this.currentDateTime);
+    this.addTask.enddate = startOfDay(this.currentDateTime);
     this.cnt--;
     this.getTasks();
     this.getCompleteTasks();
@@ -150,16 +154,16 @@ export class TasksComponent implements OnInit {
 
   next() {
     this.currentDateTime.setDate(this.currentDateTime.getDate() + 1);
-    this.displayDate = this.datePipe.transform(this.currentDateTime, "EE MM-dd-yy")
-    this.addTask.startdate = this.currentDateTime;
-    this.addTask.enddate = this.currentDateTime;
+    this.displayDate = this.datePipe.transform(this.currentDateTime, "EE MM-dd-yy");
+    this.addTask.startdate = startOfDay(this.currentDateTime);
+    this.addTask.enddate = startOfDay(this.currentDateTime);
     this.cnt++;
     this.getTasks();
     this.getCompleteTasks();
   }
 
   makeComplete(itemComplete, indx) {
-    
+
     let holdPoints = this.taskList[indx].points;
 
     if (itemComplete) {
@@ -184,13 +188,11 @@ export class TasksComponent implements OnInit {
       this.taskService.unCompleteTask(this.currentUser, this.completedTaskList[indx].id, this.currentDateTime)
         .then(res => {
           // subtract the points from the user's points
-          this.updateUserPoints((holdPoints*-1));
+          this.updateUserPoints((holdPoints * -1));
           this.taskList.push(this.completedTaskList[indx]);
           this.completedTaskList.splice(indx, 1);
 
         });
-
-
     }
   }
 

@@ -130,7 +130,6 @@ export class Rewards2Component implements OnInit, OnDestroy {
         if (this.pageCnt > this.rewards_perpage)
           this.pageCnt = this.rewards_perpage;
 
-
         this.setProgress();
 
         this.pageLoading = false;
@@ -184,10 +183,10 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   setProgress() {
     console.log("In Set Progress")
-    console.log(this.pageCnt);
-    console.log(this.cnt);
+    console.log("Page Count",this.pageCnt);
+    console.log("Total Count", this.cnt);
     for (var i = 0; i < this.pageCnt; i++) {
-      if (this.rewardsIn[this.cnt + i].cost < this.currentUser.points) {
+      if (this.rewardsIn[this.cnt + i].cost <= this.currentUser.points) {
         this.progressIn[i] = 100;
         this.cantBuy[i] = false;
         console.log("In greater than")
@@ -195,6 +194,8 @@ export class Rewards2Component implements OnInit, OnDestroy {
         this.progressIn[i] = this.currentUser.points / this.rewardsIn[this.cnt + i].cost * 100;
         this.cantBuy[i] = true;
       }
+      console.log(" in loop setProgress",this.cantBuy[i], this.rewardsIn[this.cnt + i].cost, this.rewardsIn[this.cnt + i].name)
+
     }
 
   }
