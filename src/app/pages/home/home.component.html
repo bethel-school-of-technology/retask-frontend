@@ -1,10 +1,14 @@
 ﻿<div class="row" id="header">
   <div *ngIf="!pageLoading">
-    <div class="col-md-12 text-center">
-      <br />
+    <div class="row text-center rounded" id="title">
+      <div class="col-md">
+      <br/>
       <h1>Welcome to ReTask, {{ currentUser.firstName }}!</h1>
       <br />
+      </div>
     </div>
+
+    <br/>
 
     <div class="row">
       <div class="col-md-6">
@@ -57,7 +61,6 @@
           </div>
           <h5 class="rounded">{{ rewardList[cnt].name }}</h5>
           <br />
-          <br/>
           <div class="progress">
             <div
               class="progress-bar bg-warning"
@@ -72,6 +75,9 @@
           </div>
           <br />
         </div>
+        
+        <br />
+        <br />
       </div>
 
       <div class="col-md-6">

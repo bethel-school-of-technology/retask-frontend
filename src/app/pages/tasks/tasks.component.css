@@ -15,3 +15,20 @@
 #editbuttons {
      margin: 5px;
 }
+
+.arrows {
+     cursor: pointer;
+     size: 10rem;
+}
+
+.material-icons:hover { 
+     color: rgba(0, 0, 0, 0.4);
+}
+
+h3 {
+     color: rgb(51, 51, 51);
+}
+
+.badge {
+     color: white;
+}

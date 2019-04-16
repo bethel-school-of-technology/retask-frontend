@@ -4,9 +4,11 @@ h2 {
 
 
 h1 {
-  color: white;
   font-size: 3em;
-    mix-blend-mode: difference;
+}
+
+#title {
+  background-color: white;
 }
 
 * {
