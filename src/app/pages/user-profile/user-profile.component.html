@@ -6,7 +6,6 @@
 
 <h2>User Profile</h2>
 
-<div class="container">
   <div class="row">
     <div class="col-md-4">
       <img
@@ -24,7 +23,6 @@
       </ng-template>
     </div>
     <div class="col-sm-8">
-      <div class="container2">
         <div class="row">
           <div class="col-sm-12">
             <!-- <button class="float-left" (click)="changeImageFunc()">Change Image</button> -->
@@ -38,7 +36,7 @@
             />
             <a>
               <label for="file">
-                <i class="large material-icons" id="changePic">create</i>
+                <i class="small material-icons" id="changePic">create</i>
               </label>
             </a>
 
@@ -128,7 +126,6 @@
             </div>
           </div>
         </ng-template>
-      </div>
     </div>
   </div>
   <div *ngIf="changeImage">
@@ -214,5 +211,6 @@
     <ng-template #noEdit>
       <button class="btn btn-primary" (click)="editUser()">Edit</button>
     </ng-template>
+    <br/>
+    <br/>
   </div>
-</div>
