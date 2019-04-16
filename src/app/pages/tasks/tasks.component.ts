@@ -193,8 +193,6 @@ export class TasksComponent implements OnInit {
           this.completedTaskList.splice(indx, 1);
 
         });
-
-
     }
   }
 

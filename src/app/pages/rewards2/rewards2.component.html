@@ -13,18 +13,6 @@
     <div class="row">
       <div class="col-sm-12">
 
-        <!-- this is a test -->
-        <!-- <div class="example-container">
-          <mat-form-field>
-            <input matInput placeholder="Input">
-          </mat-form-field>
-
-          <mat-form-field>
-            <textarea matInput placeholder="Textarea"></textarea>
-          </mat-form-field> -->
-
-        <!-- </div> -->
-        <!-- this is a test -->
 
         <div class="raised-block rounded">
 
@@ -50,14 +38,8 @@
           <div class="row">
             <div class="col-sm-12">
               <input type="file" id="file" (change)="onFileSelected($event)" accept="image/*">
-              <!-- <button>
-                <label for="file">Select Image</label>
-              </button> -->
             </div>
           </div>
-          <!-- <div class="row">
-          <div class="col-sm-10">
-          </div> -->
           <br />
           <div class="row">
             <div class="col-sm-6">
@@ -74,7 +56,7 @@
         </div>
 
         <!-- when we implement drag and drop -->
-        <div *ngIf="addReward && !pageLoading && usingDragDrop">
+        <!-- <div *ngIf="addReward && !pageLoading && usingDragDrop">
           <div class="example-container">
             <h2>Default Rewards</h2>
 
@@ -92,7 +74,7 @@
               <div class="example-box" *ngFor="let item of rewardsIn" cdkDrag>{{item.name}}</div>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- end of drag and drop functionality -->
       </div>
     </div>
@@ -116,25 +98,57 @@
       <div class="col-sm-1">
         <button *ngIf="pageCnt>0 && page>0;" class="btn"><i class="fa fa-backward" (click)="goBackward()"></i></button>
       </div>
+
+
+
+      <!-- first card -->
+
       <div class="col-sm-10">
         <div class="card-deck">
           <div class="row">
             <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>0">
-                <button (click)= "deleteReward" class="delete" title="delete reward">
-                  <i class="fa fa-times"></i>
+                <button class="btn btn-outline-primary btn-sm" (click)="deleteReward(rewardsIn[cnt+2])">
+                  <i class="fa fa-times float-left"></i>
                 </button>
+                <button class="btn  btn-sm" class="edit" (click)="editReward(+2)"><i
+                    class="fa fa-fw fa-pencil float-left"></i></button>
                 <img class="card-img-top" [src]="rewardsIn[cnt].uploads[0].url" alt="Card image cap">
                 <div class="card-body">
-                  <h5 class="card-title">{{rewardsIn[cnt].name}}</h5>
-                  <p class="card-text">{{rewardsIn[cnt].descr}}
-                    <br><br>Cost: {{rewardsIn[cnt].cost}} points
-                  </p>
-                  <div class="redeemButton">
-                    <button class="btn btn-primary" [disabled]="cantBuy[0]"
-                      (click)="redeem(rewardsIn[cnt].cost)">Redeem</button>
-                  </div>
-                  <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
+
+                  <h5 class="card-title">
+                    <div *ngIf="!edit[0]">{{rewardsIn[cnt].name}}</div>
+                    <div *ngIf="edit[0]">
+                      <mat-form-field>
+                        <input matInput [(ngModel)]="rewardsIn[cnt].name">
+                      </mat-form-field>
+                    </div>
+                  </h5>
+                  <p class="card-text">
+                    <div *ngIf="!edit[0]">{{rewardsIn[cnt].descr}}</div>
+                    <div *ngIf="edit[0]">
+                      <mat-form-field>
+                        <input matInput [(ngModel)]="rewardsIn[cnt].descr">
+                      </mat-form-field>
+                    </div>
+
+                    <br><br>
+                    <div *ngIf="!edit[0]">
+                      Cost: {{rewardsIn[cnt].cost}} points
+                    </div>
+                    <div *ngIf="edit[0]">
+                      <mat-form-field>
+                        <input matInput [(ngModel)]="rewardsIn[cnt].cost">
+                      </mat-form-field>
+                    </div>
+                    <br />
+
+                    <div class="redeemButton">
+                      <button class="btn btn-primary" [disabled]="cantBuy[0]"
+                        (click)="redeem(rewardsIn[cnt].cost)">Redeem</button>
+                    </div>
+                    <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
+
                 </div>
                 <!-- <div class="card-footer">
                   <small class="text-muted">Last updated 3 mins ago</small>
@@ -144,51 +158,126 @@
                       {{progressIn[cnt]}}%</div>
                   </div>
                 </div> -->
+
+                <!-- <div *ngIf="!edit[0]">[
+                  {{rewardsIn[cnt].name}},
+                  {{rewardsIn[cnt].descr}},
+                  {{rewardsIn[cnt].cost}},
+                  {{rewardsIn[cnt].uploads}}
+                  ]
+                </div> -->
+                <!-- <div *ngIf="edit[0]">
+                  <mat-form-field>
+                    <input matInput [(ngModel)]="rewardsIn[cnt].name">
+                  </mat-form-field>
+                </div> -->
               </div>
             </div>
+
+
+            <!-- second card -->
+
             <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>1">
-                <button (click)= "deleteReward" class="delete" title="delete reward">
-                  <i class="fa fa-times"></i>
+                <button class="btn btn-outline-primary btn-sm" (click)="deleteReward(rewardsIn[cnt+2])">
+                  <i class="fa fa-times float-left"></i>
                 </button>
+                <button class="btn  btn-sm" class="edit" (click)="editReward(+2)"><i
+                    class="fa fa-fw fa-pencil float-left"></i></button>
+
                 <img class="card-img-top" [src]="rewardsIn[cnt+1].uploads[0].url" alt="Card image cap">
                 <div class="card-body">
-                  <h5 class="card-title">{{rewardsIn[cnt+1].name}}</h5>
-                  <p class="card-text">{{rewardsIn[cnt+1].descr}}
-                    <br><br>Cost: {{rewardsIn[cnt+1].cost}} points</p>
-                  <div>
+                  <h5 class="card-title">
+                    <div *ngIf="!edit[+1]">{{rewardsIn[cnt+1].name}}</div>
+                    <div *ngIf="edit[+1]">
+                      <mat-form-field>
+                        <input matInput [(ngModel)]="rewardsIn[cnt+1].name">
+                      </mat-form-field>
+                    </div>
+                  </h5>
+                  <p class="card-text">
+                    <div *ngIf="!edit[+1]">{{rewardsIn[cnt+1].descr}}</div>
+                    <div *ngIf="edit[+1]">
+                      <mat-form-field>
+                        <input matInput [(ngModel)]="rewardsIn[cnt+1].descr">
+                      </mat-form-field>
+                    </div>
+
+                    <br><br>
+                    <div *ngIf="!edit[+1]">
+                      Cost: {{rewardsIn[cnt+1].cost}} points
+                    </div>
+                    <div *ngIf="edit[+1]">
+                      <mat-form-field>
+                        <input matInput [(ngModel)]="rewardsIn[cnt+1].cost">
+                      </mat-form-field>
+                    </div>
+                    <br />
+
                     <div class="redeemButton">
                       <button class="btn btn-primary" [disabled]="cantBuy[1]"
                         (click)="redeem(rewardsIn[cnt+1].cost)">Redeem</button>
                     </div>
                     <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
-                  </div>
 
                 </div>
-                <!-- <div class="card-footer">
-                  <small class="text-muted">Last updated 3 mins ago</small>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" [style.width]="progressIn[cnt+1] + '%'"
-                      aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{progressIn[cnt+1]}}%</div>
-                  </div>
-                </div> -->
               </div>
             </div>
+
+
+            <!-- third card -->
+
             <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>2">
-                <button (click)= "deleteReward" class="delete" title="delete reward">
-                  <i class="fa fa-times"></i>
+                <button class="btn btn-outline-primary btn-sm" (click)="deleteReward(rewardsIn[cnt+2])">
+                  <i class="fa fa-times float-left"></i>
                 </button>
+                <button class="btn  btn-sm" class="edit" (click)="editReward(+2)"><i
+                    class="fa fa-fw fa-pencil float-left"></i></button>
+
                 <img class="card-img-top" [src]="rewardsIn[cnt+2].uploads[0].url" alt="Card image cap">
                 <div class="card-body">
-                  <h5 class="card-title">{{rewardsIn[cnt+2].name}}</h5>
-                  <p class="card-text">{{rewardsIn[cnt+2].descr}}
-                    <br><br>Cost: {{rewardsIn[cnt+2].cost}} points</p>
-                  <div class="redeemButton">
-                    <button class="btn btn-primary" [disabled]="cantBuy[2]"
-                      (click)="redeem(rewardsIn[cnt+2].cost)">Redeem</button>
-                  </div>
-                  <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
+
+                  <h5 class="card-title">
+
+                    <div *ngIf="!edit[+2]">{{rewardsIn[cnt+2].name}}
+                    </div>
+                    <div *ngIf="edit[+2]">
+                      <mat-form-field>
+                        <input matInput [(ngModel)]="rewardsIn[cnt+2].name">
+                      </mat-form-field>
+                    </div>
+                  </h5>
+                  <p class="card-text">
+                    <div *ngIf="!edit[+2]">{{rewardsIn[cnt+2].descr}}</div>
+                    <div *ngIf="edit[+2]">
+                      <mat-form-field>
+                        <input matInput [(ngModel)]="rewardsIn[cnt+2].descr">
+                      </mat-form-field>
+                    </div>
+
+                    <br><br>
+                    <div *ngIf="!edit[+2]">
+                      Cost: {{rewardsIn[cnt+2].cost}} points
+                    </div>
+                    <div *ngIf="edit[+2]">
+                      <mat-form-field>
+                        <input matInput [(ngModel)]="rewardsIn[cnt+2].cost">
+                      </mat-form-field>
+                    </div>
+                    <br />
+                    <div *ngIf="!edit[+2]">
+                      <div class="redeemButton">
+                        <button class="btn btn-primary float-left" [disabled]="cantBuy[2]"
+                          (click)="redeem(rewardsIn[cnt+2].cost)">Redeem</button>
+                      </div>
+                    </div>
+                    <div *ngIf="edit[+2]">
+                      <button id=addButton class="btn btn-sm btn-outline-primary float-left" (click)="updateReward()">Save</button>
+                      <button id=addButton class="btn btn-sm btn-outline-primary float-right" (click)="cancelEdit">Cancel</button>
+                    </div>
+                    <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
+
 
                 </div>
                 <!-- <div class="card-footer">

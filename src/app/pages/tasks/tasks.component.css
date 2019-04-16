@@ -12,10 +12,19 @@
     cursor: pointer;
 }
 
-#editbuttons {
+/* #editbuttons { */
+
+.nextButton {
+     text-align: right;
+}
+
+.previousButton{
+     text-align: left;
+
     margin: 5px;
 }
 
 .titleContainer {
     text-align: center;
+
 }
