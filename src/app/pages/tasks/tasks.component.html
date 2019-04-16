@@ -1,15 +1,17 @@
 <div class="raised-block rounded">
   <div clss="container">
+
     <div class="titleContainer">
-      <h1 class="topheading">Tasks for - {{displayDate}}</h1>
-      <h4><i>Points - {{currentUser.points}}</i></h4>
+      <h1 class="topheading>Tasks for {{displayDate | date: "MMMM dd"}} </h1>
+      <h4> <i>Points: {{currentUser.points}}</i></h4>
+
     </div>
     <div class="row">
       <span>
-        <button id=addButton class="btn btn-sm btn-primary float-left" (click)="prev()">Previous</button>
+        <button id=addButton class="btn btn-sm btn-primary float-left" (click)="prev()">Yesterday</button>
       </span>
       <span>
-        <button id=addButton class="btn btn-sm btn-primary float-left" (click)="next()">Next</button>
+        <button id=addButton class="btn btn-sm btn-primary float-left" (click)="next()">Tomorrow</button>
       </span>
       <br>
       <br>
@@ -28,7 +30,9 @@
             <!-- <input type="checkbox" (change)="isChangeLimitAccessToggle($event.target.checked ? 'on' : 'off')" id="ifLimitAccess" class="switch-input"> -->
           </div>
           <div class="col-sm-4">
+
             <span *ngIf="task.points>0" id="points">{{ task.points }} Points</span>
+
             <div class="float-right">
               <div id="editbuttons">
                 <button id="editbuttons" (click)="openDialog(task, true)" id="link-button">Edit</button>
@@ -41,6 +45,7 @@
         </div>
       </div>
     </div>
+    <br />
     <!-- End of the Task List-->
     <div class="row">
       <h3>Completed Tasks</h3>
