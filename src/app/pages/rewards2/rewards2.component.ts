@@ -209,6 +209,8 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   }
 
+  
+
   createReward() {
 
     this.rewardToAdd.username = this.currentUser.username;

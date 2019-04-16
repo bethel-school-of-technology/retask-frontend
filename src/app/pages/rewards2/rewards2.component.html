@@ -1,6 +1,6 @@
 <!-- <img class="card-img-top" src="https://images.pexels.com/photos/209424/pexels-photo-209424.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Card image cap"> -->
 <div class="titleContainer">
-  <h1>My Rewards</h1>
+  <h2>My Rewards</h2>
   <h4><i>Available Points: {{currentUser.points}}</i></h4>
   <div *ngIf="pageLoading">
     <h5> page loading .... </h5>
@@ -111,7 +111,7 @@
                 <button class="btn btn-outline-primary btn-sm" (click)="deleteReward(rewardsIn[cnt+2])">
                   <i class="fa fa-times float-left"></i>
                 </button>
-                <button class="btn  btn-sm" class="edit" (click)="editReward(+2)"><i
+                <button class="btn  btn-sm" class="edit" (click)="editReward(0)"><i
                     class="fa fa-fw fa-pencil float-left"></i></button>
                 <img class="card-img-top" [src]="rewardsIn[cnt].uploads[0].url" alt="Card image cap">
                 <div class="card-body">
@@ -143,34 +143,17 @@
                     </div>
                     <br />
 
-                    <div class="redeemButton">
-                      <button class="btn btn-primary" [disabled]="cantBuy[0]"
-                        (click)="redeem(rewardsIn[cnt].cost)">Redeem</button>
+                    <div *ngIf="!edit[0]">
+                      <div class="redeemButton">
+                        <button class="btn btn-primary float-left" [disabled]="cantBuy[0]"
+                          (click)="redeem(rewardsIn[cnt].cost)">Redeem</button>
+                      </div>
                     </div>
-                    <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
-
+                    <div *ngIf="edit[0]">
+                      <button id=addButton class="btn btn-sm btn-outline-primary float-left" (click)="updateReward()">Save</button>
+                      <button id=addButton class="btn btn-sm btn-outline-primary float-right" (click)="cancelEdit">Cancel</button>
+                    </div>
                 </div>
-                <!-- <div class="card-footer">
-                  <small class="text-muted">Last updated 3 mins ago</small>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" [style.width]="progressIn[cnt] + '%'"
-                      [attr.aria-valuenow]="progressIn[cnt]" aria-valuemin="0" [attr.aria-valuemax]="100">
-                      {{progressIn[cnt]}}%</div>
-                  </div>
-                </div> -->
-
-                <!-- <div *ngIf="!edit[0]">[
-                  {{rewardsIn[cnt].name}},
-                  {{rewardsIn[cnt].descr}},
-                  {{rewardsIn[cnt].cost}},
-                  {{rewardsIn[cnt].uploads}}
-                  ]
-                </div> -->
-                <!-- <div *ngIf="edit[0]">
-                  <mat-form-field>
-                    <input matInput [(ngModel)]="rewardsIn[cnt].name">
-                  </mat-form-field>
-                </div> -->
               </div>
             </div>
 
@@ -179,10 +162,10 @@
 
             <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>1">
-                <button class="btn btn-outline-primary btn-sm" (click)="deleteReward(rewardsIn[cnt+2])">
+                <button class="btn btn-outline-primary btn-sm" (click)="deleteReward(rewardsIn[cnt+1])">
                   <i class="fa fa-times float-left"></i>
                 </button>
-                <button class="btn  btn-sm" class="edit" (click)="editReward(+2)"><i
+                <button class="btn  btn-sm" class="edit" (click)="editReward(+1)"><i
                     class="fa fa-fw fa-pencil float-left"></i></button>
 
                 <img class="card-img-top" [src]="rewardsIn[cnt+1].uploads[0].url" alt="Card image cap">
@@ -214,9 +197,15 @@
                     </div>
                     <br />
 
-                    <div class="redeemButton">
-                      <button class="btn btn-primary" [disabled]="cantBuy[1]"
-                        (click)="redeem(rewardsIn[cnt+1].cost)">Redeem</button>
+                    <div *ngIf="!edit[+1]">
+                      <div class="redeemButton">
+                        <button class="btn btn-primary float-left" [disabled]="cantBuy[1]"
+                          (click)="redeem(rewardsIn[cnt+1].cost)">Redeem</button>
+                      </div>
+                    </div>
+                    <div *ngIf="edit[+1]">
+                      <button id=addButton class="btn btn-sm btn-outline-primary float-left" (click)="updateReward()">Save</button>
+                      <button id=addButton class="btn btn-sm btn-outline-primary float-right" (click)="cancelEdit">Cancel</button>
                     </div>
                     <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
 
@@ -273,25 +262,16 @@
                       </div>
                     </div>
                     <div *ngIf="edit[+2]">
-                      <button id=addButton class="btn btn-sm btn-outline-primary float-left" (click)="updateReward()">Save</button>
-                      <button id=addButton class="btn btn-sm btn-outline-primary float-right" (click)="cancelEdit">Cancel</button>
+                      <button id=addButton class="btn btn-sm btn-outline-primary float-left"
+                        (click)="updateReward()">Save</button>
+                      <button id=addButton class="btn btn-sm btn-outline-primary float-right"
+                        (click)="cancelEdit">Cancel</button>
                     </div>
-                    <!-- <a href="#" class="btn btn-primary float-right">Share</a> -->
-
-
                 </div>
-                <!-- <div class="card-footer">
-                  <small class="text-muted">Last updated 3 mins ago</small>
-                  <div class="progress">
-                    <div class="progress-bar" role="progressbar" [style.width]="progressIn[cnt+2] + '%'"
-                      aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{progressIn[cnt+2]}}%</div>
-                  </div>
-                </div> -->
               </div>
             </div>
           </div>
         </div>
-
       </div>
       <div class="col-sm-1">
         <button *ngIf="(totPageCnt-1)>page;" class="btn"><i class="fa fa-forward" (click)="goFoward()"></i></button>
@@ -300,8 +280,5 @@
 
   </div>
 
-
-</div>
-<div>
 
 </div>
