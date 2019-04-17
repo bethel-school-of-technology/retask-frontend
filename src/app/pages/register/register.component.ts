@@ -3,9 +3,12 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '@app/_models'
 
-import { AlertService, UserService, AuthenticationService} from '@app/_services';
+import { AlertService, UserService, AuthenticationService } from '@app/_services';
 
-@Component({ templateUrl: 'register.component.html' })
+@Component({
+    templateUrl: 'register.component.html',
+    styleUrls: ['./register.component.css']
+})
 export class RegisterComponent implements OnInit {
     registerForm: FormGroup;
     loading = false;
@@ -53,8 +56,16 @@ export class RegisterComponent implements OnInit {
         tempUser = await this.userService.register(this.user);
         this.loading = false;
 
-
         if (tempUser.errorMessage == '') {
+            let retVal: any;
+            retVal = await this.authenticationService.login(this.f.username.value, this.f.password.value)
+            if (retVal.hasOwnProperty('username')) {
+                this.user = retVal;
+            } else {
+                this.user = null;
+            }
+
+
             this.alertService.success('Registration successful', true);
             this.router.navigate(['/login']);
         }
