@@ -7,47 +7,46 @@
     } 
 </style>
 <div *ngIf="data.edit;  else elseBlock">
-    <h1 mat-dialog-title>Edit Task</h1>
+    <h1 mat-dialog-title>Edit Reward</h1>
     <div mat-dialog-content>
         <mat-form-field>
-            <input matInput [(ngModel)]="data.task.name" placeholder="Task Name">
+            <input matInput [(ngModel)]="data.reward.name" placeholder="Reward Name">
         </mat-form-field>
         <mat-form-field>
-            <input matInput [matDatepicker]="picker1" placeholder="Start date" [(ngModel)]="data.task.startdate">
+            <input matInput [matDatepicker]="picker1" placeholder="Description" [(ngModel)]="data.reward.descr">
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
         <mat-form-field>
-            <input matInput [matDatepicker]="picker2" placeholder="End date" [(ngModel)]="data.task.enddate">
+            <input matInput [matDatepicker]="picker2" placeholder="Cost" [(ngModel)]="data.reward.cost">
             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
         <mat-form-field>
-            <input matInput [(ngModel)]="data.task.points" placeholder="Points">
+            <input matInput [(ngModel)]="data.reward.uploads" placeholder="Image">
         </mat-form-field>
     </div>
     <div mat-dialog-actions>
         <button mat-button (click)="onNoClick()">Cancel</button>
-        <button mat-button [mat-dialog-close]="data.task" cdkFocusInitial>Save</button>
+        <button mat-button [mat-dialog-close]="data.reward" cdkFocusInitial>Save</button>
     </div>
 </div>
 <ng-template #elseBlock>
-    <h1 mat-dialog-title>Delete Task</h1>
+    <h1 mat-dialog-title>Delete Reward</h1>
     <div mat-dialog-content>
         <mat-form-field>
-            <input matInput [(ngModel)]="data.task.name" placeholder="Task Name" disabled>
+            <input matInput [(ngModel)]="data.reward.name" placeholder="Reward Name" disabled>
         </mat-form-field>
         <mat-form-field>
-            <input matInput [matDatepicker]="picker1" placeholder="Start date" [(ngModel)]="data.task.startdate" disabled>
+            <input matInput [matDatepicker]="picker1" placeholder="Description" [(ngModel)]="data.reward.descr" disabled>
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
         <mat-form-field>
-            <input matInput [matDatepicker]="picker2" placeholder="End date" [(ngModel)]="data.task.enddate" disabled>
+            <input matInput [matDatepicker]="picker2" placeholder="Cost" [(ngModel)]="data.reward.cost" disabled>
             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
             <mat-datepicker #picker2></mat-datepicker>
         </mat-form-field>
-        <p>Warning: Deleting a task will delete all occurrences</p>
     </div>
     <div mat-dialog-actions>
         <button mat-button (click)="onNoClick()">Cancel</button>
