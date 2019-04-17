@@ -5,7 +5,6 @@ import { RegisterComponent } from '@app/pages/register';
 import { CalendarComponent } from '@app/pages/calendar/calendar.component';
 import { ForgotpasswordComponent } from '@app/pages/forgotpassword/forgotpassword.component';
 import { ForgotusernameComponent } from '@app/pages/forgotusername/forgotusername.component';
-import { DemoComponent } from '@app/pages/demo/demo.component';
 import { UserProfileComponent } from '@app/pages/user-profile/user-profile.component';
 
 import { AuthGuard } from './_guards';
@@ -18,7 +17,6 @@ import { PopupComponent } from './pages/popup/popup.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-    { path: 'demo', component: DemoComponent },
     { path: 'popup', component: PopupComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
