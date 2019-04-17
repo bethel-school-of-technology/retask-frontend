@@ -123,7 +123,7 @@ export class CalendarComponent implements OnInit {
 
   // set this to true to see the debugging at the bottom of the calendar
   // it will display the events in the calendar.
-  debugging: boolean = false;
+  debugging: boolean = true;
 
   taskToAdd: Task =
     {
@@ -188,6 +188,7 @@ export class CalendarComponent implements OnInit {
     this.taskService.getTasksForDateRange(this.currentUser, true, firstDay, lastDay)
       .then(tasksIn => {
         this.taskList = tasksIn as Task[];
+        console.log(this.taskList);
         this.getCompleteTasks();
       });
   }
@@ -212,8 +213,8 @@ export class CalendarComponent implements OnInit {
 
     for (let i = 0; i < this.taskList.length; i++) {
       let CalendarEvent = {
-        start: new Date(this.taskList[i].dueDate),
-        end: new Date(this.taskList[i].dueDate),
+        start: new Date(startOfDay(this.taskList[i].dueDate)),
+        end: new Date(startOfDay(this.taskList[i].dueDate)),
         title: this.taskList[i].name,
         color: colors.red,
         actions: this.actions,
