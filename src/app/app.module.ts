@@ -16,7 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { CalendarComponent } from '@app/pages/calendar/calendar.component';
+import { CalendarComponent, DialogCalendarTaskDialog } from '@app/pages/calendar/calendar.component';
 
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -28,7 +28,6 @@ import { ForgotusernameComponent } from '@app/pages/forgotusername/forgotusernam
 
 import { SocialLoginModule, AuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider, FacebookLoginProvider, LinkedInLoginProvider } from 'angularx-social-login';
-import { DemoComponent } from './pages/demo/demo.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { RewardsComponent } from './pages/rewards/rewards.component';
 import { Rewards2Component } from './pages/rewards2/rewards2.component';
@@ -90,7 +89,6 @@ export function provideConfig() {
         CalendarComponent,
         ForgotpasswordComponent,
         ForgotusernameComponent,
-        DemoComponent,
         UserProfileComponent,
         RewardsComponent,
         Rewards2Component,
@@ -98,11 +96,14 @@ export function provideConfig() {
         TasksComponent,
         PopupComponent,
         DialogOverviewExampleDialog,
-        DialogEditTaskDialog
+        DialogEditTaskDialog,
+        DialogCalendarTaskDialog,
+
     ],
     entryComponents: [
         DialogOverviewExampleDialog,
-        DialogEditTaskDialog
+        DialogEditTaskDialog,
+        DialogCalendarTaskDialog
     ],
     providers: [
         {

@@ -3,11 +3,14 @@ import {
   ChangeDetectionStrategy,
   ViewChild,
   TemplateRef,
-  OnInit
+  OnInit,
+  Inject
 } from '@angular/core';
 import {
   startOfDay,
   endOfDay,
+  addMonths,
+  subMonths,
   subDays,
   addDays,
   endOfMonth,
@@ -30,11 +33,15 @@ import {
 import { AuthenticationService, UserService } from '@app/_services';
 import { TaskService } from '@app/_services/task.service';
 import { DatePipe } from '@angular/common';
-import { MatDialog } from '@angular/material';
-import { User, Task } from '@app/_models';
-import { stringify } from '@angular/core/src/render3/util';
-import { now } from 'moment';
-import { and } from '@angular/router/src/utils/collection';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { User, Task, UserUpdateForm } from '@app/_models';
+import { environment } from '@environments/environment'
+
+export class MonthsLoaded {
+  beginDate: Date;
+  endDate: Date;
+  loaded: boolean;
+}
 
 const colors: any = {
   red: {
@@ -80,58 +87,21 @@ export class CalendarComponent implements OnInit {
       onClick: ({ event }: { event: CalendarEvent }): void => {
         this.handleEvent('Edited', event);
       }
-    },
-    {
-      label: '<i class="fa fa-fw fa-times"></i>',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter(iEvent => iEvent !== event);
-        this.handleEvent('Deleted', event);
-      }
     }
+    // if you want to add a delete event then use the action below
+    // ,
+    // {
+    //   label: '<i class="fa fa-fw fa-times"></i>',
+    //   onClick: ({ event }: { event: CalendarEvent }): void => {
+    //     this.events = this.events.filter(iEvent => iEvent !== event);
+    //     this.handleEvent('Deleted', event);
+    //   }
+    // }
   ];
 
   refresh: Subject<any> = new Subject();
 
-  events: CalendarEvent[] = [
-    // {
-    //   start: subDays(startOfDay(new Date()), 1),
-    //   end: addDays(new Date(), 1),
-    //   title: 'A 3 day event',
-    //   color: colors.red,
-    //   actions: this.actions,
-    //   allDay: true,
-    //   resizable: {
-    //     beforeStart: true,
-    //     afterEnd: true
-    //   },
-    //   draggable: true
-    // },
-    // {
-    //   start: startOfDay(new Date()),
-    //   title: 'An event with no end date',
-    //   color: colors.yellow,
-    //   actions: this.actions
-    // },
-    // {
-    //   start: subDays(endOfMonth(new Date()), 3),
-    //   end: addDays(endOfMonth(new Date()), 3),
-    //   title: 'A long event that spans 2 months',
-    //   color: colors.blue,
-    //   allDay: true
-    // },
-    // {
-    //   start: addHours(startOfDay(new Date()), 2),
-    //   end: new Date(),
-    //   title: 'A draggable and resizable event',
-    //   color: colors.yellow,
-    //   actions: this.actions,
-    //   resizable: {
-    //     beforeStart: true,
-    //     afterEnd: true
-    //   },
-    //   draggable: true
-    // }
-  ];
+  events: CalendarEvent[] = [];
 
   activeDayIsOpen: boolean = true;
 
@@ -143,6 +113,37 @@ export class CalendarComponent implements OnInit {
   todaysDate: Date = new Date();
   taskList: Task[] = [];
 
+  pageLoading: boolean = true;
+  reLoading: boolean = false;
+
+  monthsLoadedArray: MonthsLoaded[] = [];
+
+  indxCalendarArray: number;
+  todayIndxCalendarArray: number;
+
+  // set this to true to see the debugging at the bottom of the calendar
+  // it will display the events in the calendar.
+  debugging: boolean = false;
+
+  taskToAdd: Task =
+    {
+      id: null,
+      name: "",
+      startdate: new Date(),
+      enddate: new Date(),
+      dueDate: new Date(),
+      level: 0,
+      points: 0,
+      username: "",
+      parent_task_id: 0,
+      description: "",
+      strStartDate: "",
+      strEndDate: "",
+      completed: false,
+      uploads: []
+    }
+
+
   constructor(private modal: NgbModal,
     private authenticationService: AuthenticationService,
     private taskService: TaskService,
@@ -152,22 +153,37 @@ export class CalendarComponent implements OnInit {
     this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
       this.currentUser = user;
     });
+    let holdIndx = `${environment.monthsForCalendar}`
+
+    this.indxCalendarArray = +holdIndx;
+    this.todayIndxCalendarArray = this.indxCalendarArray;
   }
 
   ngOnInit() {
     this.currentDateTime = startOfMonth(new Date())
-    console.log("currentDateTime", this.currentDateTime);
-    this.getOpenTasks();
+    this.pageLoading = true;
+    this.getMonths();
+  }
+
+  getMonths() {
+
+    //return new Promise(resolve => {
+    this.displayDate = this.datePipe.transform(this.currentDateTime, "EE MM-dd-yy")
+
+    this.taskService.getDateRangeForCalendar(this.currentUser)
+      .then(calendar => {
+        this.monthsLoadedArray = calendar as MonthsLoaded[];
+        //console.log(this.monthsLoadedArray);
+        this.getOpenTasks();
+      });
 
   }
 
   getOpenTasks() {
-    var firstDay = new Date(this.currentDateTime.getFullYear(), this.currentDateTime.getMonth(), 1);
-    var lastDay = new Date(this.currentDateTime.getFullYear(), this.currentDateTime.getMonth() + 1, 0);
 
-    console.log("lastDay", lastDay);
+    var firstDay = this.monthsLoadedArray[this.indxCalendarArray].beginDate;
+    var lastDay = this.monthsLoadedArray[this.indxCalendarArray].endDate;
 
-    console.log(firstDay, lastDay);
     this.displayDate = this.datePipe.transform(this.currentDateTime, "EE MM-dd-yy")
     this.taskService.getTasksForDateRange(this.currentUser, true, firstDay, lastDay)
       .then(tasksIn => {
@@ -178,26 +194,27 @@ export class CalendarComponent implements OnInit {
   }
 
   getCompleteTasks() {
-    var firstDay = new Date(this.currentDateTime.getFullYear(), this.currentDateTime.getMonth(), 1);
-    var lastDay = new Date(this.currentDateTime.getFullYear(), this.currentDateTime.getMonth() + 1, 0);
+    var firstDay = this.monthsLoadedArray[this.indxCalendarArray].beginDate;
+    var lastDay = this.monthsLoadedArray[this.indxCalendarArray].endDate;
 
-    console.log(firstDay, lastDay);
     this.displayDate = this.datePipe.transform(this.currentDateTime, "EE MM-dd-yy")
     this.taskService.getTasksForDateRange(this.currentUser, false, firstDay, lastDay)
       .then(tasksIn => {
-        console.log(tasksIn);
         this.taskList = this.taskList.concat(tasksIn as Task[]);
-        console.log(this.taskList);
         this.setupCalendar();
+        this.pageLoading = false;
+        this.reLoading = false;
       });
   }
 
+  // This sets the calendar with the tasks
   setupCalendar() {
+    this.events = [];
 
     for (let i = 0; i < this.taskList.length; i++) {
       let CalendarEvent = {
-        start: new Date(this.taskList[i].dueDate),
-        end: new Date(this.taskList[i].dueDate),
+        start: new Date(startOfDay(this.taskList[i].dueDate)),
+        end: new Date(startOfDay(this.taskList[i].dueDate)),
         title: this.taskList[i].name,
         color: colors.red,
         actions: this.actions,
@@ -206,25 +223,37 @@ export class CalendarComponent implements OnInit {
           beforeStart: true,
           afterEnd: true
         },
-        draggable: true
+        draggable: false,
+        id: i
       }
 
-      if (this.taskList[i].completed) {
-        CalendarEvent.color = colors.green;
-      }
-
-      if (isEqual(startOfDay(this.taskList[i].dueDate), startOfDay(this.todaysDate))) {
-        CalendarEvent.color = colors.yellow;
-      }
-
-      if (isAfter(this.taskList[i].dueDate,endOfDay(this.todaysDate))) {
-        CalendarEvent.color = colors.blue;
-      }
+      this.setColor(CalendarEvent, this.taskList[i]);
 
       this.events.push(CalendarEvent);
     }
     this.refresh.next();
   }
+
+  // set the color of the event
+  setColor(calendarEvent: CalendarEvent, task: Task) {
+
+    // defualt color
+    calendarEvent.color = colors.red;
+
+    if (task.completed) {
+      calendarEvent.color = colors.green;
+    } else {
+
+      if (isEqual(startOfDay(task.dueDate), startOfDay(this.todaysDate))) {
+        calendarEvent.color = colors.yellow;
+      }
+
+      if (isAfter(task.dueDate, endOfDay(this.todaysDate))) {
+        calendarEvent.color = colors.blue;
+      }
+    }
+  }
+
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -255,14 +284,29 @@ export class CalendarComponent implements OnInit {
       }
       return iEvent;
     });
-    this.handleEvent('Dropped or resized', event);
+    //this.handleEvent('Dropped or resized', event);
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
-    this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+
+    if (!this.dialogOpen) {
+      this.dialogOpen = true;
+      this.openDialog(this.taskList[+event.id], false, event);
+    }
   }
 
+  addTask(): void {
+
+    if (!this.dialogOpen) {
+      this.dialogOpen = true;
+      let newTask = new Task();
+
+      this.openAddDialog();
+    }
+  }
+
+
+  //this is used by the debugging routine.
   addEvent(): void {
     this.events = [
       ...this.events,
@@ -288,7 +332,160 @@ export class CalendarComponent implements OnInit {
     this.view = view;
   }
 
-  closeOpenMonthViewDay() {
+  // this is called as the previous Today and next buttons are clicked
+  closeOpenMonthViewDay(indx: number) {
+    if (indx != 0) {
+      this.indxCalendarArray = this.indxCalendarArray + indx;
+    } else {
+      this.indxCalendarArray = this.todayIndxCalendarArray;
+    }
+    this.reLoading = true;
+    this.getOpenTasks();
+
     this.activeDayIsOpen = false;
   }
+
+  dialogOpen: boolean = false;
+
+  // this opens the dialog box
+  openDialog(taskIn: Task, editIn: boolean, calendarEvent: CalendarEvent): void {
+
+    let task: Task = new Task();
+    task.id = taskIn.id;
+    task.name = taskIn.name;
+    task.startdate = taskIn.startdate;
+    task.enddate = taskIn.enddate;
+    task.points = taskIn.points;
+    task.completed = taskIn.completed;
+
+    const dialogRef = this.dialog.open(DialogCalendarTaskDialog, {
+      width: '300px',
+      data: {
+        task: task,
+        delTask: false,
+        toggleComplete: false,
+        addTask: false
+      }
+    });
+
+    // after the dialog box is closed this is run
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (result.delTask) {
+          //delete the task
+          this.taskService.delete(taskIn.id, this.currentUser)
+            .then(res => {
+              this.reLoading = true;
+              this.getOpenTasks();
+            });
+        } else {
+          //console.log(result);
+          //console.log("toggleComplete", result.toggleComplete);
+          if (result.toggleComplete) {
+            if (result.task.completed) {
+              // mark as completed
+              taskIn.completed = result.task.completed;
+              this.taskService.completeTask(this.currentUser, taskIn.id, taskIn.dueDate)
+                .then(res => {
+                  this.updateUserPoints(taskIn.points)
+                  this.setColor(calendarEvent, taskIn);
+                });
+            } else {
+              // mark as uncompleted
+              taskIn.completed = result.task.completed;
+              this.taskService.unCompleteTask(this.currentUser, taskIn.id, taskIn.dueDate)
+                .then(res => {
+                  this.updateUserPoints(-taskIn.points)
+                  this.setColor(calendarEvent, taskIn);
+                });
+            }
+          } else {
+            // update changes
+            // edit the task
+            taskIn.name = task.name
+            taskIn.startdate = task.startdate;
+            taskIn.enddate = task.enddate;
+            taskIn.points = task.points;
+
+            this.taskService.update(taskIn, this.currentUser)
+              .then(res => {
+                this.reLoading = true;
+                this.getOpenTasks();
+              });
+          }
+        }
+      }
+      this.dialogOpen = false
+    });
+  }
+
+  // this opens the dialog box
+  openAddDialog(): void {
+
+    const dialogRef = this.dialog.open(DialogCalendarTaskDialog, {
+      width: '300px',
+      data: {
+        task: this.taskToAdd,
+        delTask: false,
+        toggleComplete: false,
+        addTask: true
+      }
+    });
+
+    // after the dialog box is closed this is run
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log(result)
+      if (result) {
+        let addTasks: Task[] = [];
+        addTasks.push(result.task);
+
+        this.taskService.create(addTasks, this.currentUser)
+          .then(res => {
+            this.reLoading = true;
+            this.getOpenTasks();
+          });
+      }
+      this.dialogOpen = false
+    });
+  }
+
+  updateUserPoints(points) {
+    // add points to the accumulated points
+    this.currentUser.points = this.currentUser.points + points;
+
+    let tempUser = new UserUpdateForm;
+    tempUser.firstName = this.currentUser.firstName;
+    tempUser.lastName = this.currentUser.lastName;
+    tempUser.phoneNbr = this.currentUser.phoneNbr;
+    tempUser.points = this.currentUser.points;
+
+    this.userService.update(tempUser, this.currentUser.accessToken)
+      .then(res => {
+        if (res.status == 0) {
+          this.authenticationService.saveLocally(this.currentUser);
+        }
+        else {
+          this.currentUser.points = this.currentUser.points - points;
+        }
+      });
+  }
+
+}
+
+
+
+@Component({
+  selector: 'dialog-edit-task-dialog',
+  templateUrl: 'dialog-calendar-task-dialog.html',
+})
+export class DialogCalendarTaskDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogCalendarTaskDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: { task: Task, delTask: boolean, toggleComplete: boolean, addTask: boolean }) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
 }
