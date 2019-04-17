@@ -183,7 +183,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   setProgress() {
     console.log("In Set Progress")
-    console.log("Page Count",this.pageCnt);
+    console.log("Page Count", this.pageCnt);
     console.log("Total Count", this.cnt);
     for (var i = 0; i < this.pageCnt; i++) {
       if (this.rewardsIn[this.cnt + i].cost <= this.currentUser.points) {
@@ -194,7 +194,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
         this.progressIn[i] = this.currentUser.points / this.rewardsIn[this.cnt + i].cost * 100;
         this.cantBuy[i] = true;
       }
-      console.log(" in loop setProgress",this.cantBuy[i], this.rewardsIn[this.cnt + i].cost, this.rewardsIn[this.cnt + i].name)
+      console.log(" in loop setProgress", this.cantBuy[i], this.rewardsIn[this.cnt + i].cost, this.rewardsIn[this.cnt + i].name)
 
     }
 
@@ -208,6 +208,57 @@ export class Rewards2Component implements OnInit, OnDestroy {
     console.log(this.selectedFile);
 
   }
+
+
+  //tried to copy what was happening on User Profile page
+
+  changeImage: boolean = false;
+  apiResults: ApiResponse;
+  imageToShow: any;
+  isImageLoading: boolean = true;
+
+
+  onChangeFileSelected(event) {
+    this.selectedFile = event.target.files[0];
+    // was in seperate events
+    this.userService.setPic(this.currentUser, this.selectedFile)
+      .then(res => {
+        console.log(res);
+        this.apiResults = <ApiResponse>res;
+        if (this.apiResults.status === 0) {
+
+          this.alertService.success("Image Changed");
+          this.getPic();
+        } else {
+          console.log("In here user-profile")
+          this.alertService.error(this.apiResults.message);
+        }
+        this.changeImage = false;
+      });
+
+  }
+
+  changeImageFunc() {
+    this.changeImage = true;
+  }
+
+  getPic() {
+    // Get the image 
+    this.isImageLoading = true;
+
+    this.userService.getPic(this.currentUser)
+      .then(blobIn => {
+        // creating the url to display the image from the Blob passed by the API
+        this.imageToShow = URL.createObjectURL(blobIn);
+        let urlCreator = window.URL;
+        this.imageToShow = this.sanitizer.bypassSecurityTrustUrl(
+          urlCreator.createObjectURL(blobIn));
+        this.isImageLoading = false;
+      });
+  }
+
+  //all of the above is from User Profile page
+
 
   createReward() {
 
