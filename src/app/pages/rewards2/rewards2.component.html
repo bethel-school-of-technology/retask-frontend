@@ -96,7 +96,7 @@
     </div>
     <div class="row">
       <div class="col-sm-1">
-        <button *ngIf="pageCnt>0 && page>0;" class="btn"><i class="fa fa-backward" (click)="goBackward()"></i></button>
+        <button *ngIf="pageCnt>0 && page>0;" class="btn btn-sm btn-outline-primary"><i class="fa fa-backward" (click)="goBackward()"></i></button>
       </div>
 
 
@@ -113,7 +113,15 @@
                 </button>
                 <button class="btn  btn-sm" class="edit" (click)="editReward(0)"><i
                     class="fa fa-fw fa-pencil float-left"></i></button>
-                <img class="card-img-top" [src]="rewardsIn[cnt].uploads[0].url" alt="Card image cap">
+                
+                  <div *ngIf='!edit[0]'>
+                    <img class="card-img-top" [src]="rewardsIn[cnt].uploads[0].url" alt="Card image cap">
+                  </div>
+                  <div *ngIf="edit[0]">
+                    <img class="card-img-top" [src]="rewardsIn[cnt].uploads[0].url" alt="Card image cap">
+                    <button class="btn btn-outline-primary btn-sm">Change Image</button>
+                  </div>
+
                 <div class="card-body">
 
                   <h5 class="card-title">
@@ -168,7 +176,15 @@
                 <button class="btn  btn-sm" class="edit" (click)="editReward(+1)"><i
                     class="fa fa-fw fa-pencil float-left"></i></button>
 
-                <img class="card-img-top" [src]="rewardsIn[cnt+1].uploads[0].url" alt="Card image cap">
+                    <div *ngIf='!edit[+1]'>
+                      <img class="card-img-top" [src]="rewardsIn[cnt+1].uploads[0].url" alt="Card image cap">
+                    </div>
+                    <div *ngIf="edit[+1]">
+                      <img class="card-img-top" [src]="rewardsIn[cnt+1].uploads[0].url" alt="Card image cap">
+                      <button class="btn btn-outline-primary btn-sm">Change Image</button>
+                    </div>
+  
+                
                 <div class="card-body">
                   <h5 class="card-title">
                     <div *ngIf="!edit[+1]">{{rewardsIn[cnt+1].name}}</div>
@@ -224,7 +240,15 @@
                 <button class="btn  btn-sm" class="edit" (click)="editReward(+2)"><i
                     class="fa fa-fw fa-pencil float-left"></i></button>
 
-                <img class="card-img-top" [src]="rewardsIn[cnt+2].uploads[0].url" alt="Card image cap">
+                    <div *ngIf='!edit[+2]'>
+                      <img class="card-img-top" [src]="rewardsIn[cnt+2].uploads[0].url" alt="Card image cap">
+                    </div>
+                    <div *ngIf="edit[+2]">
+                      <img class="card-img-top" [src]="rewardsIn[cnt+2].uploads[0].url" alt="Card image cap">
+                      <button class="btn btn-outline-primary btn-sm">Change Image</button>
+                    </div>
+                  
+                
                 <div class="card-body">
 
                   <h5 class="card-title">
@@ -274,7 +298,7 @@
         </div>
       </div>
       <div class="col-sm-1">
-        <button *ngIf="(totPageCnt-1)>page;" class="btn"><i class="fa fa-forward" (click)="goFoward()"></i></button>
+        <button *ngIf="(totPageCnt-1)>page;" class="btn btn-outline-primary btn-sm"><i class="fa fa-forward" (click)="goFoward()"></i></button>
       </div>
     </div>
 
