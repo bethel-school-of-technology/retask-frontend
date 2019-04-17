@@ -123,7 +123,7 @@ export class CalendarComponent implements OnInit {
 
   // set this to true to see the debugging at the bottom of the calendar
   // it will display the events in the calendar.
-  debugging: boolean = true;
+  debugging: boolean = false;
 
   taskToAdd: Task =
     {
