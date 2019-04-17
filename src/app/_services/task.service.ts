@@ -92,8 +92,17 @@ export class TaskService {
 
   }
 
-  getById(id: number) {
-    // return this.http.get(`${environment.apiUrl}/users/${id}`);
+  // get Task by ID
+  getById(id: number, user: User) {
+   
+    return new Promise(resolve => {
+      this.reTaskService.getTask(id, user.accessToken)
+        .subscribe(task => {
+          resolve(task);
+        }, err => {
+          console.log(err.message);
+        });
+    });
   }
 
   create(tasks: Task[], user: User) {
@@ -131,5 +140,30 @@ export class TaskService {
           console.log(err.message);
         });
     });
+  }
+
+
+  getTasksForDateRange(user: User, open: boolean, startDate: Date, endDate: Date) {
+    return new Promise(resolve => {
+      this.reTaskService.getTasksForDateRange(user.accessToken, open, startDate, endDate)
+        .subscribe(tasks => {
+          resolve(tasks);
+        }, err => {
+          console.log(err.message);
+        });
+    });
+
+  }
+
+  getDateRangeForCalendar(user: User) {
+    return new Promise(resolve => {
+      this.reTaskService.getDateRange(user.accessToken)
+        .subscribe(calendar => {
+          resolve(calendar);
+        }, err => {
+          console.log(err.message);
+        });
+    });
+
   }
 }

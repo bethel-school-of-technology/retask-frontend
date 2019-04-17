@@ -1,10 +1,14 @@
-﻿<div class="row justify-content-md-center align-text-top" id="header">
+﻿<div class="row" id="header">
   <div *ngIf="!pageLoading">
-    <div class="col-md-auto">
-      <br />
+    <div class="row text-center rounded" id="title">
+      <div class="col-md">
+      <br/>
       <h1>Welcome to ReTask, {{ currentUser.firstName }}!</h1>
       <br />
+      </div>
     </div>
+
+    <br/>
 
     <div class="row">
       <div class="col-md-6">
@@ -57,22 +61,23 @@
           </div>
           <h5 class="rounded">{{ rewardList[cnt].name }}</h5>
           <br />
-          <div class="carousel-caption d-none d-md-block">
-            <div class="progress">
-              <div
-                class="progress-bar"
-                role="progressbar"
-                [style.width]="progressIn[cnt + 2] + '%'"
-                aria-valuenow="25"
-                aria-valuemin="0"
-                aria-valuemax="100"
-              >
-                {{ progressIn[cnt + 2] }}%
-              </div>
+          <div class="progress">
+            <div
+              class="progress-bar bg-warning"
+              role="progressbar"
+              [style.width]="progressIn[cnt] + '%'"
+              aria-valuenow="25"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              {{ currentUser.points }} / {{ rewardList[cnt].cost }}
             </div>
           </div>
           <br />
         </div>
+        
+        <br />
+        <br />
       </div>
 
       <div class="col-md-6">
@@ -80,29 +85,31 @@
           <br />
           <h2>Today's Tasks</h2>
           <br />
-
-          <div
-            class="list-group mx-auto"
-            *ngFor="let task of taskList; let i = index"
-          >
-            <a
-              href="#"
-              class="list-group-item list-group-item-action"
-              style="background-color: #d3d3d3;"
-              >{{ task.name }} | Due in
-              {{ task.enddate | date: "hh" }} hours!</a
+          <div *ngIf="taskList.length > 0; else elseBlock">
+            <div
+              class="list-group mx-auto"
+              *ngFor="let task of taskList; let i = index"
             >
+              <a
+                href="#"
+                class="list-group-item list-group-item-action"
+                style="background-color: #d3d3d3;"
+              >
+                {{ task.name }}
+                <input
+                  type="checkbox"
+                  (change)="makeComplete($event.target.checked, i)"
+                  class="float-right"
+                  name="taskComplete"
+                  value="Complete"
+                />
+                <div class="float-right">Complete&nbsp;</div>
+              </a>
+            </div>
           </div>
-
-          <!--div class="list-group mx-auto">
-        <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
-        <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
-        <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
-        <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
-        <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
-        <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
-        <a href="#" class="list-group-item list-group-item-action">Task (end time)</a>
-      </div> -->
+          <ng-template #elseBlock>
+            You've completed all your tasks for today!
+          </ng-template>
           <br />
           <br />
         </div>

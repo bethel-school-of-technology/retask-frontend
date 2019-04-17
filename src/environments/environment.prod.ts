@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  monthsForCalendar: 12,
   apiUrl: 'http://localhost:4000',
   reTaskUrl: 'https://retask-backend.herokuapp.com'
 };

@@ -159,7 +159,7 @@ export class ReTaskService {
   //update the user.  This requires a token.
   deleteReward(reward: Reward, token: string): Observable<any> {
     let urlParm = `${environment.reTaskUrl}/api/deletereward/` + reward.id
-
+      console.log("reTask delete reward", urlParm, reward)
     return this.http.delete(urlParm
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
@@ -214,6 +214,27 @@ export class ReTaskService {
     //console.log(dateRange.startdate, dateRange.enddate);
 
     let urlParm = `${environment.reTaskUrl}/api/getopentasks`
+    return this.http.post(urlParm, dateRange
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+
+  }
+
+  // get Tasks for a Date Range 
+  getTasksForDateRange(token: string, open: boolean, startDate: Date, endDate: Date) {
+
+    let dateRange: TaskDateRange = {
+      startdate: this.datePipe.transform(startDate, "yyyy-MM-dd"),
+      enddate: this.datePipe.transform(endDate, "yyyy-MM-dd")
+    }
+
+    //console.log(dateRange.startdate, dateRange.enddate);
+
+    let urlParm = `${environment.reTaskUrl}/api/gettaskbydaterange/` + open
     return this.http.post(urlParm, dateRange
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
@@ -323,6 +344,32 @@ export class ReTaskService {
     let urlParm = `${environment.reTaskUrl}/api/deletetask/` + task_id
 
     return this.http.delete(urlParm
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+  }
+
+  //update the user.  This requires a token.
+  getTask(task_id: number, token: string): Observable<any> {
+    let urlParm = `${environment.reTaskUrl}/api/gettask/` + task_id
+
+    return this.http.get(urlParm
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+  }
+
+   //Get the Date Range for the calendar.  This requires a token.
+   getDateRange(token: string): Observable<any> {
+    let urlParm = `${environment.reTaskUrl}/api/datecalendardaterange/` + `${environment.monthsForCalendar}`
+
+    return this.http.get(urlParm
       , {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
           .append('Content-Type', 'application/json'),

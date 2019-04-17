@@ -8,7 +8,7 @@ import { AuthenticationService, UserService, AlertService, RewardService } from 
 import { ApiResponse } from '@app/_models/apiResponse';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-rewards2',
@@ -48,6 +48,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
   rewardsIn: any[];
   progressIn: number[] = [0, 0, 0];
   cantBuy: boolean[] = [true, true, true];
+  edit: boolean[] = [false, false, false];
 
   pageLoading: boolean = true;
   usingDragDrop: boolean = false;
@@ -65,8 +66,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
     private rewardService: RewardService,
     private sanitizer: DomSanitizer,
     private alertService: AlertService
-  ) 
-  {
+  ) {
     this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
       this.currentUser = user;
     });
@@ -130,7 +130,6 @@ export class Rewards2Component implements OnInit, OnDestroy {
         if (this.pageCnt > this.rewards_perpage)
           this.pageCnt = this.rewards_perpage;
 
-
         this.setProgress();
 
         this.pageLoading = false;
@@ -181,13 +180,13 @@ export class Rewards2Component implements OnInit, OnDestroy {
     this.addReward = !this.addReward;
   }
 
-  
+
   setProgress() {
     console.log("In Set Progress")
-    console.log(this.pageCnt);
-    console.log(this.cnt);
+    console.log("Page Count", this.pageCnt);
+    console.log("Total Count", this.cnt);
     for (var i = 0; i < this.pageCnt; i++) {
-      if (this.rewardsIn[this.cnt + i].cost < this.currentUser.points) {
+      if (this.rewardsIn[this.cnt + i].cost <= this.currentUser.points) {
         this.progressIn[i] = 100;
         this.cantBuy[i] = false;
         console.log("In greater than")
@@ -195,6 +194,8 @@ export class Rewards2Component implements OnInit, OnDestroy {
         this.progressIn[i] = this.currentUser.points / this.rewardsIn[this.cnt + i].cost * 100;
         this.cantBuy[i] = true;
       }
+      console.log(" in loop setProgress", this.cantBuy[i], this.rewardsIn[this.cnt + i].cost, this.rewardsIn[this.cnt + i].name)
+
     }
 
   }
@@ -208,6 +209,57 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   }
 
+
+  //tried to copy what was happening on User Profile page
+
+  changeImage: boolean = false;
+  apiResults: ApiResponse;
+  imageToShow: any;
+  isImageLoading: boolean = true;
+
+
+  onChangeFileSelected(event) {
+    this.selectedFile = event.target.files[0];
+    // was in seperate events
+    this.userService.setPic(this.currentUser, this.selectedFile)
+      .then(res => {
+        console.log(res);
+        this.apiResults = <ApiResponse>res;
+        if (this.apiResults.status === 0) {
+
+          this.alertService.success("Image Changed");
+          this.getPic();
+        } else {
+          console.log("In here user-profile")
+          this.alertService.error(this.apiResults.message);
+        }
+        this.changeImage = false;
+      });
+
+  }
+
+  changeImageFunc() {
+    this.changeImage = true;
+  }
+
+  getPic() {
+    // Get the image 
+    this.isImageLoading = true;
+
+    this.userService.getPic(this.currentUser)
+      .then(blobIn => {
+        // creating the url to display the image from the Blob passed by the API
+        this.imageToShow = URL.createObjectURL(blobIn);
+        let urlCreator = window.URL;
+        this.imageToShow = this.sanitizer.bypassSecurityTrustUrl(
+          urlCreator.createObjectURL(blobIn));
+        this.isImageLoading = false;
+      });
+  }
+
+  //all of the above is from User Profile page
+
+
   createReward() {
 
     this.rewardToAdd.username = this.currentUser.username;
@@ -217,11 +269,13 @@ export class Rewards2Component implements OnInit, OnDestroy {
     tempUpload.type = "jpg";
     this.rewardToAdd.uploads.push(tempUpload);
     this.rewardsToAdd.push(this.rewardToAdd);
-    this.rewardService.create(this.rewardsToAdd, this.currentUser)
-      .then(res => {
-        console.log(res)
-        this.loadRewards(true);
 
+    let rewardsToAdd: Reward[] = [];
+    rewardsToAdd.push(this.rewardToAdd);
+    this.rewardService.createWithFile(rewardsToAdd, this.currentUser, this.selectedFile)
+      .then(res => {
+        console.log(res);
+        this.loadRewards(false)
       });
 
     this.rewardsToAdd = []
@@ -258,24 +312,39 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   }
 
-  // deleteReward() {
-   
-  //   this.rewardToDelete.username = this.currentUser.username;
-  //   this.rewardToDelete.uploads = [];
-  //   let tempUpload = new Upload;
-  //   tempUpload.url = "http://www.pbs.org/mercy-street/lunchbox_plugins/s/photogallery/img/no-image-available.jpg";
-  //   tempUpload.type = "jpg";
-  //   this.rewardToDelete.uploads.push(tempUpload);
-  //   this.rewardsToDelete.push(this.rewardToDelete);
-  //   this.rewardService.delete(this.rewardsToDelete, this.currentUser)
-  //     .then(res => {
-  //       console.log(res)
-  //       this.loadRewards(true);
+  deleteReward(rewardToDelete: Reward) {
+    console.log("reward to delete", rewardToDelete)
+    this.rewardService.delete(rewardToDelete, this.currentUser)
+      .then(res => {
+        console.log(res)
+        this.loadRewards(true);
 
-  //     });
+      });
 
-  //   this.rewardsToDelete = []
-  //   this.deleteReward = !this.deleteReward;
   }
 
+  editReward(indx) {
+    this.edit[indx] = true;
+
+  }
+
+  cancelEdit(indx) {
+    this.edit;
+  }
+
+  // updateReward(reward: Reward, user:User){
+  //   this.rewardService.update(reward, this.currentUser)
+  //   .then(res => {
+  //     this.getReward();
+  //   });
+  // } else {
+  // //delete the task
+  // this.rewardService.delete(reward.id, this.currentUser)
+  //   .then(res => {
+  //     this.getTasks();
+  //   });
+  // }
+
+
+}
 
