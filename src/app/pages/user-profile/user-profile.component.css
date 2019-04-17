@@ -11,6 +11,12 @@
     transform: rotate(90deg); */
   }
 
+
+  *:not(i) {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+  } 
+
   #changePic {
     cursor: pointer;
   }
@@ -28,4 +34,13 @@
 
 #mainContainer {
   background-color: white;
+}
+
+.btn-warning {
+  background-color: rgb(218, 58, 58);
+}
+
+.btn-warning:hover {
+  background-color: rgb(255, 128, 128);
+  color: white;
 }

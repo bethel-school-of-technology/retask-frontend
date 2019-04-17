@@ -45,7 +45,7 @@ export class TasksComponent implements OnInit {
       strEndDate: "",
       completed: false,
       uploads: []
-    }
+    };
 
   animal: string;
   name: string;
@@ -74,7 +74,7 @@ export class TasksComponent implements OnInit {
 
     let task: Task = new Task();
 
-    task.name = taskIn.name
+    task.name = taskIn.name;
     task.startdate = taskIn.startdate;
     task.enddate = taskIn.enddate;
     task.points = taskIn.points;
