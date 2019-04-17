@@ -54,23 +54,27 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.rewardList = rewardsIn as Reward[];
       this.totRewards = this.rewardList.length;
       // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < this.rewardList.length; i++) {
-        this.progressIn[i] =
-          (this.currentUser.points / this.rewardList[i].cost) * 100;
-        if (this.progressIn[i] > 100) {
-          this.progressIn[i] = 100;
-        } else {
-          this.progressIn[i] = Math.trunc(this.progressIn[i]);
-        }
-        console.log(
-          this.currentUser.points,
-          this.rewardList[i].cost,
-          this.rewardList[i].name,
-          this.progressIn[i]
-        );
-      }
+      this.updateProgress();
       this.pageLoading = false;
     });
+  }
+
+  updateProgress() {
+    for (let i = 0; i < this.rewardList.length; i++) {
+      this.progressIn[i] =
+        (this.currentUser.points / this.rewardList[i].cost) * 100;
+      if (this.progressIn[i] > 100) {
+        this.progressIn[i] = 100;
+      } else {
+        this.progressIn[i] = Math.trunc(this.progressIn[i]);
+      }
+      console.log(
+        this.currentUser.points,
+        this.rewardList[i].cost,
+        this.rewardList[i].name,
+        this.progressIn[i]
+      );
+    }
   }
 
   ngOnDestroy() {
@@ -120,6 +124,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         .then(res => {
           console.log(res);
           // this.completedTaskList.push(this.taskList[indx]);
+          this.currentUser.points = this.taskList[indx].points + this.currentUser.points;
+          this.authenticationService.saveLocally(this.currentUser);
+          this.updateProgress();
           this.taskList.splice(indx, 1);
         });
     }

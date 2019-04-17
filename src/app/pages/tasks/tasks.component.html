@@ -1,73 +1,120 @@
 <div class="raised-block rounded">
   <div clss="container">
-
-    <div class="titleContainer">
-
-     
-      <h1 class="topheading">Tasks for {{displayDate | date: "MMMM dd"}}</h1>
-      <h4><i>Available Points: {{currentUser.points}}</i></h4>
-
-
+    <div class="row">
+      <div class="col-md">
+          <div
+          class="list-group-item list-group-item-action"
+          style="background-color: #e7e7e7;"
+        >
+        <div class="text-center">
+            <span class="badge badge-pill badge-warning float-right">{{ currentUser.points }} Available Points</span>
+            <br/>
+        <h2>
+          <span class="arrows" (click)="prev()">
+            <i class="material-icons">chevron_left</i> </span
+          >Tasks for {{ displayDate
+          }}<span class="arrows" (click)="next()">
+            <i class="material-icons">chevron_right</i>
+          </span>
+        </h2>
+      </div>
+      </div>
+      </div>
     </div>
     <div class="row">
-      <span>
-        <button id=addButton class="btn btn-sm btn-primary float-left" (click)="prev()">Yesterday</button>
-      </span>
-      <span>
-        <button id=addButton class="btn btn-sm btn-primary float-left" (click)="next()">Tomorrow</button>
-      </span>
-      <br>
-      <br>
+      <div class="col-md">
+        
+      </div>
     </div>
     <!-- This is the  Task List-->
-    <div class="list-group mx-auto" *ngFor="let task of taskList; let i = index">
-      <div class="list-group-item list-group-item-action" style="background-color: #d3d3d3;">
+    <div
+      class="list-group mx-auto"
+      *ngFor="let task of taskList; let i = index"
+    >
+      <div
+        class="list-group-item list-group-item-action"
+        style="background-color: #d8d8d8;"
+      >
         <div class="row">
           <div class="col-sm-4">
             {{ task.name }}
           </div>
           <div class="col-sm-4">
-            <div class="float-left">Complete&nbsp;</div>
-            <input type="checkbox" (change)="makeComplete($event.target.checked, i)" class="float-left"
-              name="taskComplete" value="Complete">
+            <label>
+              <input
+                type="checkbox"
+                (change)="makeComplete($event.target.checked, i)"
+                value="Complete"
+                name="taskComplete"
+              />
+              <span>Complete</span>
+            </label>
+
             <!-- <input type="checkbox" (change)="isChangeLimitAccessToggle($event.target.checked ? 'on' : 'off')" id="ifLimitAccess" class="switch-input"> -->
           </div>
           <div class="col-sm-4">
-
-            <span *ngIf="task.points>0" id="points">{{ task.points }} Points</span>
-
+            <span id="points">{{ task.points }}</span>
             <div class="float-right">
               <div id="editbuttons">
-                <button id="editbuttons" (click)="openDialog(task, true)" id="link-button">Edit</button>
+                <button
+                  id="editbuttons"
+                  (click)="openDialog(task, true)"
+                  id="link-button"
+                >
+                  Edit
+                </button>
                 &nbsp;
-                <button id="editbuttons" (click)="openDialog(task, false)" id="link-button">Del</button>
+                <button
+                  id="editbuttons"
+                  (click)="openDialog(task, false)"
+                  id="link-button"
+                >
+                  Del
+                </button>
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </div>
-    <br />
     <!-- End of the Task List-->
-    <div class="row">
-      <h3>Completed Tasks</h3>
-    </div>
+
     <!-- This is the completed Task List-->
-    <div class="list-group mx-auto" *ngFor="let task of completedTaskList; let i = index">
-      <div class="list-group-item list-group-item-action" style="background-color: lightgreen;">
-        <div class="row">
-          <div class="col-sm-4">
-            {{ task.name }}
-          </div>
-          <div class="col-sm-4">
-            <div class="float-left">Complete&nbsp;</div>
-            <input type="checkbox" (change)="makeUnComplete($event.target.checked, i)" class="float-left"
-              name="taskComplete" value="Complete" checked>
-          </div>
-          <div class="col-sm-4">
-            <div *ngIf="task.points>0">
-              <span id="points">{{ task.points }}</span> Points
+    <div>
+      <br />
+      <div
+        class="list-group-item list-group-item-action"
+        style="background-color: #e7e7e7;"
+      >
+        <h3 class="text-center">Completed Tasks</h3>
+      </div>
+      <div
+        class="list-group mx-auto"
+        *ngFor="let task of completedTaskList; let i = index"
+      >
+        <div
+          class="list-group-item list-group-item-action"
+          style="background-color: #a0e9b2;"
+        >
+          <div class="row">
+            <div class="col-sm-4">
+              {{ task.name }}
+            </div>
+            <div class="col-sm-4">
+              <label>
+                <input
+                  type="checkbox"
+                  (change)="makeUnComplete($event.target.checked, i)"
+                  value="Complete"
+                  name="taskComplete"
+                  checked
+                />
+                <span>Complete</span>
+              </label>
+            </div>
+
+            <div class="col-sm-4">
+              <span id="points">{{ task.points }}</span>
             </div>
           </div>
         </div>
@@ -76,46 +123,79 @@
     <!-- End of the completed Task List-->
   </div>
   <br />
-  <h3>Add Task</h3>
 
   <div class="raised-block rounded">
     <div class="list-group mx-auto">
-      <div class="list-group-item list-group-item-action" style="background-color: #d3d3d3;">
-        <div clss="container">
+      <div
+        class="list-group-item list-group-item-action"
+        style="background-color: #e7e7e7;"
+      >
+        <div class="container">
+          <h3 class="text-center">Add Task</h3>
+          <br />
           <div class="row">
-            <div class="col-sm-3">
+            <div class="input-field col-sm-3">
               <mat-form-field>
-                <input matInput placeholder="Enter task name" [(ngModel)]="addTask.name">
+                <input
+                  matInput
+                  placeholder="Enter task name"
+                  [(ngModel)]="addTask.name"
+                />
               </mat-form-field>
             </div>
             <div class="col-sm-3">
               <mat-form-field>
-                <input matInput [matDatepicker]="picker" placeholder="Choose start date" [ngModel]="addTask.startdate">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <input
+                  matInput
+                  [matDatepicker]="picker"
+                  placeholder="Choose start date"
+                  [(ngModel)]="addTask.startdate"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
             </div>
             <div class="col-sm-3">
               <mat-form-field>
-                <input matInput [matDatepicker]="picker2" placeholder="Choose end date" [(ngModel)]="addTask.enddate">
-                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <input
+                  matInput
+                  [matDatepicker]="picker2"
+                  placeholder="Choose end date"
+                  [(ngModel)]="addTask.enddate"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker2"
+                ></mat-datepicker-toggle>
                 <mat-datepicker #picker2></mat-datepicker>
               </mat-form-field>
             </div>
             <div class="col-sm-3">
               <mat-form-field>
-                <input matInput placeholder="Enter points" [(ngModel)]="addTask.points">
+                <input
+                  matInput
+                  placeholder="Enter points"
+                  [(ngModel)]="addTask.points"
+                />
               </mat-form-field>
             </div>
           </div>
         </div>
-        <br>
-        <button id=addButton class="btn btn-sm btn-primary" (click)="OnAddTask()">Add Task</button>
-
+        <br />
+        <div class="col-sm text-right">
+          <button
+            id="addButton"
+            class="btn btn-sm btn-primary"
+            (click)="OnAddTask()"
+          >
+            Add Task
+          </button>
+        </div>
       </div>
     </div>
     <br />
-
-
   </div>
 </div>
