@@ -20,7 +20,7 @@ export class RewardService {
     return new Promise(resolve => {
       this.reTaskService.getRewardsByUsername(user.accessToken)
         .subscribe(rewards => {
-          console.log(rewards)
+          //console.log(rewards)
           resolve(rewards);
         }, err => {
           console.log(err.message);
@@ -41,7 +41,7 @@ export class RewardService {
           rewards[0].uploads[0].url = res.url;
           this.reTaskService.createReward(rewards, user.accessToken)
             .subscribe(rewards => {
-              console.log(rewards)
+              //console.log(rewards)
               resolve(rewards);
             }, err => {
               console.log(err.message);
@@ -55,7 +55,7 @@ export class RewardService {
     return new Promise(resolve => {
       this.reTaskService.createReward(rewards, user.accessToken)
         .subscribe(rewards => {
-          console.log(rewards)
+          //console.log(rewards)
           resolve(rewards);
         }, err => {
           console.log(err.message);
@@ -73,7 +73,7 @@ export class RewardService {
     return new Promise(resolve => {
       this.reTaskService.deleteReward(reward, user.accessToken)
         .subscribe(res => {
-          console.log(res)
+          //console.log(res)
           resolve(res);
         }, err => {
           console.log(err.message);

@@ -64,7 +64,7 @@ export class AuthenticationService {
                     }
 
                     tempUser = user;
-                    console.log(user);
+                    //console.log(user);
                     resolve(tempUser);
 
 
