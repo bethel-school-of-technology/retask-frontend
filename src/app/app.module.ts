@@ -30,7 +30,7 @@ import { SocialLoginModule, AuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider, FacebookLoginProvider, LinkedInLoginProvider } from 'angularx-social-login';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { RewardsComponent } from './pages/rewards/rewards.component';
-import { Rewards2Component } from './pages/rewards2/rewards2.component';
+import { Rewards2Component, DialogEditRewardDialog } from './pages/rewards2/rewards2.component';
 import { Home2Component } from './pages/home2/home2.component';
 import { TasksComponent, DialogEditTaskDialog } from './pages/tasks/tasks.component';
 
@@ -98,12 +98,14 @@ export function provideConfig() {
         DialogOverviewExampleDialog,
         DialogEditTaskDialog,
         DialogCalendarTaskDialog,
+        DialogEditRewardDialog
 
     ],
     entryComponents: [
         DialogOverviewExampleDialog,
         DialogEditTaskDialog,
-        DialogCalendarTaskDialog
+        DialogCalendarTaskDialog,
+        DialogEditRewardDialog
     ],
     providers: [
         {

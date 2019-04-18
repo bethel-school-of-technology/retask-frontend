@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -9,6 +9,16 @@ import { ApiResponse } from '@app/_models/apiResponse';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { inject } from '@angular/core/testing';
+
+
+
+
+
+export interface RewardDialogData {
+  animal: string;
+  name: string;
+}
 
 @Component({
   selector: 'app-rewards2',
@@ -65,8 +75,10 @@ export class Rewards2Component implements OnInit, OnDestroy {
     private userService: UserService,
     private rewardService: RewardService,
     private sanitizer: DomSanitizer,
-    private alertService: AlertService
-  ) {
+    private alertService: AlertService,
+    public dialog: MatDialog,
+  ) 
+  {
     this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
       this.currentUser = user;
     });
@@ -328,9 +340,9 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   }
 
-  cancelEdit(indx) {
-    this.edit;
-  }
+  // cancelEdit(indx) {
+  //   this.edit;
+  // }
 
   // updateReward(reward: Reward, user:User){
   //   this.rewardService.update(reward, this.currentUser)
@@ -344,7 +356,89 @@ export class Rewards2Component implements OnInit, OnDestroy {
   //     this.getTasks();
   //   });
   // }
+  // this opens the dialog box
+  openDialog(rewardIn: Reward, editIn: boolean): void {
 
+    console.log(rewardIn);
+    
+    let reward: Reward = new Reward();
+
+    reward.name = rewardIn.name
+    reward.descr = rewardIn.descr;
+    reward.cost = rewardIn.cost;
+    reward.uploads = rewardIn.uploads;
+
+    const dialogRef = this.dialog.open(DialogEditRewardDialog, {
+      width: '255px',
+      data: {
+        reward: reward,
+        edit: editIn
+
+      }
+    });
+
+    // after the dialog box is closed this is run
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (editIn) {
+          // edit the task
+          rewardIn.name = reward.name
+          rewardIn.descr = reward.descr;
+          rewardIn.cost = reward.cost;
+          rewardIn.uploads = reward.uploads;
+
+        //   this.rewardService.update(rewardIn, this.currentUser)
+        //     .then(res => {
+        //       this.getRewards();
+        //     });
+        // } else {
+        //   //delete the task
+        //   this.rewardService.delete(rewardIn.id, this.currentUser)
+        //     .then(res => {
+        //       this.getRewards();
+        //     });
+        }
+      }
+    });
+  }
+
+
+  picChanged;
+  
+
+  saveRewardChanges(rewardIn: Reward) {
+
+    //console.log(rewardIn);
+    // if (this.picChanged) {
+    //   this.rewardService.updatePic(rewardIn, this.currentUser, this.selectedFile)
+    //     .then(res => {
+    //       this.picChanged = false;
+    //       console.log(res);
+    //     });
+    // } else {
+    //   this.rewardService.update(rewardIn, this.currentUser)
+    //     .then(res => {
+    //       console.log(res);
+    //     });
+    }
+  }
+
+
+
+
+@Component({
+  selector: 'dialog-edit-reward-dialog',
+  templateUrl: 'dialog-edit-reward-dialog.html',
+})
+export class DialogEditRewardDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogEditRewardDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: { reward: Reward, edit: boolean }) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 
 }
 

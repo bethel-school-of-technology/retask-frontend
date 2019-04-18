@@ -64,9 +64,14 @@ export class RewardService {
     //return this.http.put(`${environment.apiUrl}/users/${task.id}`, task);
   }
 
-  update(reward: Reward) {
+  updatePic(reward: Reward, user: User, selectedFile: File) {
     //return this.http.put(`${environment.apiUrl}/users/${task.id}`, task);
   }
+
+  update(reward: Reward, user: User){
+
+  }
+
 
   delete(reward: Reward, user: User) {
     console.log("delete reward", reward)
