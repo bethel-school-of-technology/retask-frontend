@@ -1,5 +1,5 @@
 <h2>Forgot Username</h2>
-<form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="usernameForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
             <label for="Email">Email</label>
             <input type="email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
