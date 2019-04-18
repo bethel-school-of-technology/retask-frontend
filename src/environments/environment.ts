@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   monthsForCalendar: 12,                  // indicates that 12 month range forward and backward on calendar
   apiUrl: 'http://localhost:4000',
-  reTaskUrl: 'https://retask-backend.herokuapp.com'
+  reTaskUrl: 'http://localhost:8090'
 };
 
 // reTaskUrl: 'http://localhost:8090',
