@@ -104,6 +104,7 @@ export class RewardService {
   }
 
   // delete the reward
+
   delete(reward: Reward, user: User) {
     //console.log("delete reward", reward)
     return new Promise(resolve => {
