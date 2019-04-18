@@ -1,9 +1,14 @@
-﻿<div class="row" id="header">
+﻿<div *ngIf="pageLoading; else show_home">
+  <div class="lds-ring centered"><div></div><div></div><div></div><div></div></div>
+</div>
+
+<div class="row" id="header">
   <div *ngIf="!pageLoading">
     <div class="row text-center rounded" id="title">
       <div class="col-md">
       <br/>
-      <h1>Welcome to ReTask, {{ currentUser.firstName }}!</h1>
+      <h2 class="tracking-in-expand">Welcome to ReTask, </h2>
+      <h1 class="text-focus-in">{{ currentUser.firstName }}! </h1>
       <br />
       </div>
     </div>
