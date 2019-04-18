@@ -1,10 +1,16 @@
 <style>
-    body {background-color: powderblue;}
-    h1 {color: blue;}
+    body {
+        background-color: powderblue;
+    }
+
+    h1 {
+        color: blue;
+    }
+
     p {
         color: red;
         text-align: center;
-    } 
+    }
 </style>
 <div *ngIf="data.edit;  else elseBlock">
     <h1 mat-dialog-title>Edit Reward</h1>
@@ -13,18 +19,16 @@
             <input matInput [(ngModel)]="data.reward.name" placeholder="Reward Name">
         </mat-form-field>
         <mat-form-field>
-            <input matInput [matDatepicker]="picker1" placeholder="Description" [(ngModel)]="data.reward.descr">
-            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker #picker1></mat-datepicker>
+            <input matInput [(ngModel)]="data.reward.descr" placeholder="Description">
         </mat-form-field>
         <mat-form-field>
-            <input matInput [matDatepicker]="picker2" placeholder="Cost" [(ngModel)]="data.reward.cost">
-            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-            <mat-datepicker #picker2></mat-datepicker>
+            <input matInput [(ngModel)]="data.reward.cost" placeholder="Cost">
         </mat-form-field>
-        <mat-form-field>
-            <input matInput [(ngModel)]="data.reward.uploads" placeholder="Image">
-        </mat-form-field>
+
+        <a (click)="onChangeFileSelected">
+            <img class="card-img-top" [src]="data.reward.uploads[0].url" alt="Card image cap">
+        </a>
+
     </div>
     <div mat-dialog-actions>
         <button mat-button (click)="onNoClick()">Cancel</button>
@@ -38,7 +42,8 @@
             <input matInput [(ngModel)]="data.reward.name" placeholder="Reward Name" disabled>
         </mat-form-field>
         <mat-form-field>
-            <input matInput [matDatepicker]="picker1" placeholder="Description" [(ngModel)]="data.reward.descr" disabled>
+            <input matInput [matDatepicker]="picker1" placeholder="Description" [(ngModel)]="data.reward.descr"
+                disabled>
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>

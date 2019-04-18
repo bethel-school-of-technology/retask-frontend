@@ -15,11 +15,16 @@ import { inject } from '@angular/core/testing';
 
 
 
-export interface TaskDialogData {
+export interface RewardDialogData {
   animal: string;
   name: string;
 }
 
+@Component({
+  selector: 'app-rewards2',
+  templateUrl: './rewards2.component.html',
+  styleUrls: ['./rewards2.component.css']
+})
 export class Rewards2Component implements OnInit, OnDestroy {
 
   currentUser: User;
@@ -335,9 +340,9 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   }
 
-  cancelEdit(indx) {
-    this.edit;
-  }
+  // cancelEdit(indx) {
+  //   this.edit;
+  // }
 
   // updateReward(reward: Reward, user:User){
   //   this.rewardService.update(reward, this.currentUser)
@@ -354,6 +359,8 @@ export class Rewards2Component implements OnInit, OnDestroy {
   // this opens the dialog box
   openDialog(rewardIn: Reward, editIn: boolean): void {
 
+    console.log(rewardIn);
+    
     let reward: Reward = new Reward();
 
     reward.name = rewardIn.name
@@ -361,7 +368,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
     reward.cost = rewardIn.cost;
     reward.uploads = rewardIn.uploads;
 
-    const dialogRef = this.dialog.open(DialogEditTaskDialog, {
+    const dialogRef = this.dialog.open(DialogEditRewardDialog, {
       width: '255px',
       data: {
         reward: reward,
@@ -395,23 +402,38 @@ export class Rewards2Component implements OnInit, OnDestroy {
     });
   }
 
-}
+
+  picChanged;
+  
+
+  saveRewardChanges(rewardIn: Reward) {
+
+    //console.log(rewardIn);
+    // if (this.picChanged) {
+    //   this.rewardService.updatePic(rewardIn, this.currentUser, this.selectedFile)
+    //     .then(res => {
+    //       this.picChanged = false;
+    //       console.log(res);
+    //     });
+    // } else {
+    //   this.rewardService.update(rewardIn, this.currentUser)
+    //     .then(res => {
+    //       console.log(res);
+    //     });
+    }
+  }
+
+
+
 
 @Component({
-  selector: 'app-rewards2',
-  templateUrl: './rewards2.component.html',
-  styleUrls: ['./rewards2.component.css']
+  selector: 'dialog-edit-reward-dialog',
+  templateUrl: 'dialog-edit-reward-dialog.html',
 })
-
-
-@Component({
-  selector: 'dialog-edit-task-dialog',
-  templateUrl: 'dialog-edit-task-dialog.html',
-})
-export class DialogEditTaskDialog {
+export class DialogEditRewardDialog {
 
   constructor(
-    public dialogRef: MatDialogRef<DialogEditTaskDialog>,
+    public dialogRef: MatDialogRef<DialogEditRewardDialog>,
     @Inject(MAT_DIALOG_DATA) public data: { reward: Reward, edit: boolean }) { }
 
   onNoClick(): void {
@@ -419,3 +441,4 @@ export class DialogEditTaskDialog {
   }
 
 }
+
