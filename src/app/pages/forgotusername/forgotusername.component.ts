@@ -36,12 +36,12 @@ export class ForgotusernameComponent implements OnInit {
   }
 
   //convenience getter for easy access to form fields
-  get f() { return this.passwordForm.controls; }
+  get f() { return this.usernameForm.controls; }
 
   onSubmit() {
     this.alertService.success(null, false);
 
-    if (this.passwordForm.invalid) {
+    if (this.usernameForm.invalid) {
       this.alertService.success('Invalid Email', true);
       return;
     }
