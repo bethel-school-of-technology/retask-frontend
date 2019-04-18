@@ -1,13 +1,38 @@
 <ol>
-    <li>
+  <li>
+    <mat-form-field>
+      <input matInput [(ngModel)]="name" placeholder="What's your name?">
+    </mat-form-field>
+  </li>
+  <li>
+    <button mat-raised-button (click)="openDialog()">Pick one</button>
+  </li>
+  <li *ngIf="animal">
+    You chose: <i>{{animal}}</i>
+  </li>
+</ol>
+
+<div class="list-group mx-auto" *ngFor="let reward of rewards; let i = index">
+  <div class="row">
+    <div class="col-sm-3">
       <mat-form-field>
-        <input matInput [(ngModel)]="name" placeholder="What's your name?">
+        <input matInput [(ngModel)]="rewards[i].id" placeholder="Reward Id">
       </mat-form-field>
-    </li>
-    <li>
-      <button mat-raised-button (click)="openDialog()">Pick one</button>
-    </li>
-    <li *ngIf="animal">
-      You chose: <i>{{animal}}</i>
-    </li>
-  </ol>
+    </div>
+    <div class="col-sm-2">
+      <mat-form-field>
+        <input matInput [(ngModel)]="rewards[i].name" placeholder="Reward Name">
+      </mat-form-field>
+
+    </div>
+    <div class="col-sm-2">
+      <img class="card-img-top" [src]="rewards[i].uploads[0].url" alt="Card image cap">
+    </div>
+    <div class="col-sm-2">
+      <input type="file" id="file" (change)="onFileSelected($event)" accept="image/*">
+    </div>
+    <div class="col-sm-2">
+      <button mat-raised-button (click)="saveRewardChanges(rewards[i])">Save Changes to Reward</button>
+    </div>
+  </div>
+</div>

@@ -156,6 +156,19 @@ export class ReTaskService {
     );
   }
 
+   //update the user.  This requires a token.
+   updateReward(rewards: Reward[], token: string): Observable<any> {
+    let urlParm = `${environment.reTaskUrl}/api/updaterewards`
+
+    return this.http.post(urlParm, rewards
+      , {
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)
+          .append('Content-Type', 'application/json'),
+        responseType: 'json'
+      }
+    );
+  }
+
   //update the user.  This requires a token.
   deleteReward(reward: Reward, token: string): Observable<any> {
     let urlParm = `${environment.reTaskUrl}/api/deletereward/` + reward.id
