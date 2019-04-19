@@ -10,7 +10,7 @@ import { AlertService, UserService, AuthenticationService, ReTaskService } from 
   styleUrls: ['./forgotusername.component.css']
 })
 export class ForgotusernameComponent implements OnInit {
-  passwordForm: FormGroup;
+  usernameForm: FormGroup;
   loading = false;
   submitted = false;
 
@@ -30,18 +30,18 @@ export class ForgotusernameComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.passwordForm = this.formBuilder.group({
+    this.usernameForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$')]]
     })
   }
 
   //convenience getter for easy access to form fields
-  get f() { return this.passwordForm.controls; }
+  get f() { return this.usernameForm.controls; }
 
   onSubmit() {
     this.alertService.success(null, false);
 
-    if (this.passwordForm.invalid) {
+    if (this.usernameForm.invalid) {
       this.alertService.success('Invalid Email', true);
       return;
     }

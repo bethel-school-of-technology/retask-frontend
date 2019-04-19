@@ -188,7 +188,7 @@ export class CalendarComponent implements OnInit {
     this.taskService.getTasksForDateRange(this.currentUser, true, firstDay, lastDay)
       .then(tasksIn => {
         this.taskList = tasksIn as Task[];
-        console.log(this.taskList);
+        //console.log(this.taskList);
         this.getCompleteTasks();
       });
   }

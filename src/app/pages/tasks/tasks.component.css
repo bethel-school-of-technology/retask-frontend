@@ -2,29 +2,33 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 #link-button {
-    background: none !important;
-    color: inherit;
-    border: none;
-    padding: 0 !important;
-    font: inherit;
-    /*border is optional*/
-    border-bottom: 1px solid #444;
-    cursor: pointer;
+     background:none!important;
+     color:inherit;
+     border:none; 
+     padding:0!important;
+     font: inherit;
+     /*border is optional*/
+     border-bottom:1px solid #444; 
+     cursor: pointer;
 }
 
-/* #editbuttons { */
-
-.nextButton {
-     text-align: right;
+#editbuttons {
+     margin: 5px;
 }
 
-.previousButton{
-     text-align: left;
-
-    margin: 5px;
+.arrows {
+     cursor: pointer;
+     size: 10rem;
 }
 
-.titleContainer {
-    text-align: center;
+.material-icons:hover { 
+     color: rgba(0, 0, 0, 0.4);
+}
 
+h3 {
+     color: rgb(113, 113, 113);
+}
+
+.badge {
+     font-weight: 50;
 }

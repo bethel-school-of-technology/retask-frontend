@@ -71,7 +71,7 @@ export class UserService {
         return new Promise(resolve => {
             this.reTaskService.getPic(user.accessToken)
                 .subscribe(file => {
-                    console.log(file)
+                    //console.log(file)
                     resolve(file);
                 }, err => {
                     console.log(err.message);
@@ -87,7 +87,7 @@ export class UserService {
                     dataOut=res;
                     resolve(dataOut);
                 }, err => {
-                    console.log("in herer");
+                    console.log("in here");
                     console.log(err.message);
                 });
         });

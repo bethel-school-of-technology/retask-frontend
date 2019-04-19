@@ -1,149 +1,233 @@
-<h2>User Profile</h2>
+<head>
+  <!--materialize tags-->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+  />
+</head>
 
-<div class="container">
+<h3 class="text-center">User Profile</h3>
+
+<div class="row rounded" id="mainContainer">
+  <div class="col-md-4">
+    <br />
+    <img
+      [src]="imageToShow"
+      class="responsive-img"
+      alt="Place image title"
+      *ngIf="!isImageLoading; else noImageFound"
+      class="profile"
+    />
+    <ng-template #noImageFound>
+      <img
+        class="responsive"
+        src="assets/img/image.gif"
+        alt="Fallbackimage"
+        class="profile"
+      />
+    </ng-template>
+    <br />
+    <br />
+  </div>
+  <div class="col-md-2">
     <div class="row">
-        <div class="col-sm-3">
-            <img [src]="imageToShow" class="responsive" alt="Place image title"
-                *ngIf="!isImageLoading; else noImageFound">
-            <ng-template #noImageFound>
-                <img class="responsive" src="assets/img/image.gif" alt="Fallbackimage">
-            </ng-template>
-        </div>
-        <div class="col-sm-9">
-            <div class="container2">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <!-- <button class="float-left" (click)="changeImageFunc()">Change Image</button> -->
-                        <input type="file" class="float-left" id="file" (change)="onFileSelected($event)"
-                            accept="image/*" hidden="true">
-                        <button>
-                        <label for="file">Change Image</label>
-                        </button>
-
-                        <button class="float-right" *ngIf="!changePasswordOn; else changingPassword"
-                            (click)="changePassword()">Change Password
-                        </button>
-                    </div>
-                </div>
-                <ng-template #changingPassword>
-                    <div class="row">
-                        <br>
-                    </div>
-                    <div class="row">
-                        <br>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-10">
-                            <div class="float-right">
-                                <label for="oldPassword">Current Password &nbsp;</label>
-                                <input type="password" matInput placeholder="" value="" [(ngModel)]="oldPassword"
-                                    name="oldPassword">
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-10">
-                            <div class="float-right">
-                                <label for="newPassword">New Password &nbsp;</label>
-                                <input type="password" matInput placeholder="" value="" [(ngModel)]="newPassword"
-                                    name="newPassword">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-10">
-                            <div class="float-right">
-                                <label for="confirmNewPassword">Confirm New Password &nbsp;</label>
-                                <input type="password" matInput placeholder="" value="" [(ngModel)]="confirmNewPassword"
-                                    name="confirmNewPassword">
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-10">
-                            <div class="float-right">
-                                <button class="btn-sm btn-outline-primary float-right"
-                                    (click)="savePassword(false)">Cancel
-                                </button>
-                                <button class="btn-sm btn-primary float-right" (click)="savePassword(true)">Save
-                                    Password
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </ng-template>
-            </div>
-
-        </div>
+      <div class="col-md">
+        <!-- <button class="float-left" (click)="changeImageFunc()">Change Image</button> -->
+        <input
+          type="file"
+          class="float-left"
+          id="file"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+          hidden="true"
+        />
+        <br />
+        <a>
+          <label for="file">
+            <i class="small material-icons" id="changePic">create</i>
+          </label>
+        </a>
+      </div>
     </div>
-    <div *ngIf="changeImage">
-        <div class="row">
-            <div class="col-sm-12">
-                <br>
-                <!--  -->
-
-                <!-- <button class="float-left" (click)="onFileUpload()">Upload File</button> -->
-                <!--  -->
-            </div>
+  </div>
+  <div class="col-md-6">
+    <br />
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input
+          type="text"
+          formControlName="firstName"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }"
+        />
+        <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+          <div *ngIf="f.firstName.errors.required">First Name is required</div>
         </div>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input
+          type="text"
+          formControlName="lastName"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }"
+        />
+        <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+          <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="PhoneNbr">Phone Nbr</label>
+        <input
+          type="text"
+          formControlName="phoneNbr"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.phoneNbr.errors }"
+        />
+        <div *ngIf="submitted && f.phoneNbr.errors" class="invalid-feedback">
+          <div *ngIf="f.phoneNbr.errors.required">Phone Nbr is required</div>
+          <div *ngIf="f.phoneNbr.errors.pattern">Invalide Phone Nbr</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="Email">Email</label>
+        <input
+          type="email"
+          formControlName="email"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+        />
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+          <div *ngIf="f.email.errors.required">Email is required</div>
+          <div *ngIf="f.email.errors.pattern">Invalide Email</div>
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-6">
+        <!-- display the Save button if the user wants to edit their profile -->
+        <button
+          class="btn btn-primary"
+          *ngIf="editForm; else noEdit"
+          (click)="saveUser()"
+        >
+          Save
+        </button>
+        <!-- If the form is not being edited then this button will show -->
+        <ng-template #noEdit>
+          <button class="btn btn-primary" (click)="editUser()">Edit</button>
+        </ng-template>
+        <br />
+        <br />
+      </div>
+      <div class="col-md-6">
+        <button
+          class="btn btn-warning float-right"
+          *ngIf="!changePasswordOn; else changingPassword"
+          (click)="changePassword()"
+        >
+          Change Password
+        </button>
+        
+      </div>
     </div>
+  </div>
+</div>
 
-    <!-- <img [src]="imageToShow" class="responsive" alt="Place image title" *ngIf="!isImageLoading; else noImageFound">
+<div *ngIf="changeImage">
+  <div class="row">
+    <div class="col-sm-12">
+      <br />
+      <!--  -->
+
+      <!-- <button class="float-left" (click)="onFileUpload()">Upload File</button> -->
+      <!--  -->
+    </div>
+  </div>
+</div>
+
+<!-- <img [src]="imageToShow" class="responsive" alt="Place image title" *ngIf="!isImageLoading; else noImageFound">
 <ng-template #noImageFound>
     <img class="responsive" src="assets/img/image.gif" alt="Fallbackimage">
 </ng-template> -->
-    <br>
-    <br>
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input type="text" formControlName="firstName" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
-            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-                <div *ngIf="f.firstName.errors.required">First Name is required</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input type="text" formControlName="lastName" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
-            <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
-                <div *ngIf="f.lastName.errors.required">Last Name is required</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="PhoneNbr">Phone Nbr</label>
-            <input type="text" formControlName="phoneNbr" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.phoneNbr.errors }" />
-            <div *ngIf="submitted && f.phoneNbr.errors" class="invalid-feedback">
-                <div *ngIf="f.phoneNbr.errors.required">Phone Nbr is required</div>
-                <div *ngIf="f.phoneNbr.errors.pattern">Invalide Phone Nbr</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="Email">Email</label>
-            <input type="email" formControlName="email" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                <div *ngIf="f.email.errors.required">Email is required</div>
-                <div *ngIf="f.email.errors.pattern">Invalide Email</div>
-            </div>
-        </div>
 
-    </form>
-    <div>
-        <!-- display the Save button if the user wants to edit their profile -->
-        <button class="btn btn-primary" *ngIf="editForm; else noEdit" (click)="saveUser()">Save</button>
-        <!-- If the form is not being edited then this button will show -->
-        <ng-template #noEdit>
-            <button class="btn btn-primary" (click)="editUser()">Edit</button>
-        </ng-template>
+<ng-template #changingPassword>
+  <div class="row">
+    <br />
+  </div>
+  <div class="row">
+    <br />
+  </div>
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-10">
+      <div class="float-right">
+        <label for="oldPassword">Current Password &nbsp;</label>
+        <input
+          type="password"
+          matInput
+          placeholder=""
+          value=""
+          [(ngModel)]="oldPassword"
+          name="oldPassword"
+        />
+      </div>
     </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-10">
+      <div class="float-right">
+        <label for="newPassword">New Password &nbsp;</label>
+        <input
+          type="password"
+          matInput
+          placeholder=""
+          value=""
+          [(ngModel)]="newPassword"
+          name="newPassword"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-10">
+      <div class="float-right">
+        <label for="confirmNewPassword">Confirm New Password &nbsp;</label>
+        <input
+          type="password"
+          matInput
+          placeholder=""
+          value=""
+          [(ngModel)]="confirmNewPassword"
+          name="confirmNewPassword"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-10">
+      <div class="float-right">
+        <button
+          class="btn-sm btn-outline-primary float-right"
+          (click)="savePassword(false)"
+        >
+          Cancel
+        </button>
+        <button
+          class="btn-sm btn-primary float-right"
+          (click)="savePassword(true)"
+        >
+          Save Password
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
