@@ -180,7 +180,8 @@ export class Rewards2Component implements OnInit, OnDestroy {
   addReward: boolean = false;
 
   addRewards() {
-    this.addReward = !this.addReward;
+    //this.addReward = !this.addReward;
+    this.openDialog(this.rewardToAdd, false, false);
   }
 
 
@@ -317,12 +318,9 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   deleteReward(rewardToDelete: Reward) {
     //console.log("reward to delete", rewardToDelete)
-    this.rewardService.delete(rewardToDelete, this.currentUser)
-      .then(res => {
-        //console.log(res)
-        this.loadRewards(true);
 
-      });
+    this.openDialog(rewardToDelete, false, true);
+
 
   }
 
@@ -331,9 +329,20 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   }
 
-  openDialog(rewardIn: Reward, editIn: boolean): void {
+  openDialog(rewardIn: Reward, editIn: boolean, deleteReward: boolean): void {
 
-    //console.log(rewardIn);
+    // if editIn is false then it is an add
+
+    if (!editIn && !deleteReward) {
+      rewardIn.username = this.currentUser.username;
+      rewardIn.uploads = [];
+      let tempUpload = new Upload;
+      tempUpload.url = "http://www.pbs.org/mercy-street/lunchbox_plugins/s/photogallery/img/no-image-available.jpg";
+      tempUpload.type = "jpg";
+
+      rewardIn.uploads.push(tempUpload);
+    }
+
 
     let reward: Reward = new Reward();
     let upload: Upload = new Upload();
@@ -354,7 +363,8 @@ export class Rewards2Component implements OnInit, OnDestroy {
         reward: reward,
         edit: editIn,
         pic: File,
-        picChanged: false
+        picChanged: false,
+        deleteReward: deleteReward
       }
     });
 
@@ -362,20 +372,40 @@ export class Rewards2Component implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       //console.log(result);
       if (result) {
-        // edit the task
-        rewardIn.name = reward.name
-        rewardIn.descr = reward.descr;
-        rewardIn.cost = reward.cost;
-        rewardIn.uploads = reward.uploads;
-        //console.log(reward);
-        this.saveRewardChanges(rewardIn, result.picChanged, result.pic);
+        // if delete the reward
+        if (result.deleteReward) {
+          this.rewardService.delete(rewardIn, this.currentUser)
+            .then(res => {
+              //console.log(res)
+              this.loadRewards(true);
+            });
+
+        // if add or edit reward
+        } else {
+          rewardIn.name = reward.name
+          rewardIn.descr = reward.descr;
+          rewardIn.cost = reward.cost;
+          rewardIn.uploads = reward.uploads;
+          if (editIn) {
+            //console.log(reward);
+            this.saveRewardChanges(rewardIn, result.picChanged, result.pic);
+          } else {
+
+            let rewardsToAdd: Reward[] = [];
+            rewardsToAdd.push(rewardIn);
+            this.rewardService.createWithFile(rewardsToAdd, this.currentUser, result.pic)
+              .then(res => {
+                //console.log(res);
+                this.loadRewards(false)
+              });
+
+            this.rewardsToAdd = []
+          }
+        }
       }
     }
     );
   }
-
-
-  // picChanged;
 
 
   saveRewardChanges(rewardIn: Reward, picChanged: boolean, pic: File) {
@@ -407,7 +437,7 @@ export class DialogEditRewardDialog {
   constructor(
     public dialogRef: MatDialogRef<DialogEditRewardDialog>,
     @Inject(MAT_DIALOG_DATA) public data: {
-      reward: Reward, edit: boolean, pic: File, picChanged: boolean
+      reward: Reward, edit: boolean, pic: File, picChanged: boolean, deleteReward: boolean
     },
   ) { }
 
@@ -418,7 +448,7 @@ export class DialogEditRewardDialog {
 
 
   onFileSelected(event) {
-    console.log("event", event);
+    //console.log("event", event);
     if (event.target.files[0]) {
       this.data.picChanged = true;
       this.data.pic = event.target.files[0];
@@ -428,10 +458,10 @@ export class DialogEditRewardDialog {
       if (event.target.files && event.target.files[0]) {
         var reader = new FileReader();
         reader.onload = (event: any) => {
-            this.data.reward.uploads[0].url = event.target.result;
+          this.data.reward.uploads[0].url = event.target.result;
         }
         reader.readAsDataURL(event.target.files[0]);
-    }
+      }
 
     }
 

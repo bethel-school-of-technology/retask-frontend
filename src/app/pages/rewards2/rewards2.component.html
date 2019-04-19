@@ -113,7 +113,7 @@
                 <button class="btn btn-outline-primary btn-sm"(click)="deleteReward(rewardsIn[cnt])">
                   <i class="fa fa-times float-left"></i>
                 </button>
-                <button class="btn  btn-sm" class="edit" (click)="openDialog(rewardsIn[cnt], true)"><i
+                <button class="btn  btn-sm" class="edit" (click)="openDialog(rewardsIn[cnt], true, false)"><i
                     class="fa fa-fw fa-pencil float-left"></i></button>
 
                 <img class="card-img-top" [src]="rewardsIn[cnt].uploads[0].url" alt="Card image cap">
@@ -146,7 +146,7 @@
                 <button class="btn btn-outline-primary btn-sm" (click)="deleteReward(rewardsIn[cnt+1])">
                   <i class="fa fa-times float-left"></i>
                 </button>
-                <button class="btn  btn-sm" class="edit" (click)="openDialog(rewardsIn[cnt+1], true)"><i
+                <button class="btn  btn-sm" class="edit" (click)="openDialog(rewardsIn[cnt+1], true, false)"><i
                     class="fa fa-fw fa-pencil float-left"></i></button>
 
                 <img class="card-img-top" [src]="rewardsIn[cnt+1].uploads[0].url" alt="Card image cap">
@@ -181,7 +181,7 @@
                 <button class="btn btn-outline-primary btn-sm" (click)="deleteReward(rewardsIn[cnt+2])">
                   <i class="fa fa-times float-left"></i>
                 </button>
-                <button class="btn  btn-sm" class="edit" (click)="openDialog(rewardsIn[cnt+2], true)"><i
+                <button class="btn  btn-sm" class="edit" (click)="openDialog(rewardsIn[cnt+2], true, false)"><i
                     class="fa fa-fw fa-pencil float-left"></i></button>
 
                 <img class="card-img-top" [src]="rewardsIn[cnt+2].uploads[0].url" alt="Card image cap">
