@@ -48,7 +48,7 @@ export class UserService {
                     resolve(dataOut);
                     
                 }, err => {
-                    console.log(err.message);
+                    //console.log(err.message);
                     let errorStatus = new ApiResponse;
                     errorStatus.status = -1;
                     if (err.status === 400) {
@@ -56,7 +56,7 @@ export class UserService {
                     } else {
                         errorStatus.message = "Error Updating";
                     }
-                    console.log(errorStatus);
+                    //console.log(errorStatus);
                     resolve(errorStatus);
                 });
         });
@@ -74,7 +74,7 @@ export class UserService {
                     //console.log(file)
                     resolve(file);
                 }, err => {
-                    console.log(err.message);
+                    //console.log(err.message);
                 });
         });
     }
@@ -87,8 +87,8 @@ export class UserService {
                     dataOut=res;
                     resolve(dataOut);
                 }, err => {
-                    console.log("in here");
-                    console.log(err.message);
+                    //console.log("in here");
+                    //console.log(err.message);
                 });
         });
     }
@@ -107,7 +107,7 @@ export class UserService {
                     dataOut.message="ok"
                     resolve(dataOut);
                 }, err => {
-                    console.log(err);
+                    //console.log(err);
                     let errorStatus = new ApiResponse;
                     errorStatus.status = -1;
                     if (err.status === 400) {
@@ -115,7 +115,7 @@ export class UserService {
                     } else {
                         errorStatus.message = "";
                     }
-                    console.log(errorStatus);
+                    //console.log(errorStatus);
                     resolve(errorStatus);
                 });
         });

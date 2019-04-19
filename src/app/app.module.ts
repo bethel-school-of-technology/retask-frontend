@@ -28,7 +28,7 @@ import { ForgotusernameComponent } from '@app/pages/forgotusername/forgotusernam
 
 import { SocialLoginModule, AuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider, FacebookLoginProvider, LinkedInLoginProvider } from 'angularx-social-login';
-import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { UserProfileComponent, DialogPasswordDialog } from './pages/user-profile/user-profile.component';
 import { RewardsComponent } from './pages/rewards/rewards.component';
 import { Rewards2Component, DialogEditRewardDialog } from './pages/rewards2/rewards2.component';
 import { Home2Component } from './pages/home2/home2.component';
@@ -98,14 +98,16 @@ export function provideConfig() {
         DialogOverviewExampleDialog,
         DialogEditTaskDialog,
         DialogCalendarTaskDialog,
-        DialogEditRewardDialog
+        DialogEditRewardDialog,
+        DialogPasswordDialog
 
     ],
     entryComponents: [
         DialogOverviewExampleDialog,
         DialogEditTaskDialog,
         DialogCalendarTaskDialog,
-        DialogEditRewardDialog
+        DialogEditRewardDialog,
+        DialogPasswordDialog
     ],
     providers: [
         {
