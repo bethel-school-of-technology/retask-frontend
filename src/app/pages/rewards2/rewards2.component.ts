@@ -8,11 +8,6 @@ import { AuthenticationService, UserService, AlertService, RewardService } from 
 import { ApiResponse } from '@app/_models/apiResponse';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { inject } from '@angular/core/testing';
-
-
-
 
 
 export interface RewardDialogData {
@@ -51,9 +46,6 @@ export class Rewards2Component implements OnInit, OnDestroy {
   }
 
   rewardsToDelete: Reward[] = [];
-
-
-
 
   rewardsIn: any[];
   progressIn: number[] = [0, 0, 0];
@@ -162,11 +154,11 @@ export class Rewards2Component implements OnInit, OnDestroy {
       if (this.pageCnt > this.rewards_perpage)
         this.pageCnt = this.rewards_perpage;
 
-      console.log("from goForward")
+      //console.log("from goForward")
       this.setProgress();
     }
-    console.log("total page cnt = " + this.totPageCnt);
-    console.log(this.pageCnt);
+    //console.log("total page cnt = " + this.totPageCnt);
+    //console.log(this.pageCnt);
   }
 
   goBackward() {
@@ -178,34 +170,35 @@ export class Rewards2Component implements OnInit, OnDestroy {
       if (this.pageCnt > this.rewards_perpage)
         this.pageCnt = this.rewards_perpage;
 
-      console.log("from goBackward")
+      //console.log("from goBackward")
       this.setProgress();
     }
-    console.log("total page cnt = " + this.totPageCnt);
-    console.log(this.pageCnt);
+    //console.log("total page cnt = " + this.totPageCnt);
+    //console.log(this.pageCnt);
   }
 
   addReward: boolean = false;
 
   addRewards() {
-    this.addReward = !this.addReward;
+    //this.addReward = !this.addReward;
+    this.openDialog(this.rewardToAdd, false, false);
   }
 
 
   setProgress() {
-    console.log("In Set Progress")
-    console.log("Page Count", this.pageCnt);
-    console.log("Total Count", this.cnt);
+    //console.log("In Set Progress")
+    //console.log("Page Count", this.pageCnt);
+    //console.log("Total Count", this.cnt);
     for (var i = 0; i < this.pageCnt; i++) {
       if (this.rewardsIn[this.cnt + i].cost <= this.currentUser.points) {
         this.progressIn[i] = 100;
         this.cantBuy[i] = false;
-        console.log("In greater than")
+        //console.log("In greater than")
       } else {
         this.progressIn[i] = this.currentUser.points / this.rewardsIn[this.cnt + i].cost * 100;
         this.cantBuy[i] = true;
       }
-      console.log(" in loop setProgress", this.cantBuy[i], this.rewardsIn[this.cnt + i].cost, this.rewardsIn[this.cnt + i].name)
+      //console.log(" in loop setProgress", this.cantBuy[i], this.rewardsIn[this.cnt + i].cost, this.rewardsIn[this.cnt + i].name)
 
     }
 
@@ -216,7 +209,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
   onFileSelected(event) {
     this.selectedFile = event.target.files[0];
     // was in seperate events
-    console.log(this.selectedFile);
+    //console.log(this.selectedFile);
 
   }
 
@@ -238,10 +231,10 @@ export class Rewards2Component implements OnInit, OnDestroy {
         this.apiResults = <ApiResponse>res;
         if (this.apiResults.status === 0) {
 
-          this.alertService.success("Image Changed");
+          //this.alertService.success("Image Changed");
           this.getPic();
         } else {
-          console.log("In here user-profile")
+          //console.log("In here user-profile")
           this.alertService.error(this.apiResults.message);
         }
         this.changeImage = false;
@@ -285,7 +278,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
     rewardsToAdd.push(this.rewardToAdd);
     this.rewardService.createWithFile(rewardsToAdd, this.currentUser, this.selectedFile)
       .then(res => {
-        console.log(res);
+        //console.log(res);
         this.loadRewards(false)
       });
 
@@ -324,13 +317,10 @@ export class Rewards2Component implements OnInit, OnDestroy {
   }
 
   deleteReward(rewardToDelete: Reward) {
-    console.log("reward to delete", rewardToDelete)
-    this.rewardService.delete(rewardToDelete, this.currentUser)
-      .then(res => {
-        console.log(res)
-        this.loadRewards(true);
+    //console.log("reward to delete", rewardToDelete)
 
-      });
+    this.openDialog(rewardToDelete, false, true);
+
 
   }
 
@@ -339,34 +329,33 @@ export class Rewards2Component implements OnInit, OnDestroy {
 
   }
 
-  // cancelEdit(indx) {
-  //   this.edit;
-  // }
+  openDialog(rewardIn: Reward, editIn: boolean, deleteReward: boolean): void {
 
-  // updateReward(reward: Reward, user:User){
-  //   this.rewardService.update(reward, this.currentUser)
-  //   .then(res => {
-  //     this.getReward();
-  //   });
-  // } else {
-  // //delete the task
-  // this.rewardService.delete(reward.id, this.currentUser)
-  //   .then(res => {
-  //     this.getTasks();
-  //   });
-  // }
-  // this opens the dialog box
-  openDialog(rewardIn: Reward, editIn: boolean): void {
+    // if editIn is false then it is an add
 
-    console.log(rewardIn);
+    if (!editIn && !deleteReward) {
+      rewardIn.username = this.currentUser.username;
+      rewardIn.uploads = [];
+      let tempUpload = new Upload;
+      tempUpload.url = "http://www.pbs.org/mercy-street/lunchbox_plugins/s/photogallery/img/no-image-available.jpg";
+      tempUpload.type = "jpg";
+
+      rewardIn.uploads.push(tempUpload);
+    }
+
 
     let reward: Reward = new Reward();
+    let upload: Upload = new Upload();
 
+    upload.url = rewardIn.uploads[0].url;
+    upload.id = rewardIn.uploads[0].id;
+    upload.type = rewardIn.uploads[0].type;
 
     reward.name = rewardIn.name
     reward.descr = rewardIn.descr;
     reward.cost = rewardIn.cost;
-    reward.uploads = rewardIn.uploads;
+    reward.uploads = [];
+    reward.uploads.push(upload);
 
     const dialogRef = this.dialog.open(DialogEditRewardDialog, {
       width: '255px',
@@ -374,54 +363,64 @@ export class Rewards2Component implements OnInit, OnDestroy {
         reward: reward,
         edit: editIn,
         pic: File,
-        picChanged: false
-
+        picChanged: false,
+        deleteReward: deleteReward
       }
     });
 
     // after the dialog box is closed this is run
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      //console.log(result);
       if (result) {
-        // edit the task
-        rewardIn.name = reward.name
-        rewardIn.descr = reward.descr;
-        rewardIn.cost = reward.cost;
-        rewardIn.uploads = reward.uploads;
-        console.log(reward);
-        this.saveRewardChanges(rewardIn, result.picChanged, result.pic);
-        //   this.rewardService.update(rewardIn, this.currentUser)
-        //     .then(res => {
-        //       this.getRewards();
-        //     });
-        // } else {
-        //   //delete the task
-        //   this.rewardService.delete(rewardIn.id, this.currentUser)
-        //     .then(res => {
-        //       this.getRewards();
-        //     });
+        // if delete the reward
+        if (result.deleteReward) {
+          this.rewardService.delete(rewardIn, this.currentUser)
+            .then(res => {
+              //console.log(res)
+              this.loadRewards(true);
+            });
+
+        // if add or edit reward
+        } else {
+          rewardIn.name = reward.name
+          rewardIn.descr = reward.descr;
+          rewardIn.cost = reward.cost;
+          rewardIn.uploads = reward.uploads;
+          if (editIn) {
+            //console.log(reward);
+            this.saveRewardChanges(rewardIn, result.picChanged, result.pic);
+          } else {
+
+            let rewardsToAdd: Reward[] = [];
+            rewardsToAdd.push(rewardIn);
+            this.rewardService.createWithFile(rewardsToAdd, this.currentUser, result.pic)
+              .then(res => {
+                //console.log(res);
+                this.loadRewards(false)
+              });
+
+            this.rewardsToAdd = []
+          }
+        }
       }
     }
     );
   }
 
 
-  // picChanged;
-
-
   saveRewardChanges(rewardIn: Reward, picChanged: boolean, pic: File) {
 
-    console.log(rewardIn);
+    //console.log(rewardIn);
     if (picChanged) {
       this.rewardService.updatePic(rewardIn, this.currentUser, pic)
         .then(res => {
           picChanged = false;
-          console.log(res);
+          //console.log(res);
         });
     } else {
       this.rewardService.update(rewardIn, this.currentUser)
         .then(res => {
-          console.log(res);
+          //console.log(res);
         });
     }
   }
@@ -437,7 +436,10 @@ export class DialogEditRewardDialog {
 
   constructor(
     public dialogRef: MatDialogRef<DialogEditRewardDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: { reward: Reward, edit: boolean, pic: File, picChanged: boolean }) { }
+    @Inject(MAT_DIALOG_DATA) public data: {
+      reward: Reward, edit: boolean, pic: File, picChanged: boolean, deleteReward: boolean
+    },
+  ) { }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -446,14 +448,23 @@ export class DialogEditRewardDialog {
 
 
   onFileSelected(event) {
-    console.log(event);
+    //console.log("event", event);
     if (event.target.files[0]) {
       this.data.picChanged = true;
       this.data.pic = event.target.files[0];
       // this.data.reward.uploads[0].url = event.target.files[0].url;
       // was in seperate events
-      console.log(this.data.pic);
+
+      if (event.target.files && event.target.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (event: any) => {
+          this.data.reward.uploads[0].url = event.target.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+      }
+
     }
+
   }
 
 }
