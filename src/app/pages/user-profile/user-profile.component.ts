@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -6,6 +6,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { User, UserUpdateForm } from '@app/_models/user';
 import { AuthenticationService, UserService, AlertService } from '@app/_services';
 import { ApiResponse } from '@app/_models/apiResponse';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
+import { Reward } from '@app/_models';
 
 @Component({
   selector: 'app-user-profile',
@@ -40,7 +42,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private authenticationService: AuthenticationService,
     private userService: UserService,
     private sanitizer: DomSanitizer,
-    private alertService: AlertService
+    private alertService: AlertService,
+    public dialog: MatDialog
   ) {
     this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
       this.currentUser = user;
@@ -57,7 +60,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
     this.getPic();
 
-    
+
 
 
   }
@@ -67,21 +70,21 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.currentUserSubscription.unsubscribe();
   }
 
-  onSubmit() {}
+  onSubmit() { }
 
   getPic() {
-  // Get the image 
-  this.isImageLoading = true;
+    // Get the image 
+    this.isImageLoading = true;
 
-  this.userService.getPic(this.currentUser)
-    .then(blobIn => {
-      // creating the url to display the image from the Blob passed by the API
-      this.imageToShow = URL.createObjectURL(blobIn);
-      let urlCreator = window.URL;
-      this.imageToShow = this.sanitizer.bypassSecurityTrustUrl(
-        urlCreator.createObjectURL(blobIn));
-      this.isImageLoading = false;
-    });
+    this.userService.getPic(this.currentUser)
+      .then(blobIn => {
+        // creating the url to display the image from the Blob passed by the API
+        this.imageToShow = URL.createObjectURL(blobIn);
+        let urlCreator = window.URL;
+        this.imageToShow = this.sanitizer.bypassSecurityTrustUrl(
+          urlCreator.createObjectURL(blobIn));
+        this.isImageLoading = false;
+      });
   }
 
   // convenience getter for easy access to form fields
@@ -126,7 +129,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   changePassword() {
-    this.changePasswordOn = true;
+    //this.changePasswordOn = true;
+    this.openDialog(this.currentUser, true)
     this.alertService.clear();
   }
 
@@ -134,12 +138,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
     if (save) {
 
-      if (this.newPassword!==this.confirmNewPassword) {
+      if (this.newPassword !== this.confirmNewPassword) {
         this.alertService.error("New Password and Confirm New Password are not equal");
         return;
       }
-  
-      if (this.newPassword.length<6) {
+
+      if (this.newPassword.length < 6) {
         this.alertService.error("New Password must be at least 6 characters");
         return;
       }
@@ -172,25 +176,116 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.selectedFile = event.target.files[0];
     // was in seperate events
     this.userService.setPic(this.currentUser, this.selectedFile)
-        .then(res => {
-          console.log(res);
-          this.apiResults = <ApiResponse>res;
-          if (this.apiResults.status === 0) {
-            
-            this.changePasswordOn = false;
-            this.alertService.success("Image Changed");
-            this.getPic();
-          } else {
-            console.log("In here user-profile")
-            this.alertService.error(this.apiResults.message);
-          }
-          this.changeImage=false;
-        });
+      .then(res => {
+        //console.log(res);
+        this.apiResults = <ApiResponse>res;
+        if (this.apiResults.status === 0) {
+
+          this.changePasswordOn = false;
+          this.alertService.success("Image Changed");
+          this.getPic();
+        } else {
+          //console.log("In here user-profile")
+          this.alertService.error(this.apiResults.message);
+        }
+        this.changeImage = false;
+      });
 
   }
 
   changeImageFunc() {
-    this.changeImage=true;
+    this.changeImage = true;
+  }
+
+
+  // this opens the dialog box
+  openDialog(user: User, editIn: boolean): void {
+
+    const dialogRef = this.dialog.open(DialogPasswordDialog, {
+      width: '300px',
+      data: {
+        user: this.currentUser,
+        oldPassword: '',
+        newPassword: '',
+        confirmNewPassword: '',
+        edit: editIn
+
+      }
+    });
+
+    // after the dialog box is closed this is run
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log(result);
+      if (result) {
+        this.alertService.success("Password Successfully Changed");
+      }
+    });
+  }
+
+}
+
+@Component({
+  selector: 'dialog-password-dialog',
+  templateUrl: 'dialog-password-dialog.html',
+})
+export class DialogPasswordDialog {
+
+  passRequired: boolean = false;
+  newPassRequired: boolean = false;
+  apiError: boolean = false;
+  errMessage: string = "";
+
+  constructor(
+    private userService: UserService,
+    public dialogRef: MatDialogRef<DialogPasswordDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: {
+      user: User,
+      oldPassword: string,
+      newPassword: string,
+      confirmNewPassword: string,
+      edit: boolean
+    }
+  ) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  changePassword() {
+    this.passRequired = false;
+    this.newPassRequired = false;
+    this.apiError = false;
+
+    if (this.data.oldPassword.length == 0) {
+      this.passRequired = true;
+      return;
+    }
+
+    if (this.data.newPassword.length == 0) {
+      this.newPassRequired = true;
+      return;
+    }
+
+    if ((this.data.newPassword.length < 6) ||
+      (this.data.newPassword !== this.data.confirmNewPassword)) {
+      return
+    }
+
+    let apiResults: ApiResponse;
+    this.userService.resetPassword(this.data.oldPassword, this.data.newPassword, this.data.user.accessToken)
+        .then(res => {
+          apiResults = res;
+          if (apiResults.status === 0) {
+            this.data.oldPassword = "";
+            this.data.newPassword = "";
+            this.data.confirmNewPassword = "";
+            this.dialogRef.close(this.data);
+          } else {
+            this.apiError = true;
+            this.errMessage = apiResults.message
+          }
+        });
+    
   }
 
 }

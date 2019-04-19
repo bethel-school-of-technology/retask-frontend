@@ -1,13 +1,23 @@
 <style>
-    body {background-color: powderblue;}
-    h1 {color: blue;}
+    body {
+        background-color: powderblue;
+    }
+
+    h1 {
+        color: blue;
+    }
+
     p {
         color: red;
         text-align: center;
-    } 
+    }
+
+    .title-center {
+        margin: 0 auto;
+    }
 </style>
 <div *ngIf="data.edit;  else elseBlock">
-    <h1 mat-dialog-title>Edit Task</h1>
+    <h1 class=title-center mat-dialog-title>Edit Task</h1>
     <div mat-dialog-content>
         <mat-form-field>
             <input matInput [(ngModel)]="data.task.name" placeholder="Task Name">
@@ -38,7 +48,8 @@
             <input matInput [(ngModel)]="data.task.name" placeholder="Task Name" disabled>
         </mat-form-field>
         <mat-form-field>
-            <input matInput [matDatepicker]="picker1" placeholder="Start date" [(ngModel)]="data.task.startdate" disabled>
+            <input matInput [matDatepicker]="picker1" placeholder="Start date" [(ngModel)]="data.task.startdate"
+                disabled>
             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
             <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
