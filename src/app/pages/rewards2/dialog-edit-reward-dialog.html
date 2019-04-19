@@ -27,8 +27,9 @@
 
         <div>
             <!-- <a (click)="file.click()"> -->
-            <img  class="card-img-top" [src]="data.reward.uploads[0].url" alt="Card image cap">
-            <label for="file" class="mat-button">Change Image</label>
+            <!-- <img  class="card-img-top" [src]="data.reward.uploads[0].url" alt="Card image cap"> -->
+            <label for="file" class="mat-button"><img class="card-img-top" [src]="data.reward.uploads[0].url"
+                    alt="Card image cap"></label>
             <input type="file" id="file" (change)="onFileSelected($event)" accept="image/*" hidden="true">
             <!-- </a> -->
         </div>
@@ -40,25 +41,52 @@
     </div>
 </div>
 <ng-template #elseBlock>
-    <h1 mat-dialog-title>Delete Reward</h1>
-    <div mat-dialog-content>
-        <mat-form-field>
-            <input matInput [(ngModel)]="data.reward.name" placeholder="Reward Name" disabled>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput [matDatepicker]="picker1" placeholder="Description" [(ngModel)]="data.reward.descr"
-                disabled>
-            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker #picker1></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput [matDatepicker]="picker2" placeholder="Cost" [(ngModel)]="data.reward.cost" disabled>
-            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-            <mat-datepicker #picker2></mat-datepicker>
-        </mat-form-field>
+    <!-- This is the Delete  -->
+    <div *ngIf="data.deleteReward;  else elseAddBlock">
+        <!-- <h1 mat-dialog-title>Delete Reward</h1> -->
+        <div mat-dialog-content>
+            <!-- <mat-form-field>
+                <input matInput [(ngModel)]="data.deleteReward" placeholder="Reward Name">
+            </mat-form-field> -->
+            <!-- <div mat-dialog-actions> -->
+                Delete reward?
+                <br>
+                <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Yes</button>
+                <button mat-button (click)="onNoClick()">No</button>
+            <!-- </div> -->
+        </div>
     </div>
-    <div mat-dialog-actions>
-        <button mat-button (click)="onNoClick()">Cancel</button>
-        <button mat-button [mat-dialog-close]="data.task" cdkFocusInitial>Delete</button>
-    </div>
+    <!-- This is the Add  -->
+    <ng-template #elseAddBlock>
+        <h1 mat-dialog-title>Add Reward</h1>
+        <div mat-dialog-content>
+            <mat-form-field>
+                <input matInput [(ngModel)]="data.reward.name" placeholder="Reward Name">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput [(ngModel)]="data.reward.descr" placeholder="Description">
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput [(ngModel)]="data.reward.cost" placeholder="Cost">
+            </mat-form-field>
+
+            <div>
+                <!-- <a (click)="file.click()"> -->
+                <!-- <img  class="card-img-top" [src]="data.reward.uploads[0].url" alt="Card image cap"> -->
+                <label for="file" class="mat-button"><img class="card-img-top" [src]="data.reward.uploads[0].url"
+                        alt="Card image cap"></label>
+                <input type="file" id="file" (change)="onFileSelected($event)" accept="image/*" hidden="true">
+                <!-- </a> -->
+            </div>
+
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button (click)="onNoClick()">Cancel</button>
+            <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+        </div>
+    </ng-template>
+
+
+
+
 </ng-template>
