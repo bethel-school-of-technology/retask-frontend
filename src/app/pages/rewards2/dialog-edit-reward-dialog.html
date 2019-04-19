@@ -27,8 +27,8 @@
 
         <div>
             <!-- <a (click)="file.click()"> -->
-            <img  class="card-img-top" [src]="data.reward.uploads[0].url" alt="Card image cap">
-            <label for="file" class="mat-button">Change Image</label>
+            <!-- <img  class="card-img-top" [src]="data.reward.uploads[0].url" alt="Card image cap"> -->
+            <label for="file" class="mat-button"><img  class="card-img-top" [src]="data.reward.uploads[0].url" alt="Card image cap"></label>
             <input type="file" id="file" (change)="onFileSelected($event)" accept="image/*" hidden="true">
             <!-- </a> -->
         </div>
