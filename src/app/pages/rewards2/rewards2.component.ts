@@ -77,8 +77,7 @@ export class Rewards2Component implements OnInit, OnDestroy {
     private sanitizer: DomSanitizer,
     private alertService: AlertService,
     public dialog: MatDialog,
-  ) 
-  {
+  ) {
     this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
       this.currentUser = user;
     });
@@ -360,8 +359,9 @@ export class Rewards2Component implements OnInit, OnDestroy {
   openDialog(rewardIn: Reward, editIn: boolean): void {
 
     console.log(rewardIn);
-    
+
     let reward: Reward = new Reward();
+
 
     reward.name = rewardIn.name
     reward.descr = rewardIn.descr;
@@ -372,21 +372,24 @@ export class Rewards2Component implements OnInit, OnDestroy {
       width: '255px',
       data: {
         reward: reward,
-        edit: editIn
+        edit: editIn,
+        pic: File,
+        picChanged: false
 
       }
     });
 
     // after the dialog box is closed this is run
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
       if (result) {
-        if (editIn) {
-          // edit the task
-          rewardIn.name = reward.name
-          rewardIn.descr = reward.descr;
-          rewardIn.cost = reward.cost;
-          rewardIn.uploads = reward.uploads;
-
+        // edit the task
+        rewardIn.name = reward.name
+        rewardIn.descr = reward.descr;
+        rewardIn.cost = reward.cost;
+        rewardIn.uploads = reward.uploads;
+        console.log(reward);
+        this.saveRewardChanges(rewardIn, result.picChanged, result.pic);
         //   this.rewardService.update(rewardIn, this.currentUser)
         //     .then(res => {
         //       this.getRewards();
@@ -397,32 +400,32 @@ export class Rewards2Component implements OnInit, OnDestroy {
         //     .then(res => {
         //       this.getRewards();
         //     });
-        }
       }
-    });
+    }
+    );
   }
 
 
-  picChanged;
-  
+  // picChanged;
 
-  saveRewardChanges(rewardIn: Reward) {
 
-    //console.log(rewardIn);
-    // if (this.picChanged) {
-    //   this.rewardService.updatePic(rewardIn, this.currentUser, this.selectedFile)
-    //     .then(res => {
-    //       this.picChanged = false;
-    //       console.log(res);
-    //     });
-    // } else {
-    //   this.rewardService.update(rewardIn, this.currentUser)
-    //     .then(res => {
-    //       console.log(res);
-    //     });
+  saveRewardChanges(rewardIn: Reward, picChanged: boolean, pic: File) {
+
+    console.log(rewardIn);
+    if (picChanged) {
+      this.rewardService.updatePic(rewardIn, this.currentUser, pic)
+        .then(res => {
+          picChanged = false;
+          console.log(res);
+        });
+    } else {
+      this.rewardService.update(rewardIn, this.currentUser)
+        .then(res => {
+          console.log(res);
+        });
     }
   }
-
+}
 
 
 
@@ -434,10 +437,23 @@ export class DialogEditRewardDialog {
 
   constructor(
     public dialogRef: MatDialogRef<DialogEditRewardDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: { reward: Reward, edit: boolean }) { }
+    @Inject(MAT_DIALOG_DATA) public data: { reward: Reward, edit: boolean, pic: File, picChanged: boolean }) { }
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+
+
+  onFileSelected(event) {
+    console.log(event);
+    if (event.target.files[0]) {
+      this.data.picChanged = true;
+      this.data.pic = event.target.files[0];
+      // this.data.reward.uploads[0].url = event.target.files[0].url;
+      // was in seperate events
+      console.log(this.data.pic);
+    }
   }
 
 }
