@@ -25,14 +25,18 @@
             <input matInput [(ngModel)]="data.reward.cost" placeholder="Cost">
         </mat-form-field>
 
-        <a (click)="onChangeFileSelected">
-            <img class="card-img-top" [src]="data.reward.uploads[0].url" alt="Card image cap">
-        </a>
+        <div>
+            <!-- <a (click)="file.click()"> -->
+            <img  class="card-img-top" [src]="data.reward.uploads[0].url" alt="Card image cap">
+            <label for="file" class="mat-button">Change Image</label>
+            <input type="file" id="file" (change)="onFileSelected($event)" accept="image/*" hidden="true">
+            <!-- </a> -->
+        </div>
 
     </div>
     <div mat-dialog-actions>
         <button mat-button (click)="onNoClick()">Cancel</button>
-        <button mat-button [mat-dialog-close]="data.reward" cdkFocusInitial>Save</button>
+        <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
     </div>
 </div>
 <ng-template #elseBlock>
