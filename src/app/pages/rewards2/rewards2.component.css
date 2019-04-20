@@ -211,19 +211,19 @@ padding-left: 55%;
 }
 
 .delete {
-  color: rgb(255, 117, 117);
+  color: rgb(122, 122, 122);
 }
 
 .delete:hover {
-  color: rgb(255, 182, 182);
+  color: rgb(255, 128, 128);
 }
 
 .create {
-  color: rgb(0, 174, 255);
+  color: rgb(122, 122, 122);
 }
 
 .create:hover {
-  color: rgb(110, 209, 255);
+  color: rgb(51, 163, 255);
 }
 
 .navigation:hover { 

@@ -1,33 +1,78 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
+
+* {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+}
+
 #link-button {
-     background:none!important;
-     color:inherit;
-     border:none; 
-     padding:0!important;
-     font: inherit;
-     /*border is optional*/
-     border-bottom:1px solid #444; 
-     cursor: pointer;
+  background: none !important;
+  color: inherit;
+  border: none;
+  padding: 0 !important;
+  font: inherit;
+  /*border is optional*/
+  border-bottom: 1px solid #444;
+  cursor: pointer;
 }
 
 #editbuttons {
-     margin: 5px;
+  margin: 5px;
 }
 
 .arrows {
-     cursor: pointer;
+  cursor: pointer;
 }
 
-.material-icons:hover { 
-     color: rgba(0, 0, 0, 0.4);
+.material-icons:hover {
+  color: rgba(0, 0, 0, 0.4);
 }
 
 h3 {
-     color: rgb(113, 113, 113);
+  color: rgb(113, 113, 113);
 }
 
 .badge {
-     font-weight: 50;
+  font-weight: 50;
 }
+
+
+
+.tracking-in-expand {
+  -webkit-animation: tracking-in-expand 2s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+  animation: tracking-in-expand 2s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+}
+
+@-webkit-keyframes tracking-in-expand {
+  0% {
+    letter-spacing: -0.5em;
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes tracking-in-expand {
+  0% {
+    letter-spacing: -0.5em;
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+
