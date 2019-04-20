@@ -58,7 +58,7 @@ const colors: any = {
   },
   green: {
     primary: '#008000',
-    secondary: '#808080'
+    secondary: '#9fffaf'
   }
 };
 
