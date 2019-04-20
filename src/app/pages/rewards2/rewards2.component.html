@@ -1,11 +1,21 @@
-
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
 <!-- <img class="card-img-top" src="https://images.pexels.com/photos/209424/pexels-photo-209424.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Card image cap"> -->
 <div class="titleContainer">
-  <h2>My Rewards</h2>
-  <h4><i>Available Points: {{currentUser.points}}</i></h4>
-  <div *ngIf="pageLoading">
-    <h5> page loading .... </h5>
+  <div class="row">
+    <div
+    class="list-group-item list-group-item-action rounded"
+    style="background-color: rgba(255, 255, 255, 0.507);"
+  >
+  <span class="badge badge-pill badge-primary float-right">{{ currentUser.points }} Available Points</span>
+  <br/>
+  <h1 class='text-center tracking-in-expand'>My Rewards</h1>
   </div>
+  <div *ngIf="pageLoading">
+    <div class="lds-ring centered"><div></div><div></div><div></div><div></div></div>
+  </div>
+</div>
 </div>
 
 <!-- If the page is loaded but they want to add rewards then show this section -->
@@ -88,6 +98,7 @@
       <div class="col-sm-12">
         <div *ngIf="!addReward">
           <div class="addRewards">
+            <br/>
             <button class="btn btn-sm btn-primary" (click)="addRewards()">Add Rewards</button>
           </div>
         </div>
@@ -95,35 +106,45 @@
         <br>
       </div>
     </div>
+
     <div class="row">
-      <div class="col-sm-1">
-        <button *ngIf="pageCnt>0 && page>0;" class="btn btn-sm btn-outline-primary"><i class="fa fa-backward"
-            (click)="goBackward()"></i></button>
+      <div class="col-md-1">
+            <span class="arrows">
+                <i *ngIf="pageCnt>0 && page>0;" class="material-icons large navigation" (click)="goBackward()">fast_rewind</i> </span
+              >
       </div>
 
 
 
       <!-- first card -->
 
-      <div class="col-sm-10">
+      <div class="col-md-10">
         <div class="card-deck">
           <div class="row">
-            <div class="col-sm-4">
+            <div class="col-md-4">
               <div class="card" *ngIf="pageCnt>0">
-                <button class="btn btn-outline-primary btn-sm"(click)="deleteReward(rewardsIn[cnt])">
-                  <i class="fa fa-times float-left"></i>
-                </button>
-                <button class="btn  btn-sm" class="edit" (click)="openDialog(rewardsIn[cnt], true, false)"><i
-                    class="fa fa-fw fa-pencil float-left"></i></button>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <span class="arrows">
+                        <i class="create material-icons medium" (click)="openDialog(rewardsIn[cnt], true, false)">create</i> </span
+                      >
+                    </div>
+                    <div class="col-md-6">
+                      <span class="arrows float-right">
+                          <i *ngIf="(totPageCnt-1)>page;" class="delete material-icons medium" (click)="deleteReward(rewardsIn[cnt])">delete</i> </span
+                        >
+                      </div>
+                    </div>
 
                 <img class="card-img-top" [src]="rewardsIn[cnt].uploads[0].url" alt="Card image cap">
 
                 <div class="card-body">
 
-                  <h5 class="card-title">
+                  <h5 class="card-title text-center">
                     {{rewardsIn[cnt].name}}
                   </h5>
-                  <p class="card-text">
+                  <p class="card-text text-center">
                     {{rewardsIn[cnt].descr}}
 
                     <br><br>
@@ -143,11 +164,19 @@
 
             <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>1">
-                <button class="btn btn-outline-primary btn-sm" (click)="deleteReward(rewardsIn[cnt+1])">
-                  <i class="fa fa-times float-left"></i>
-                </button>
-                <button class="btn  btn-sm" class="edit" (click)="openDialog(rewardsIn[cnt+1], true, false)"><i
-                    class="fa fa-fw fa-pencil float-left"></i></button>
+                
+                  <div class="row">
+                      <div class="col-md-6">
+                        <span class="arrows">
+                            <i class="create material-icons medium" (click)="openDialog(rewardsIn[cnt], true, false)">create</i> </span
+                          >
+                        </div>
+                        <div class="col-md-6">
+                          <span class="arrows float-right">
+                              <i *ngIf="(totPageCnt-1)>page;" class="delete material-icons medium" (click)="deleteReward(rewardsIn[cnt])">delete</i> </span
+                            >
+                          </div>
+                        </div>
 
                 <img class="card-img-top" [src]="rewardsIn[cnt+1].uploads[0].url" alt="Card image cap">
 
@@ -178,11 +207,19 @@
 
             <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>2">
-                <button class="btn btn-outline-primary btn-sm" (click)="deleteReward(rewardsIn[cnt+2])">
-                  <i class="fa fa-times float-left"></i>
-                </button>
-                <button class="btn  btn-sm" class="edit" (click)="openDialog(rewardsIn[cnt+2], true, false)"><i
-                    class="fa fa-fw fa-pencil float-left"></i></button>
+                
+                  <div class="row">
+                      <div class="col-md-6">
+                        <span class="arrows">
+                            <i class="create material-icons medium" (click)="openDialog(rewardsIn[cnt], true, false)">create</i> </span
+                          >
+                        </div>
+                        <div class="col-md-6">
+                          <span class="arrows float-right">
+                              <i *ngIf="(totPageCnt-1)>page;" class="delete material-icons medium" (click)="deleteReward(rewardsIn[cnt])">delete</i> </span
+                            >
+                          </div>
+                        </div>
 
                 <img class="card-img-top" [src]="rewardsIn[cnt+2].uploads[0].url" alt="Card image cap">
 
@@ -209,9 +246,10 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-1">
-        <button *ngIf="(totPageCnt-1)>page;" class="btn btn-outline-primary btn-sm"><i class="fa fa-forward"
-            (click)="goFoward()"></i></button>
+      <div class="col-md-1">
+          <span class="arrows">
+              <i *ngIf="(totPageCnt-1)>page;" class="material-icons large navigation" (click)="goFoward()">fast_forward</i> </span
+            >
       </div>
 
     </div>
