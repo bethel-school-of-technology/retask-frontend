@@ -121,7 +121,7 @@
       <div class="col-md-10">
         <div class="card-deck">
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-sm-4">
               <div class="card" *ngIf="pageCnt>0">
 
                 <div class="row">
@@ -132,7 +132,7 @@
                     </div>
                     <div class="col-md-6">
                       <span class="arrows float-right">
-                          <i *ngIf="(totPageCnt-1)>page;" class="delete material-icons medium" (click)="deleteReward(rewardsIn[cnt])">delete</i> </span
+                          <i *ngIf="(totPageCnt)>page;" class="delete material-icons medium" (click)="deleteReward(rewardsIn[cnt])">delete</i> </span
                         >
                       </div>
                     </div>
@@ -173,7 +173,7 @@
                         </div>
                         <div class="col-md-6">
                           <span class="arrows float-right">
-                              <i *ngIf="(totPageCnt-1)>page;" class="delete material-icons medium" (click)="deleteReward(rewardsIn[cnt])">delete</i> </span
+                              <i *ngIf="(totPageCnt)>page;" class="delete material-icons medium" (click)="deleteReward(rewardsIn[cnt])">delete</i> </span
                             >
                           </div>
                         </div>
@@ -216,7 +216,7 @@
                         </div>
                         <div class="col-md-6">
                           <span class="arrows float-right">
-                              <i *ngIf="(totPageCnt-1)>page;" class="delete material-icons medium" (click)="deleteReward(rewardsIn[cnt])">delete</i> </span
+                              <i *ngIf="(totPageCnt)>page;" class="delete material-icons medium" (click)="deleteReward(rewardsIn[cnt])">delete</i> </span
                             >
                           </div>
                         </div>
