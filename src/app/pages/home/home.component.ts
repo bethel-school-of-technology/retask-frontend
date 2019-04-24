@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // loading page variable
   pageLoading = true;
+  loadingTask = true;
   cnt = 0;
   totRewards = 0; // total number of rewards
   displayDate: any;
@@ -68,12 +69,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       } else {
         this.progressIn[i] = Math.trunc(this.progressIn[i]);
       }
-      console.log(
-        this.currentUser.points,
-        this.rewardList[i].cost,
-        this.rewardList[i].name,
-        this.progressIn[i]
-      );
+      // console.log(
+      //   this.currentUser.points,
+      //   this.rewardList[i].cost,
+      //   this.rewardList[i].name,
+      //   this.progressIn[i]
+      // );
     }
   }
 
@@ -95,7 +96,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getTasks() {
-    console.log(this.currentDateTime);
+    //console.log(this.currentDateTime);
     this.displayDate = this.datePipe.transform(
       this.currentDateTime,
       'EE MM-dd-yy'
@@ -108,11 +109,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       )
       .then(tasksIn => {
         this.taskList = tasksIn as Task[];
+        this.loadingTask = false;
       });
   }
 
   makeComplete(itemComplete, indx) {
-    console.log(itemComplete, indx);
+    //console.log(itemComplete, indx);
 
     if (itemComplete) {
       this.taskService
@@ -122,7 +124,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.currentDateTime
         )
         .then(res => {
-          console.log(res);
+          //console.log(res);
           // this.completedTaskList.push(this.taskList[indx]);
           this.currentUser.points = this.taskList[indx].points + this.currentUser.points;
           this.authenticationService.saveLocally(this.currentUser);
