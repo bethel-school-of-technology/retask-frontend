@@ -168,12 +168,12 @@
                   <div class="row">
                       <div class="col-md-6">
                         <span class="arrows">
-                            <i class="create material-icons medium" (click)="openDialog(rewardsIn[cnt], true, false)">create</i> </span
+                            <i class="create material-icons medium" (click)="openDialog(rewardsIn[cnt+1], true, false)">create</i> </span
                           >
                         </div>
                         <div class="col-md-6">
                           <span class="arrows float-right">
-                              <i *ngIf="(totPageCnt)>page;" class="delete material-icons medium" (click)="deleteReward(rewardsIn[cnt])">delete</i> </span
+                              <i *ngIf="(totPageCnt)>page;" class="delete material-icons medium" (click)="deleteReward(rewardsIn[cnt+1])">delete</i> </span
                             >
                           </div>
                         </div>
@@ -211,12 +211,12 @@
                   <div class="row">
                       <div class="col-md-6">
                         <span class="arrows">
-                            <i class="create material-icons medium" (click)="openDialog(rewardsIn[cnt], true, false)">create</i> </span
+                            <i class="create material-icons medium" (click)="openDialog(rewardsIn[cnt+2], true, false)">create</i> </span
                           >
                         </div>
                         <div class="col-md-6">
                           <span class="arrows float-right">
-                              <i *ngIf="(totPageCnt)>page;" class="delete material-icons medium" (click)="deleteReward(rewardsIn[cnt])">delete</i> </span
+                              <i *ngIf="(totPageCnt)>page;" class="delete material-icons medium" (click)="deleteReward(rewardsIn[cnt+2])">delete</i> </span
                             >
                           </div>
                         </div>
