@@ -17,7 +17,6 @@ import { PopupComponent } from './pages/popup/popup.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-    { path: 'popup', component: PopupComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'calendar', component: CalendarComponent, canActivate: [AuthGuard] },
