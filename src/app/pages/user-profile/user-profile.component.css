@@ -38,6 +38,7 @@
 
 .btn-warning {
   background-color: rgb(218, 58, 58);
+  color: white;
 }
 
 .btn-warning:hover {
