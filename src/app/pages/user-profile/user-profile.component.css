@@ -27,9 +27,28 @@
 
 .profile {
     vertical-align: middle;
+    border-radius: 50%;
+}
+
+@media only screen and (min-width: 768px) {
+  .profile {
     width: 400px;
     height: 400px;
-    border-radius: 50%;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .profile {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+@media only screen and (max-width: 767px) and (orientation: portrait) {
+  .profile {
+    width: 300px;
+    height: 300px;
+  }
 }
 
 #mainContainer {
@@ -47,8 +66,8 @@
 }
 
 .tracking-in-expand {
-	-webkit-animation: tracking-in-expand 2s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
-	        animation: tracking-in-expand 2s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+	-webkit-animation: tracking-in-expand 1s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+	        animation: tracking-in-expand 1s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
 }
 @-webkit-keyframes tracking-in-expand {
   0% {

@@ -16,10 +16,10 @@
         <h2 class="tracking-in-expand">
           <span class="arrows" (click)="prev()">
             <i class="material-icons">chevron_left</i> </span
-          >Tasks for {{ displayDate
-          }}<span class="arrows" (click)="next()">
-            <i class="material-icons">chevron_right</i>
-          </span>
+          >Tasks for<span class="arrows" (click)="next()">
+              <i class="material-icons">chevron_right</i>
+            </span> <br/>{{ displayDate
+          }}
         </h2>
       </div>
       </div>
@@ -57,7 +57,7 @@
             <!-- <input type="checkbox" (change)="isChangeLimitAccessToggle($event.target.checked ? 'on' : 'off')" id="ifLimitAccess" class="switch-input"> -->
           </div>
           <div class="col-sm-4">
-            <span id="points">{{ task.points }}</span>
+            <span id="points" class="badge badge-pill badge-secondary">{{ task.points }}</span>
             <div class="float-right">
               <div id="editbuttons">
                 <button
@@ -118,7 +118,7 @@
             </div>
 
             <div class="col-sm-4">
-              <span id="points">{{ task.points }}</span>
+              <span id="points" class="badge badge-pill badge-success">{{ task.points }}</span>
             </div>
           </div>
         </div>

@@ -177,8 +177,8 @@ padding-left: 55%;
 
 
 .tracking-in-expand {
-	-webkit-animation: tracking-in-expand 1.7s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
-	        animation: tracking-in-expand 1.7s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+	-webkit-animation: tracking-in-expand 1s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
+	        animation: tracking-in-expand 1s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
 }
 
 @-webkit-keyframes tracking-in-expand {
@@ -226,6 +226,10 @@ padding-left: 55%;
   color: rgb(51, 163, 255);
 }
 
+.navigation {
+  background-color: white;
+  color: rgb(122, 122, 122);
+}
 .navigation:hover { 
-  color: rgba(0, 0, 0, 0.4);
+  color: rgb(221, 221, 221);
 }
