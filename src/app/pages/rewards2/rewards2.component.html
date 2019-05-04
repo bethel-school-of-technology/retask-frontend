@@ -110,7 +110,7 @@
     <div class="row">
       <div class="col-md-1">
             <span class="arrows">
-                <i *ngIf="pageCnt>0 && page>0;" class="material-icons large navigation" (click)="goBackward()">fast_rewind</i> </span
+                <i *ngIf="pageCnt>0 && page>0;" class="material-icons large navigation rounded" (click)="goBackward()">fast_rewind</i> </span
               >
       </div>
 
@@ -248,7 +248,7 @@
       </div>
       <div class="col-md-1">
           <span class="arrows">
-              <i *ngIf="(totPageCnt-1)>page;" class="material-icons large navigation" (click)="goFoward()">fast_forward</i> </span
+              <i *ngIf="(totPageCnt-1)>page;" class="material-icons large navigation float-right rounded" (click)="goFoward()">fast_forward</i> </span
             >
       </div>
 
